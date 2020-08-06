@@ -26,27 +26,15 @@
 </template>
 
 <script>
+
     export default {
         name: 'featureList',
+        props: {
+            features: Array
+        },
         data (){
             return {
-                features: [
-                    {
-                        icon: require('../assets/img/icons/aeroland-branding-box-image-01-1.png'), 
-                        title: 'Cross-browser Compatible Design', 
-                        desc: 'Apps are built based on highly compatible design for all kinds of Internet browsers.'
-                    },
-                    {
-                        icon: require('../assets/img/icons/aeroland-branding-box-image-02-1.png'), 
-                        title: 'Highly Responsive Tools', 
-                        desc: 'Apps are built based on highly compatible design for all kinds of Internet browsers.'
-                    },
-                    {
-                        icon: require('../assets/img/icons/aeroland-branding-box-image-03-1.png'), 
-                        title: 'Completely Mobile Ready', 
-                        desc: 'Apps are built based on highly compatible design for all kinds of Internet browsers.'
-                    },
-                ]
+               
             }
         }
     }

@@ -7,36 +7,11 @@
         <HeroBranding />
 
         <!-- about section -->
-        <div class="box-image-area section-space--ptb_120" id="about">
-            <div class="container">
-                <div class="section-title-wrapper text-center section-space--mb_60 wow move-up">
-                    <h2 class="section-title mb-15">Expand Your Business</h2>
-                    <span class="section-text">Plan ahead to make progress and lead the trend.</span>
-                </div>
-                <!-- about component -->
-                <AboutExpand />
-            </div>
-        </div>
+       <AboutSection/>
 
         <!-- business analytics start -->
-        <div class="feature-icon-list-area section-space--pb_120">
-            <div class="container">
-                <div class="section-title-wrapper text-center section-space--mb_100">
-                    <h2 class="section-title mb-30">Receive real-time business analytics</h2>
-                    <div class="video-button-container video-popup">
-                        <silentbox-single src="https://www.youtube.com/watch?v=9No-FiEInLA">
-                            <div class="video-play">
-                                <i class="fa fa-play-circle"></i>
-                                <span class="video-text">INTRO & DEMO VIDEO</span>
-                            </div>
-                        </silentbox-single>
-                    </div>
-                </div>
-            </div>
-            <!-- feature list component -->
-            <FeatureList />
-        </div>
-
+        <BusinessSection/>
+        
         <!-- requirement section-->
         <RequireList />
 
@@ -62,43 +37,11 @@
                         S0.5,48.875,0.5,48.875V108h1920h1920V48.875C3840.5,48.875,3602.5,97.739,3360.5,97.739z"/>
             </template>
         </CurveShape>
-        <div class="pricing-table-area bg-gray-2 pt-30" id="pricing">
-            <div class="pricing-table-title-area position-relative">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="section-title-wrapper text-center section-space--mb_60">
-                                <h2 class="section-title font-width-light mb-15 wow move-up">Affordable for everyone!</h2>
-                                <span class="section-text wow move-up">If you are planning on developing a product landing app or website, take a look at this beautiful-crafted and error-free HTML template.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pricing-table-content-area section-space--pb_90">
-                <div class="container">
-                    <!-- Pricing component -->
-                    <Pricing />
-                </div>
-            </div>
-        </div>
+        <PricingSection/>
         <!-- pricing section end-->
 
         <!-- partner client section -->
-        <div class="brand-logo-area section-space--ptb_120" id="partner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-title-wrapper text-center section-space--mb_60">
-                            <h2 class="section-title mb-15 wow move-up">Trusted services from top-rated company</h2>
-                            <span class="section-text wow move-up">It is about us being able to offer help with the branding campaign, product presentation, and advertisement running across social media.</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- brandlogo component -->
-                <BrandLogo />
-            </div>
-        </div>
+        <PartnerClientSection/>
 
         <!-- newsletter section -->
         <Newsletter /> 
@@ -127,6 +70,11 @@
     import FooterMain from '../components/FooterMain'
     import OffcanvasSearchBox from '../components/OffcanvasSearchBox'
 
+    import  AboutSection from '../components/AboutSection'
+    import BusinessSection from '../components/BusinessSection'
+    import PricingSection from '../components/PricingSection'
+    import PartnerClientSection from '../components/PartnerClientSection'
+
     export default {
         name: 'app',
         components: {
@@ -142,7 +90,12 @@
             BrandLogo,
             Newsletter,
             FooterMain,
-            OffcanvasSearchBox
+            OffcanvasSearchBox,
+
+            AboutSection,
+            BusinessSection,
+            PricingSection,
+            PartnerClientSection
         }
     }
 </script>

@@ -3,7 +3,7 @@
         <div class="col-md-6 col-xl-3 pricing-table wow move-up" v-for="(pricing, index) in pricingTable" :key="index">
             <div class="pricing-table__inner">
                 <div class="pricing-table__feature-mark" v-if="pricing.isPopular">
-                    <span>Popular Choice</span>
+                    <span>{{popularTitle}}</span>
                 </div>
                 <div class="pricing-table__header">
                     <div class="pricing-table__image">
@@ -32,6 +32,9 @@
 <script>
     export default {
         name: 'pricing',
+        props: {
+            popularTitle: String
+        },
         data (){
             return {
                 pricingTable: [
