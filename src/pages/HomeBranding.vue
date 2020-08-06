@@ -58,14 +58,14 @@
 <script>
     import Navbar from '../components/Navbar'
     import HeroBranding from '../components/HeroBranding'
-    import AboutExpand from '../components/AboutExpand'
-    import FeatureList from '../components/FeatureList'
+    // import AboutExpand from '../components/AboutExpand'
+    // import FeatureList from '../components/FeatureList'
     import RequireList from '../components/RequireList'
     import FeatureTwo from '../components/FeatureTwo'
     import ProgressCircle from '../components/ProgressCircle'
     import CurveShape from '../components/CurveShape'
-    import Pricing from '../components/Pricing'
-    import BrandLogo from '../components/BrandLogo'
+    // import Pricing from '../components/Pricing'
+    // import BrandLogo from '../components/BrandLogo'
     import Newsletter from '../components/Newsletter'
     import FooterMain from '../components/FooterMain'
     import OffcanvasSearchBox from '../components/OffcanvasSearchBox'
@@ -80,14 +80,14 @@
         components: {
             Navbar,
             HeroBranding,
-            AboutExpand,
-            FeatureList,
+            // AboutExpand,
+            // FeatureList,
             RequireList,
             FeatureTwo,
             ProgressCircle,
             CurveShape,
-            Pricing,
-            BrandLogo,
+            // Pricing,
+            // BrandLogo,
             Newsletter,
             FooterMain,
             OffcanvasSearchBox,
