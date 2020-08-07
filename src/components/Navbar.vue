@@ -2,7 +2,10 @@
     <b-navbar type="light" toggleable="xl" fixed="top" v-b-scrollspy:nav-scroller class="header-area" :class="{'is-sticky': scrolled}">
         <div class="container-fluid container-fluid--cp-150">
             <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-            <b-navbar-brand class="navbar-brand" to="/"><img :src='"../assets/img/logo/logo-dark.png"' alt="logo"></b-navbar-brand>
+            <b-navbar-brand class="navbar-brand" to="/">
+            <!-- <img :src='"../assets/img/logo/logo-dark.png"' alt="logo"> -->
+            <img :src="logoSrc" alt="logo">
+            </b-navbar-brand>
             <b-btn-group class="header-config-wrapper">
                 <b-btn class="header-config" @click="toggleClass('addClass', 'active')"><i class="far fa-search"></i></b-btn>
                 <b-link class="ht-btn ht-btn--outline hire-btn d-none d-xl-block">Hire Us Now</b-link>
@@ -26,6 +29,7 @@
         name:'Navbar',
         data (){
             return {
+                logoSrc: "https://i1-dulich.vnecdn.net/2019/11/22/2-1574406624.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=2FEx_wSQ59liq86XLaeOVA",
                 load: true,
                 limitPosition: 200,
                 scrolled: false,

@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <!-- Navbar section -->
+    <!-- Navbar section -->       
     <Navbar />
 
     <!-- hero section -->
@@ -10,18 +10,24 @@
     <AboutSection />
 
     <!-- business analytics start -->
+    <!-- Khác tên comp con business vs  FeatureList -->
     <BusinessSection />
 
     <!-- requirement section-->
+    <!-- khác tên model vs comp -->
+    <!-- thiếu property srcImage trong model -->
     <RequireList />
 
     <!-- feature carousel -->
+    <!-- khác tên model vs comp -->
+    <!-- thiếu property imgSrc trong model featureCarousel -->
     <FeatureTwo />
 
     <!-- feature list progress bar -->
     <div class="feature-list-progress-area pb-30">
       <div class="container">
         <!-- progress feature component -->
+        <!-- thiếu title, fill, class, class 2 trong model -->
         <ProgressCircle />
       </div>
     </div>

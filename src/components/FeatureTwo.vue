@@ -101,13 +101,7 @@
         },
         data (){
             return {
-                swiperSlide: [{
-                    srcIcon: '',
-                    title: '',
-                    desciption: ''
-                }
-                
-                ],
+               
                 swiperOption: {
                     speed: 600,
                     loop: true,

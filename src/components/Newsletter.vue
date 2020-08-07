@@ -37,6 +37,7 @@ export default {
       text: "What’s next in AeroLand?",
       textHref: "#",
       buttonTitle: "Learn more",
+      textTitle:""
     };
   },
 };
