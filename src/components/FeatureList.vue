@@ -19,7 +19,7 @@
               </div>
               <div class="single-feature-icon__content">
                 <h6 class="title">{{ feature.title }}</h6>
-                <div class="text">{{ feature.desc }}</div>
+                <div class="text">{{ feature.description }}</div>
               </div>
             </div>
           </div>

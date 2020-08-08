@@ -10,7 +10,7 @@
                 </div>
             </div>
 
-            <!-- service agency component -->
+            <!-- api agency component -->
             <ServiceItemAgency />
         </div>
     </div>

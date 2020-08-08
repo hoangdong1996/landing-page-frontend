@@ -7,7 +7,7 @@
                         <div class="col-lg-12">
                             <div class="section-title-wrapper text-center section-space--mb_60">
                                 <h2 class="section-title font-width-light mb-15 wow move-up">{{sectionTitle}}</h2>
-                                <span class="section-text wow move-up">{{desciption}}</span>
+                                <span class="section-text wow move-up">{{description}}</span>
                             </div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
             return {
                 popularTitle: 'Popular Choice',
                 sectionTitle: 'Affordable for everyone!',
-                desciption: 'If you are planning on developing a product landing app or website, take a look at this beautiful-crafted and error-free HTML template.'
+                description: 'If you are planning on developing a product landing app or website, take a look at this beautiful-crafted and error-free HTML template.'
             }
         }
     }

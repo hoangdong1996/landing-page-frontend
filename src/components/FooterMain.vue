@@ -6,15 +6,15 @@
           <div class="col-lg-4 col-md-6 footer-widget">
             <div class="footer-widget__logo mb-30">
               <router-link to="/">
-                <img src="../assets/img/logo/logo-dark.png" class="img-fluid logo-dark" alt />
-                <img src="../assets/img/logo/logo-light.png" class="img-fluid logo-light" alt />
+                <img src="../assets/img/logo/logo-dark.png" class="img-fluid logo-dark" alt/>
+                <img src="../assets/img/logo/logo-light.png" class="img-fluid logo-light" alt/>
               </router-link>
             </div>
 
             <ul class="footer-widget__list">
-              <li>{{widgetList.title}}</li>
+              <li>{{ widgetList.title }}</li>
               <li v-for="(list,index) in widgetList.link" :key="index">
-                <a v-bind:href="widgetList.href[index]" class="hover-style-link">{{list}}</a>
+                <a v-bind:href="widgetList.href[index]" class="hover-style-link">{{ list }}</a>
               </li>
             </ul>
             <!-- <ul class="footer-widget__list">
@@ -32,14 +32,14 @@
           </div>
 
           <div
-            class="col-lg-2 col-md-6 footer-widget"
-            v-for="(foot,index) in footerWidget"
-            :key="index"
+              class="col-lg-4 col-md-6 footer-widget"
+              v-for="(foot,index) in footerList"
+              :key="index"
           >
-            <h6 class="footer-widget__title mb-20">{{foot.title}}</h6>
+            <h6 class="footer-widget__title mb-20">{{ foot.title }}</h6>
             <ul class="footer-widget__list">
-              <li v-for="(link,i) in foot.link" :key="i">
-                <a v-bind:href="foot.href[i]" class="hover-style-link">{{link}}</a>
+              <li v-for="(link,index) in foot.footerLinkList" :key="index">
+                <a v-bind:href="link.href" class="hover-style-link">{{ link.title }}</a>
               </li>
             </ul>
           </div>
@@ -68,13 +68,13 @@
                   <div class="swiper-slide twitter-feed-slider__single">
                     <div class="tweet">
                       <div class="tweet__text">
-                        {{tweet.text}}
-                        <a v-bind:href="tweet.href" target="_blank">{{tweet.info}}</a>
+                        {{ tweet.text }}
+                        <a v-bind:href="tweet.href" target="_blank">{{ tweet.info }}</a>
                         <a href="https://t.co/2iDReuyPMt" target="_blank">https://t.co/2iDReuyPMt</a>
                       </div>
                       <div class="tweet__info">
                         <h6 class="tweet__heading">Unsplash</h6>
-                        <span class="tweet__date">{{tweet.date}}</span>
+                        <span class="tweet__date">{{ tweet.date }}</span>
                       </div>
                     </div>
 
@@ -137,28 +137,41 @@ export default {
   props: ["FooterStyle"],
   data() {
     return {
-      widgetList: {
-        title: "58 Howard Street #2 San Francisco, CA 941",
-        link: ["contact@aeroland.com", "(+68)1221 09876", "www.website.com"],
-        href: ["#", "#", "#"],
-      },
-      footerWidget: [
+      logoSrc: "#",
+      footerList: [
         {
           title: "Who we are",
-          link: ["About us", "About us", "About us", "About us"],
-          href: ["#", "#", "#", "#"],
-        },
-        {
-          title: "Who we are",
-          link: ["About us", "About us", "About us", "About us"],
-          href: ["#", "#", "#", "#"],
+          footerLinkList: [
+            {
+              title: "About us",
+              href: "#"
+            },
+            {
+              title: "About us",
+              href: "#"
+            },
+            {
+              title: "About us",
+              href: "#"
+            },
+            {
+              title: "About us",
+              href: "#"
+            }
+          ],
         },
       ],
+
       tweet: {
         text: ' "The ocean never ceases to amaze!" Feature: Ben Klea',
         href: "https://t.co/jSRMsZAdPW",
         info: "https://t.co/2iDReuyPMt",
         date: "May 07, 2020",
+      },
+      widgetList: {
+        title: "58 Howard Street #2 San Francisco, CA 941",
+        link: ["contact@aeroland.com", "(+68)1221 09876", "www.website.com"],
+        href: ["#", "#", "#"],
       },
     };
   },

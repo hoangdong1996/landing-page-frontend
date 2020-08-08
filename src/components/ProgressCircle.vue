@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md-6" v-for="(progress, index) in fearureListProgress" :key="index">
+    <div class="col-md-6" v-for="(progress, index) in featureListProgress" :key="index">
       <div class="feature-list-progress section-space--pt_60">
         <div class="feature-list-progress__counter">
           <div class="circle-progress-wrapper">
@@ -114,19 +114,25 @@
 <script>
 import VueCircle from "vue2-circle-progress/src/index.vue";
 
+const FILL = { gradient: ["#fad961", "#f76b1c"] };
+const BLUE = { gradient: ["#9C7AF2", "#5E61E7"] };
+const CLASSNULL = " ";
+const CLASS = "circle-design--blue";
+const CLASS2 = "chart-progress__inner--blue";
+
 export default {
   components: {
     VueCircle,
   },
   data() {
     return {
-      fearureListProgress: [
+      featureListProgress: [
         {
           progress: 80,
           title: "Digital Marketing",
-          fill: { gradient: ["#fad961", "#f76b1c"] },
-          class: "",
-          class2: "",
+          fill: FILL,
+          class: CLASSNULL,
+          class2: CLASSNULL,
           listProgress: [
             "Digital Marketing",
             "Website audit",
@@ -139,9 +145,9 @@ export default {
         {
           progress: 90,
           title: "Digital Marketing",
-          blue: { gradient: ["#9C7AF2", "#5E61E7"] },
-          class: "circle-design--blue",
-          class2: "chart-progress__inner--blue",
+          blue: BLUE,
+          class: CLASS,
+          class2: CLASS2,
           listProgress: [
             "Digital Marketing",
             "Website audit",
