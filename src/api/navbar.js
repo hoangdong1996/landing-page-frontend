@@ -1,16 +1,8 @@
 import request from '@/utils/request';
 
-export function updateNavbar(data) {
-    return request({
-        url: '',
-        method: 'post',
-        data
-    })
-}
-
 export function getNavbar() {
     return request({
-        url: '',
+        url: '/api/navbar-section/get-latest',
         method: 'get'
     })
 }

@@ -4,8 +4,8 @@
     <div class="container-fluid container-fluid--cp-150">
       <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
       <b-navbar-brand class="navbar-brand" to="/">
-        <!-- <img :src='"../assets/img/logo/logo-dark.png"' alt="logo"> -->
-        <img :src="navbarComponent.srcLogoNavbar" alt="logo">
+        <!--         <img :src='"../assets/img/logo/logo-dark.png"' alt="logo">-->
+        <img :src="logoNavbar" alt="logo">
       </b-navbar-brand>
       <b-btn-group class="header-config-wrapper">
         <b-btn class="header-config" @click="toggleClass('addClass', 'active')"><i class="far fa-search"></i></b-btn>
@@ -26,30 +26,34 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import {mapState} from 'vuex';
 
 export default {
   name: 'Navbar',
 
-  computed :{
-    ...mapState(['navbarComponent'])
+  computed: {
+    ...mapState({
+      logoNavbar: state => state.navbar.logoSrc
+
+    })
   },
 
   data() {
     return {
-      logoSrc: "https://i1-dulich.vnecdn.net/2019/11/22/2-1574406624.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=2FEx_wSQ59liq86XLaeOVA",
       load: true,
       limitPosition: 200,
       scrolled: false,
       lastPosition: 500,
+      logo: this.$store.getters.logoSrc
     }
   },
   mounted() {
-    this.$store.dispatch('loadLogoNavbar'),
+    this.$store.dispatch('navbar/getLogoNavbar');
 
     (function () {
       scrollTo();
     })();
+
     function scrollTo() {
       const links = document.querySelectorAll('.scroll > a');
       links.forEach(each => (each.onclick = scrollAnchors));

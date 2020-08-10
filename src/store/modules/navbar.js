@@ -1,5 +1,6 @@
 import {getNavbar} from '@/api/navbar';
 
+
 const state = {
     logoSrc: ""
 }
@@ -11,12 +12,12 @@ const mutations ={
 }
 
 const actions ={
-   getLogoNavbar({commit}) {
-        let response = getNavbar()
-        commit('UPDATE_LOGO', response.data);
+    getLogoNavbar({commit}) {
+        getNavbar().then(response => {
+            commit('UPDATE_LOGO', response.data.data.logo_src);
+        });
     }
 }
-
 
 export default {
     namespaced: true,

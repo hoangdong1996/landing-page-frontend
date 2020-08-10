@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
 import VueSilentbox from 'vue-silentbox'
 import WOW from 'wow.js/dist/wow.js';
-import store from './store/store'
+import store from './store/index'
 
 Vue.use(VueSilentbox)
 Vue.use(VueRouter)
@@ -28,7 +28,6 @@ import { routes } from './router/index'
 
 const router = new VueRouter({
     routes,
-    store,
     mode: 'history'
 })
 
@@ -36,6 +35,7 @@ const router = new VueRouter({
 new Vue({
     render: h => h(App),
     router,
+    store,
     mounted(){
         new WOW().init();
     }

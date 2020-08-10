@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default () => {
     return axios.create({
-        baseURL: '',
+        baseUrl: '192.168.1.122:8081',
         withCredentials: false,
         headers: {
             Accept: "application/json",
@@ -10,3 +10,5 @@ export default () => {
         }
     });
 }
+
+// export default service
