@@ -8,13 +8,13 @@
               <div class="chart-progress__inner-wrapper">
                 <div class="chart-progress__inner chart-progress__inner--blue">
                   <vue-circle
-                    :progress="progress.progress"
-                    :size="160"
-                    line-cap="round"
-                    :fill="index === 0 ? fill : blue"
-                    :thickness="4"
-                    :start-angle="0"
-                    :show-percent="true">
+                      :progress="progress.progress"
+                      :size="160"
+                      line-cap="round"
+                      :fill="index === 0 ? fill : blue"
+                      :thickness="4"
+                      :start-angle="0"
+                      :show-percent="true">
                   </vue-circle>
                 </div>
               </div>
@@ -26,9 +26,9 @@
         <div class="feature-list-progress__info">
           <h6 class="feature-list-progress__title mb-20">{{ progress.featureListTitle }}</h6>
           <ul
-            class="feature-list-progress__list"
-            v-for="(list) in progress.featureList"
-            :key="list">
+              class="feature-list-progress__list"
+              v-for="(list) in progress.featureList"
+              :key="list">
             <li>{{ list }}</li>
           </ul>
         </div>

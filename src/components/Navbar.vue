@@ -40,7 +40,6 @@ export default {
   computed: {
     ...mapState({
       logoNavbar: state => state.navbar.logoSrc
-
     })
   },
 

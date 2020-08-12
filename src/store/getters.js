@@ -1,6 +1,5 @@
 const getters = {
   logoNavbar: state => state.navbar.logoSrc,
-
   heroBranding: state => state.heroBranding.heroBranding,
   aboutSection: state => state.aboutSection.aboutSection,
   businessSection: state => state.businessSection.businessSection,
