@@ -37,7 +37,6 @@ export default {
       type: Array
     },
     popularTitle: {
-      type: Array
     }
   },
   data() {

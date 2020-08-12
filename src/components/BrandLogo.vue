@@ -1,7 +1,7 @@
 <template>
   <div class="row brand-logo-wrapper">
     <div
-      v-for="(brand, index) in brands"
+      v-for="(brand, index) in brandLogoList"
       :key="index"
       class="col-lg-2 col-md-3 col-sm-4 col-6 brand-logo wow move-up"
     >
@@ -18,6 +18,9 @@
 <script>
 export default {
   name: 'BrandLogo',
+  props :{
+    brandLogoList : Array
+  },
   data() {
     return {
       brands: [

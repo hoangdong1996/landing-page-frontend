@@ -9,6 +9,7 @@ const getters = {
   newsletter: state => state.newsletter.newsletter,
   footer: state => state.footer.footer,
   progressCircle: state => state.progressCircle.featureProgressList,
-  pricingSection: state => state.princingSection.pricingSectionObj
+  pricingSection: state => state.pricingSection.pricingComponent,
+  partnerClientSection: state => state.partnerClientSection.partnerClientSection
 }
 export default getters

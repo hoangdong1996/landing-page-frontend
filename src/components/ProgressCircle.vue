@@ -52,11 +52,7 @@ export default {
     VueCircle
   },
   computed: {
-    // ...mapState(['progressCircle']),
     ...mapGetters(['progressCircle'])
-    // progressCircle() {
-    //   return this.$store.getters.progressCircle;
-    // }
   },
   mounted() {
     this.$store.dispatch('updateProgressCircle')
@@ -67,7 +63,6 @@ export default {
       blue: BLUE,
       class1: CLASS,
       class2: CLASS2
-      // featureListProgress: this.$store.dispatch('updateProgressCircle')
     }
   }
 }

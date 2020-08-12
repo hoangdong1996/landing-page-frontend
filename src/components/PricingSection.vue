@@ -28,7 +28,8 @@
 
 <script>
 import Pricing from './Pricing'
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
+
 export default {
   components: {
     Pricing
@@ -38,7 +39,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch('updatePricingSection')
-    console.log(this.pricingSection)
   },
   data() {
     return {}

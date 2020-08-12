@@ -12,7 +12,6 @@ const mutations = {
 const actions = {
   updateProgressCircle({ commit }) {
     getProgressCircle().then(response => {
-      console.log(response.data.data)
       commit('UPDATE_PROGRESS_CIRCLE', response.data.data)
     })
   }
