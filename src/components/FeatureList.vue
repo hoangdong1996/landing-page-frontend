@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-6">
         <div class="feature-icon-list__media wow move-up">
-          <img v-bind:src="image" class="img-fluid" alt />
+          <img :src="image" class="img-fluid" alt>
         </div>
       </div>
       <div class="col-lg-6">
@@ -15,7 +15,7 @@
               class="single-feature-icon wow move-up"
             >
               <div class="single-feature-icon__media">
-                <img :src="feature.icon" class="img-fluid" alt />
+                <img :src="feature.icon" class="img-fluid" alt>
               </div>
               <div class="single-feature-icon__content">
                 <h6 class="title">{{ feature.title }}</h6>
@@ -31,13 +31,13 @@
 
 <script>
 export default {
-  name: "featureList",
+  name: 'FeatureList',
   props: {
     image: String,
-    features: Array,
+    features: Array
   },
   data() {
-    return {};
-  },
-};
+    return {}
+  }
+}
 </script>

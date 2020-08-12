@@ -35,15 +35,15 @@ export default {
   methods: {
     // offcanvas searchbox
     mobiletoggleClass(addRemoveClass, className) {
-      const el = document.querySelector('#offcanvas-menu');
+      const el = document.querySelector('#offcanvas-menu')
       if (addRemoveClass === 'addClass') {
-        el.classList.add(className);
+        el.classList.add(className)
       } else {
-        el.classList.remove(className);
+        el.classList.remove(className)
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

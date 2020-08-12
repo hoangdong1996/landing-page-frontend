@@ -6,15 +6,15 @@
           <div class="col-lg-4 col-md-6 footer-widget">
             <div class="footer-widget__logo mb-30">
               <router-link to="/">
-                <img src="../assets/img/logo/logo-dark.png" class="img-fluid logo-dark" alt/>
-                <img src="../assets/img/logo/logo-light.png" class="img-fluid logo-light" alt/>
+                <img :src="footer.logo_src" class="img-fluid logo-dark" alt>
+                <!-- <img src="../assets/img/logo/logo-light.png" class="img-fluid logo-light" alt> -->
               </router-link>
             </div>
 
             <ul class="footer-widget__list">
               <li>{{ widgetList.title }}</li>
               <li v-for="(list,index) in widgetList.link" :key="index">
-                <a v-bind:href="widgetList.href[index]" class="hover-style-link">{{ list }}</a>
+                <a :href="widgetList.href[index]" class="hover-style-link">{{ list }}</a>
               </li>
             </ul>
             <!-- <ul class="footer-widget__list">
@@ -31,15 +31,11 @@
             </ul>-->
           </div>
 
-          <div
-              class="col-lg-4 col-md-6 footer-widget"
-              v-for="(foot,index) in footerList"
-              :key="index"
-          >
-            <h6 class="footer-widget__title mb-20">{{ foot.title }}</h6>
+          <div class="col-lg-2 col-md-6 footer-widget">
+            <h6 class="footer-widget__title mb-20">{{ footer.title }}</h6>
             <ul class="footer-widget__list">
-              <li v-for="(link,index) in foot.footerLinkList" :key="index">
-                <a v-bind:href="link.href" class="hover-style-link">{{ link.title }}</a>
+              <li v-for="(footerLink,index) in footer.footerLinkList" :key="index">
+                <a :href="footerLink.href" class="hover-style-link">{{ footerLink.title }}</a>
               </li>
             </ul>
           </div>
@@ -69,7 +65,7 @@
                     <div class="tweet">
                       <div class="tweet__text">
                         {{ tweet.text }}
-                        <a v-bind:href="tweet.href" target="_blank">{{ tweet.info }}</a>
+                        <a :href="tweet.href" target="_blank">{{ tweet.info }}</a>
                         <a href="https://t.co/2iDReuyPMt" target="_blank">https://t.co/2iDReuyPMt</a>
                       </div>
                       <div class="tweet__info">
@@ -110,17 +106,17 @@
             <ul class="list ht-social-networks solid-rounded-icon">
               <li class="item">
                 <a href="#" target="_blank" class="social-link">
-                  <i class="fab fa-facebook social-link-icon"></i>
+                  <i class="fab fa-facebook social-link-icon" />
                 </a>
               </li>
               <li class="item">
                 <a href="#" target="_blank" class="social-link">
-                  <i class="fab fa-twitter social-link-icon"></i>
+                  <i class="fab fa-twitter social-link-icon" />
                 </a>
               </li>
               <li class="item">
                 <a href="#" target="_blank" class="social-link">
-                  <i class="fab fa-instagram social-link-icon"></i>
+                  <i class="fab fa-instagram social-link-icon" />
                 </a>
               </li>
             </ul>
@@ -132,48 +128,30 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: "FooterMain",
-  props: ["FooterStyle"],
+  name: 'FooterMain',
+  props: ['FooterStyle'],
   data() {
     return {
-      logoSrc: "#",
-      footerList: [
-        {
-          title: "Who we are",
-          footerLinkList: [
-            {
-              title: "About us",
-              href: "#"
-            },
-            {
-              title: "About us",
-              href: "#"
-            },
-            {
-              title: "About us",
-              href: "#"
-            },
-            {
-              title: "About us",
-              href: "#"
-            }
-          ],
-        },
-      ],
-
       tweet: {
         text: ' "The ocean never ceases to amaze!" Feature: Ben Klea',
-        href: "https://t.co/jSRMsZAdPW",
-        info: "https://t.co/2iDReuyPMt",
-        date: "May 07, 2020",
+        href: 'https://t.co/jSRMsZAdPW',
+        info: 'https://t.co/2iDReuyPMt',
+        date: 'May 07, 2020'
       },
       widgetList: {
-        title: "58 Howard Street #2 San Francisco, CA 941",
-        link: ["contact@aeroland.com", "(+68)1221 09876", "www.website.com"],
-        href: ["#", "#", "#"],
-      },
-    };
+        title: '58 Howard Street #2 San Francisco, CA 941',
+        link: ['contact@aeroland.com', '(+68)1221 09876', 'www.website.com'],
+        href: ['#', '#', '#']
+      }
+    }
   },
-};
+  computed: {
+    ...mapGetters(['footer'])
+  },
+  mounted() {
+    this.$store.dispatch('footer/getFooter')
+  }
+}
 </script>
