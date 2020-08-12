@@ -11,7 +11,7 @@
           </div>
           <h5 class="pricing-table__title">{{ pricing.title }}</h5>
           <div class="pricing-table__price-wrap">
-            <h6 class="currency">$</h6>
+            <h6 class="currency">VNĐ</h6>
             <h6 class="price">{{ pricing.value }}</h6>
             <h6 class="period">/{{ pricing.duration }}</h6>
           </div>

@@ -10,7 +10,7 @@
       </div>
       <div class="box-image__content">
         <h6 class="box-image__title">
-          <a href="#" class="stretched-link">{{ about.title }}</a>
+          <a :href="aboutExpand.href" class="stretched-link">{{ about.title }}</a>
         </h6>
       </div>
     </div>

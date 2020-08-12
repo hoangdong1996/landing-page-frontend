@@ -18,7 +18,7 @@
                         <li class="list-item">Fast Loading, Reader Friendly Navigation Style</li>
                     </ul> -->
           <div class="tab-button wow move-up">
-            <router-link to="branding" class="ht-btn ht-btn-md">Learn more</router-link>
+            <router-link :to="{path: requirementSection.button_href}" class="ht-btn ht-btn-md">{{requirementSection.button_title}}</router-link>
           </div>
         </div>
       </div>
