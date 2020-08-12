@@ -6,7 +6,7 @@
           <div class="circle-progress-wrapper">
             <div class="chart-progress">
               <div class="chart-progress__inner-wrapper">
-                <div class="chart-progress__inner chart-progress__inner--blue">
+                <div class="chart-progress__inner" v-bind:class="index === 0 ? classNull: class2">
                   <vue-circle
                       :progress="progress.progress"
                       :size="160"
@@ -19,8 +19,8 @@
                 </div>
               </div>
             </div>
-            <div class="circle-design one" :class="index === 0 ? class1 : class2"></div>
-            <div class="circle-design two" :class="index === 0 ? class2 : class1"></div>
+            <div class="circle-design one" :class="index === 0 ? classNull : class1"></div>
+            <div class="circle-design two" :class="index === 0 ? classNull : class1"></div>
           </div>
         </div>
         <div class="feature-list-progress__info">
@@ -39,11 +39,11 @@
 
 <script>
 import VueCircle from 'vue2-circle-progress/src/index.vue'
-import { mapGetters } from 'vuex'
+import {mapGetters} from 'vuex'
 
-const FILL = { gradient: ['#fad961', '#f76b1c'] }
-const BLUE = { gradient: ['#9C7AF2', '#5E61E7'] }
-// const CLASSNULL = ' '
+const FILL = {gradient: ['#fad961', '#f76b1c']}
+const BLUE = {gradient: ['#9C7AF2', '#5E61E7']}
+const CLASSNULL = ' '
 const CLASS = 'circle-design--blue'
 const CLASS2 = 'chart-progress__inner--blue'
 
@@ -62,7 +62,8 @@ export default {
       fill: FILL,
       blue: BLUE,
       class1: CLASS,
-      class2: CLASS2
+      class2: CLASS2,
+      classNull: CLASSNULL
     }
   }
 }
