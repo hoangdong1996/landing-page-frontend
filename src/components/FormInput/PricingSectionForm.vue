@@ -2,26 +2,23 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>Business Section</span>
+        <span>Pricing Section</span>
       </div>
       <el-form ref="form" :model="form" label-width="120px">
         <el-form-item label="Title">
           <el-input class="input-label" ></el-input>
         </el-form-item>
-        <el-form-item label="Video url">
+        <el-form-item label="Description">
           <el-input class="input-label"></el-input>
         </el-form-item>
-        <el-form-item label="Video title">
-          <el-input class="input-label"></el-input>
-        </el-form-item>
-        <el-form-item label="Image ">
+        <el-form-item label="Popular title">
           <el-input class="input-label"></el-input>
         </el-form-item>
         <el-row style="text-align: center">
-          <el-col :span="24"><span>Feature List</span></el-col>
+          <el-col :span="24"><span>Pricing List</span></el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" v-for="(card, index) in 3" :key="index" style="padding-right: 10px">
+          <el-col :span="6" v-for="(card, index) in 4" :key="index" style="padding-right: 10px">
             <div>
               <el-card>
                 <el-form-item label="Icon">
@@ -33,14 +30,20 @@
                       :file-list="fileList"
                       list-type="picture">
                     <el-button size="small" type="primary">Click to upload</el-button>
-                    <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
+                      <div slot="tip" class="el-upload__tip">jpg/png files with a size 500kb</div>
                   </el-upload>
                 </el-form-item>
-                <el-form-item label="Title">
+                <el-form-item label="Thumb">
                   <el-input class="input-label" size="small"></el-input>
                 </el-form-item>
-                <el-form-item label="Description">
-                  <el-input class="input-label" size="small"></el-input>
+                <el-form-item label="Title">
+                  <el-input class="input-label" ></el-input>
+                </el-form-item>
+                <el-form-item label="Value">
+                  <el-input class="input-label" ></el-input>
+                </el-form-item>
+                <el-form-item label="Duration">
+                  <el-input class="input-label" ></el-input>
                 </el-form-item>
               </el-card>
             </div>
@@ -67,6 +70,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-card .el-form .el-row .el-col .el-form-item{
+  margin-bottom: 0px;
+  margin-top: 5px;
+}
+
 .upload{
   border: 1px gainsboro solid;
   border-radius: 5px;
@@ -76,9 +84,9 @@ export default {
 .el-row {
   margin-bottom: 25px;
 
-&:last-child {
-   margin-bottom: 0;
- }
+  &:last-child {
+    margin-bottom: 0;
+  }
 
 }
 

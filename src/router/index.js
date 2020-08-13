@@ -12,6 +12,7 @@ import FeatureApp from "@/components/FeatureApp";
 import FeatureCarouselSectionForm from "@/components/FormInput/FeatureCarouselSectionForm";
 import RequirementSectionForm from "@/components/FormInput/RequirementSectionForm";
 import ProgressCircleForm from "@/components/FormInput/ProgressCircleForm";
+import PricingSectionForm from "@/components/FormInput/PricingSectionForm";
 
 
 export const routes = [
@@ -60,6 +61,10 @@ export const routes = [
             {
                 path: "/progress-circle-form",
                 component: ProgressCircleForm
+            },
+            {
+                path: "/pricing-section-form",
+                component: PricingSectionForm
             }
         ]
     },
