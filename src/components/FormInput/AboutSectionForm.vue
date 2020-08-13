@@ -7,7 +7,7 @@
       </div>
       <el-form ref="form" :model="form" label-width="120px">
         <el-form-item label="Title">
-          <el-input class="input-label" v-model="form.name" size="small"></el-input>
+          <el-input class="input-label" v-model="form.name" ></el-input>
         </el-form-item>
         <el-form-item label="Description">
           <el-input class="input-label" type="textarea" v-model="form.desc"></el-input>

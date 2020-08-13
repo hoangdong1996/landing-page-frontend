@@ -5,7 +5,13 @@ import NavbarForm from "@/components/FormInput/NavbarForm";
 import AboutSectionForm from "@/components/FormInput/AboutSectionForm";
 import HeroBrandingForm from "@/components/FormInput/HeroBrandingForm";
 import BusinessSectionForm from "@/components/FormInput/BusinessSectionForm";
-import RequirementSection from "@/components/FormInput/RequirementSection";
+import RequirementSection from "@/components/FormInput/RequirementSectionForm";
+import FeatureCarouselSection from "@/components/FormInput/FeatureCarouselSectionForm";
+import ProgressCircle from "@/components/ProgressCircle";
+import FeatureApp from "@/components/FeatureApp";
+import FeatureCarouselSectionForm from "@/components/FormInput/FeatureCarouselSectionForm";
+import RequirementSectionForm from "@/components/FormInput/RequirementSectionForm";
+import ProgressCircleForm from "@/components/FormInput/ProgressCircleForm";
 
 
 export const routes = [
@@ -45,7 +51,15 @@ export const routes = [
             },
             {
                 path: "/requirement-section-form",
-                component: RequirementSection
+                component: RequirementSectionForm
+            },
+            {
+                path: "/feature-carousel-section-form",
+                component: FeatureCarouselSectionForm
+            },
+            {
+                path: "/progress-circle-form",
+                component: ProgressCircleForm
             }
         ]
     },

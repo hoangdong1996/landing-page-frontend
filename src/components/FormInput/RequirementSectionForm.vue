@@ -36,7 +36,6 @@
           <div class="list-require" style="border: gainsboro 1px solid; border-radius: 5px; padding: 5px">
             <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="120px" class="demo-dynamic">
               <el-form-item
-                  prop="email"
                   label="Text"
                   :rules="[
                 { required: true, message: 'Please input', trigger: 'blur' },
@@ -44,10 +43,9 @@
                 <el-col :span="12">  <el-input v-model="dynamicValidateForm.email"></el-input></el-col>
               </el-form-item>
               <el-form-item style="padding-top: 5px"
-                  v-for="(domain, index) in dynamicValidateForm.domains"
+                  v-for="(domain) in dynamicValidateForm.domains"
                   :label="'Text'"
                   :key="domain.key"
-                  :prop="'domains.' + index + '.value'"
                   :rules="{
                 required: true, message: 'domain can not be null', trigger: 'blur'
                 }">

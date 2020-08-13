@@ -52,6 +52,15 @@
             <span>Requirement Section</span>
           </el-menu-item>
 
+          <el-menu-item index="6" :route="{ path:'feature-carousel-section-form'}">
+            <i class="el-icon-edit"></i>
+            <span>Feature Carousel Section</span>
+          </el-menu-item>
+
+          <el-menu-item index="7" :route="{ path:'progress-circle-form'}">
+            <i class="el-icon-edit"></i>
+            <span>Progress Circle</span>
+          </el-menu-item>
 
         </el-menu>
       </el-aside>
