@@ -1,32 +1,36 @@
 <template>
   <div>
     <el-card class="box-card">
-      <div slot="header" class="clearfix" >
+      <div slot="header" class="clearfix">
         <span>Hero Branding</span>
       </div>
-      <el-form ref="form" :model="form" label-width="120px">
+      <el-form ref="form" :model="heroBranding" label-width="120px">
         <el-form-item label="Title">
-          <el-input class="input-label" v-model="form.name"></el-input>
+          <el-input class="input-label" v-model="heroBranding.title"></el-input>
         </el-form-item>
         <el-form-item label="Description">
-          <el-input class="input-label" type="textarea" v-model="form.desc"></el-input>
+          <el-input class="input-label" type="textarea" v-model="heroBranding.description"></el-input>
         </el-form-item>
         <el-form-item label="Button title">
-          <el-input class="input-label"  v-model="form.desc"></el-input>
+          <el-input class="input-label" v-model="heroBranding.buttonTitle"></el-input>
         </el-form-item>
         <el-form-item label="Button href">
-          <el-input class="input-label"  v-model="form.desc"></el-input>
+          <el-input class="input-label" v-model="heroBranding.buttonHref"></el-input>
         </el-form-item>
-        <el-form-item label="Icon">
+        <el-form-item label="Image">
           <el-upload
               class="upload-demo upload"
               action="https://jsonplaceholder.typicode.com/posts/"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :file-list="fileList"
-              list-type="picture">
+              list-type="picture"
+              v-model="heroBranding.image"
+          >
             <el-button size="small" type="primary">Click to upload</el-button>
-            <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a size less than 500kb</div>
+            <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a size
+              less than 500kb
+            </div>
           </el-upload>
         </el-form-item>
 
@@ -43,9 +47,12 @@
 export default {
   data() {
     return {
-      form: {
-        name: '',
-        desc: ''
+      heroBranding: {
+        title: '',
+        description: '',
+        buttonTitle: '',
+        buttonHref: '',
+        image: ''
       }
     }
   },
@@ -54,7 +61,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.upload{
+.upload {
   border: 1px gainsboro solid;
   border-radius: 5px;
   padding: 5px;
@@ -62,6 +69,7 @@ export default {
 
 .el-row {
   margin-bottom: 25px;
+
   &:last-child {
     margin-bottom: 0;
   }

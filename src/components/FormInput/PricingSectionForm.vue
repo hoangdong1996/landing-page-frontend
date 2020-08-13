@@ -4,21 +4,21 @@
       <div slot="header" class="clearfix">
         <span>Pricing Section</span>
       </div>
-      <el-form ref="form" :model="form" label-width="120px">
+      <el-form ref="form" :model="pricingSection" label-width="120px">
         <el-form-item label="Title">
-          <el-input class="input-label" ></el-input>
+          <el-input class="input-label"  v-model="pricingSection.title"></el-input>
         </el-form-item>
         <el-form-item label="Description">
-          <el-input class="input-label"></el-input>
+          <el-input class="input-label" v-model="pricingSection.description"></el-input>
         </el-form-item>
         <el-form-item label="Popular title">
-          <el-input class="input-label"></el-input>
+          <el-input class="input-label" v-model="pricingSection.popularTitle"></el-input>
         </el-form-item>
         <el-row style="text-align: center">
           <el-col :span="24"><span>Pricing List</span></el-col>
         </el-row>
         <el-row>
-          <el-col :span="6" v-for="(card, index) in 4" :key="index" style="padding-right: 10px">
+          <el-col :span="6" v-for="(pricing, index) in pricingSection.pricingList" :key="index" style="padding-right: 10px">
             <div>
               <el-card>
                 <el-form-item label="Icon">
@@ -28,22 +28,22 @@
                       :on-preview="handlePreview"
                       :on-remove="handleRemove"
                       :file-list="fileList"
-                      list-type="picture">
+                      list-type="picture" v-model="pricing.icon">
                     <el-button size="small" type="primary">Click to upload</el-button>
                       <div slot="tip" class="el-upload__tip">jpg/png files with a size 500kb</div>
                   </el-upload>
                 </el-form-item>
                 <el-form-item label="Thumb">
-                  <el-input class="input-label" size="small"></el-input>
+                  <el-input class="input-label" v-model="pricing.thumb"></el-input>
                 </el-form-item>
                 <el-form-item label="Title">
-                  <el-input class="input-label" ></el-input>
+                  <el-input class="input-label" v-model="pricing.title"></el-input>
                 </el-form-item>
                 <el-form-item label="Value">
-                  <el-input class="input-label" ></el-input>
+                  <el-input class="input-label" v-model="pricing.value"></el-input>
                 </el-form-item>
                 <el-form-item label="Duration">
-                  <el-input class="input-label" ></el-input>
+                  <el-input class="input-label" v-model="pricing.duration"></el-input>
                 </el-form-item>
               </el-card>
             </div>
@@ -63,7 +63,41 @@
 export default {
   data() {
     return {
-      form: {}
+      pricingSection: {
+        title: '',
+        description: '',
+        popularTitle: '',
+        pricingList: [
+          {
+            icon:'',
+            thumb: '',
+            title:'',
+            value:'',
+            duration:''
+          },
+          {
+            icon:'',
+            thumb: '',
+            title:'',
+            value:'',
+            duration:''
+          },
+          {
+            icon:'',
+            thumb: '',
+            title:'',
+            value:'',
+            duration:''
+          },
+          {
+            icon:'',
+            thumb: '',
+            title:'',
+            value:'',
+            duration:''
+          }
+        ]
+      }
     }
   }
 }

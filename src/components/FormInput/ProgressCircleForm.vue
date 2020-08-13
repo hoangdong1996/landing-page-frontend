@@ -5,55 +5,32 @@
         <span>Progress Circle</span>
       </div>
 
-      <el-form ref="form" :model="form" label-width="120px">
-        <el-card v-for="(progress, index) in 2" :key="index">
-          <el-form-item label="Progress">
-            <el-input-number v-model="num" @change="handleChange" :min="1" :max="100"></el-input-number>
-          </el-form-item>
-          <el-form-item label="Title">
-            <el-input class="input-label"></el-input>
-          </el-form-item>
+      <el-form ref="form" :model="progressCircleForm" label-width="120px">
 
-          <el-form-item label="List text">
-            <div class="list-require" style="border: gainsboro 1px solid; border-radius: 5px; padding: 5px">
-              <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="120px"
-                       class="demo-dynamic">
-                <el-form-item
-                    label="Text"
-                    :rules="[
-                { required: true, trigger: 'blur' },
-                 ]">
-                  <el-col :span="12">
-                    <el-input v-model="dynamicValidateForm.email"></el-input>
-                  </el-col>
-                </el-form-item>
-                <el-form-item style="padding-top: 5px"
-                              v-for="(domain) in dynamicValidateForm.domains"
-                              :label="'Text'"
-                              :key="domain.key"
-
-                              :rules="{
-                required: true, trigger: 'blur'
-                }">
-                  <el-row>
-                    <el-col :span="12">
-                      <el-input v-model="domain.value"></el-input>
-                    </el-col>
-                    <el-col :span="12 ">
-                      <el-button @click.prevent="removeDomain(domain)">Delete</el-button>
-                    </el-col>
-                  </el-row>
-                </el-form-item>
-                <el-form-item>
-                  <el-button @click="addDomain">New text</el-button>
-                </el-form-item>
-              </el-form>
-            </div>
-          </el-form-item>
-        </el-card>
-
-        <el-form-item style="text-align: center; padding-top: 10px" >
-          <el-button type="primary" @click="onSubmit">Create</el-button>
+        <el-form v-for="(subForm,index) in progressCircleForm.featureProgressList" :key="index" :model="subForm">
+          <el-card>
+            <el-form-item>
+              <el-input v-model="subForm.progress"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-input v-model="subForm.featureListTitle"></el-input>
+            </el-form-item>
+            <el-form-item
+                v-for="(feature, index) in subForm.featureList"
+                :label="'Feature' + index"
+                :key="index"
+                :prop="'featureList.' + index + '.value'"
+                :rules="{
+                  required: true, message: 'feature can not be null', trigger: 'blur'
+                }"
+            >
+              <el-input v-model="feature.value"></el-input>
+              <el-button @click.prevent="removeFeature(feature)">Delete</el-button>
+            </el-form-item>
+          </el-card>
+        </el-form>
+        <el-form-item style="text-align: center; padding-top: 10px">
+          <el-button type="primary">Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
@@ -65,32 +42,52 @@
 export default {
   data() {
     return {
-      num: 1,
-      form: {},
-      dynamicValidateForm: {
-        domains: [{
-          key: 1,
-          value: ''
-        }],
-        email: ''
+      progressCircleForm: {
+        featureProgressList: [
+          {
+            progress: '',
+            featureListTitle: '',
+            featureList: [
+              {
+                key: 1,
+                value: ''
+              }
+            ]
+          }, {
+            progress: '',
+            featureListTitle: '',
+            featureList: [
+              {
+                key: 1,
+                value: ''
+              }
+            ]
+          },
+        ]
       }
-    };
+    }
   },
   methods: {
-    removeDomain(item) {
-      var index = this.dynamicValidateForm.domains.indexOf(item);
+    removeText(item) {
+      var index = this.progressCircle.featureList.indexOf(item);
       if (index !== -1) {
-        this.dynamicValidateForm.domains.splice(index, 1);
+        this.progressCircle.text.splice(index, 1);
       }
     },
-    addDomain() {
-      this.dynamicValidateForm.domains.push({
+    addText() {
+      this.progressCircle.text.push({
         key: Date.now(),
         value: ''
       });
     },
     handleChange(value) {
       console.log(value)
+    },
+    removeFeature(item) {
+      var index = this.progressCircleForm.featureProgressList.indexOf(item);
+      if (index !== -1) {
+        this.dynamicValidateForm.domains.splice(index, 1);
+      }
     }
   }
 }

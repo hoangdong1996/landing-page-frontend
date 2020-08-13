@@ -1,11 +1,11 @@
 <template>
-  <div >
+  <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Navbar</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
-      <el-form ref="form" :model="form" label-width="120px">
+      <el-form ref="form" :model="navbar" label-width="120px">
         <el-row>
           <el-col :span="8" style="padding-right: 10px">
             <div>
@@ -17,7 +17,9 @@
                       :on-preview="handlePreview"
                       :on-remove="handleRemove"
                       :file-list="fileList"
-                      list-type="picture">
+                      list-type="picture"
+                      v-model="navbar.logoSrc"
+                  >
                     <el-button size="small" type="primary">Click to upload</el-button>
                     <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
                   </el-upload>
@@ -39,18 +41,17 @@
 export default {
   data() {
     return {
-      form: {
-
+      navbar: {
+        logoSrc: ''
       }
     }
   },
-  methods: {
-  }
+  methods: {}
 }
 </script>
 
 <style scoped>
-.upload{
+.upload {
   border: 1px gainsboro solid;
   border-radius: 5px;
   padding: 5px;
@@ -61,10 +62,10 @@ export default {
   display: table;
   content: "";
 }
+
 .clearfix:after {
   clear: both
 }
-
 
 
 </style>

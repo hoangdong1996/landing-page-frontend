@@ -4,24 +4,24 @@
       <div slot="header" class="clearfix">
         <span>Business Section</span>
       </div>
-      <el-form ref="form" :model="form" label-width="120px">
+      <el-form ref="form" :model="businessSection" label-width="120px">
         <el-form-item label="Title">
-          <el-input class="input-label" ></el-input>
+          <el-input class="input-label" v-model="businessSection.title"></el-input>
         </el-form-item>
-        <el-form-item label="Video url">
-          <el-input class="input-label"></el-input>
+        <el-form-item label="Video url" >
+          <el-input class="input-label" v-model="businessSection.videoUrl"></el-input>
         </el-form-item>
-        <el-form-item label="Video title">
-          <el-input class="input-label"></el-input>
+        <el-form-item label="Video title" >
+          <el-input class="input-label" v-model="businessSection.title"></el-input>
         </el-form-item>
         <el-form-item label="Image ">
-          <el-input class="input-label"></el-input>
+          <el-input class="input-label" v-model="businessSection.image"></el-input>
         </el-form-item>
         <el-row style="text-align: center">
           <el-col :span="24"><span>Feature List</span></el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" v-for="(card, index) in 3" :key="index" style="padding-right: 10px">
+          <el-col :span="8" v-for="(feature, index) in businessSection.featureList" :key="index" style="padding-right: 10px">
             <div>
               <el-card>
                 <el-form-item label="Icon">
@@ -31,16 +31,18 @@
                       :on-preview="handlePreview"
                       :on-remove="handleRemove"
                       :file-list="fileList"
-                      list-type="picture">
+                      list-type="picture"
+                      v-model="feature.icon"
+                  >
                     <el-button size="small" type="primary">Click to upload</el-button>
                     <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
                   </el-upload>
                 </el-form-item>
-                <el-form-item label="Title">
-                  <el-input class="input-label" size="small"></el-input>
+                <el-form-item label="Title" >
+                  <el-input class="input-label" size="small" v-model="feature.title"></el-input>
                 </el-form-item>
                 <el-form-item label="Description">
-                  <el-input class="input-label" size="small"></el-input>
+                  <el-input class="input-label" size="small"  v-model="feature.description"></el-input>
                 </el-form-item>
               </el-card>
             </div>
@@ -60,7 +62,29 @@
 export default {
   data() {
     return {
-      form: {}
+      businessSection: {
+        title: '',
+        videoTitle:'',
+        videoUrl:'',
+        image:'',
+        featureList:[
+          {
+            icon:'',
+            title:'',
+            description:''
+          },
+          {
+            icon:'',
+            title:'',
+            description:''
+          },
+          {
+            icon:'',
+            title:'',
+            description:''
+          }
+        ]
+      }
     }
   }
 }

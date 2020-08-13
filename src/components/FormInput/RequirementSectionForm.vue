@@ -32,7 +32,7 @@
           </el-upload>
         </el-form-item>
 
-        <el-form-item label="List text" >
+        <el-form-item label="List text">
           <div class="list-require" style="border: gainsboro 1px solid; border-radius: 5px; padding: 5px">
             <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="120px" class="demo-dynamic">
               <el-form-item
@@ -40,20 +40,22 @@
                   :rules="[
                 { required: true, message: 'Please input', trigger: 'blur' },
                  ]">
-                <el-col :span="12">  <el-input v-model="dynamicValidateForm.email"></el-input></el-col>
+                <el-col :span="12">
+                  <el-input v-model="dynamicValidateForm.email"></el-input>
+                </el-col>
               </el-form-item>
               <el-form-item style="padding-top: 5px"
-                  v-for="(domain) in dynamicValidateForm.domains"
-                  :label="'Text'"
-                  :key="domain.key"
-                  :rules="{
+                            v-for="(domain) in dynamicValidateForm.domains"
+                            :label="'Text'"
+                            :key="domain.key"
+                            :rules="{
                 required: true, message: 'domain can not be null', trigger: 'blur'
                 }">
                 <el-row>
                   <el-col :span="12">
                     <el-input v-model="domain.value"></el-input>
                   </el-col>
-                  <el-col :span="12 " >
+                  <el-col :span="12 ">
                     <el-button @click.prevent="removeDomain(domain)">Delete</el-button>
                   </el-col>
                 </el-row>
@@ -78,6 +80,17 @@
 export default {
   data() {
     return {
+      requirementSection: {
+        title: '',
+        description: '',
+        image:'',
+        button_title:'',
+        button_href:'',
+        requirementList:[
+
+        ]
+      },
+      form: {},
       dynamicValidateForm: {
         domains: [{
           key: 1,

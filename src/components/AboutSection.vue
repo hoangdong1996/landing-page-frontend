@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="font-family: 'Helvetica Neue'">
     <div id="about" class="box-image-area section-space--ptb_120">
       <div class="container">
         <div class="section-title-wrapper text-center section-space--mb_60 wow move-up">

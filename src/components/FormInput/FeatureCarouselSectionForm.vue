@@ -1,12 +1,12 @@
 <template>
   <div>
     <el-card class="box-card">
-      <div slot="header" class="clearfix" >
+      <div slot="header" class="clearfix">
         <span>Feature Carousel Section</span>
       </div>
-      <el-form ref="form" :model="form" label-width="120px">
+      <el-form ref="form" :model="featureCarouselSection" label-width="120px">
         <el-row>
-          <el-col :span="8" v-for="(card, index) in 3" :key="index" style="padding-right: 10px">
+          <el-col :span="8" v-for="(feature, index) in featureCarouselSection" :key="index" style="padding-right: 10px">
             <div>
               <el-card>
                 <el-form-item label="Image">
@@ -16,16 +16,18 @@
                       :on-preview="handlePreview"
                       :on-remove="handleRemove"
                       :file-list="fileList"
-                      list-type="picture">
+                      list-type="picture"
+                      v-model="feature.icon"
+                  >
                     <el-button size="small" type="primary">Click to upload</el-button>
                     <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
                   </el-upload>
                 </el-form-item>
                 <el-form-item label="Title">
-                  <el-input class="input-label" v-model="form.name" size="small"></el-input>
+                  <el-input class="input-label" v-model="feature.title" size="small"></el-input>
                 </el-form-item>
                 <el-form-item label="Description">
-                  <el-input class="input-label" v-model="form.name" size="small"></el-input>
+                  <el-input class="input-label" v-model="feature.description" size="small"></el-input>
                 </el-form-item>
               </el-card>
             </div>
@@ -45,10 +47,23 @@
 export default {
   data() {
     return {
-      form: {
-        name: '',
-        desc: ''
-      }
+      featureCarouselSection:[
+        {
+          icon: '',
+          title: '',
+          description: ''
+        },
+        {
+          icon: '',
+          title: '',
+          description: ''
+        },
+        {
+          icon: '',
+          title: '',
+          description: ''
+        }
+      ]
     }
   },
   methods: {}
@@ -56,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.upload{
+.upload {
   border: 1px gainsboro solid;
   border-radius: 5px;
   padding: 5px;
