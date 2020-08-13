@@ -7,6 +7,7 @@ import VueSilentbox from 'vue-silentbox'
 import WOW from 'wow.js/dist/wow.js';
 import store from './store/index'
 
+
 Vue.use(VueSilentbox)
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
@@ -19,10 +20,15 @@ import 'animate.css/animate.min.css'
 import '../src/assets/scss/style.scss'
 import 'slick-carousel/slick/slick.css'
 
-
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
+import * as filters from './filters'
+
+// register global utility filters
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+})
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false

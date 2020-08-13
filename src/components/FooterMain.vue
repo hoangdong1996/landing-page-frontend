@@ -1,12 +1,12 @@
 <template>
-  <div class="footer-area-wrapper" :class="FooterStyle">
+  <div class="footer-area-wrapper" :class="FooterStyle" v-if="footer">
     <div class="footer-area section-space--ptb_90">
       <div class="container">
         <div class="row footer-widget-wrapper">
           <div class="col-lg-4 col-md-6 footer-widget">
             <div class="footer-widget__logo mb-30">
               <router-link to="/">
-                <img :src="footer.logo_src" class="img-fluid logo-dark" alt>
+                <img :src="footer.logo_src.data | pngSrc" class="img-fluid logo-dark" alt>
                 <!-- <img src="../assets/img/logo/logo-light.png" class="img-fluid logo-light" alt> -->
               </router-link>
             </div>

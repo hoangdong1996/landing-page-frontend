@@ -1,5 +1,5 @@
 <template>
-  <div id="requirement" class="requirements-list-area bg-gray">
+  <div id="requirement" class="requirements-list-area bg-gray" v-if="requirementSection">
     <div class="row align-items-center">
       <div class="col-lg-6 order-2 order-xl-1">
         <div class="requirements-list">
@@ -25,7 +25,7 @@
       <div class="col-lg-6 order-1 order-xl-2">
         <div class="requirements-list-image wow move-up" style="margin-left: auto !important; margin-top: auto">
           <img
-            :src="requirementSection.image_url"
+            :src="requirementSection.image_url.data | pngSrc"
             class="img-fluid"
             alt
           >

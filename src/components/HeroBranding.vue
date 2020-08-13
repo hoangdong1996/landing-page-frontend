@@ -4,7 +4,7 @@
     id="home"
 
     class="hero-branding bg-cover"
-    :style="{ 'background-image': 'url(' + heroBranding.background_img +')' }"
+    :style="{ 'background-image': 'url(data:image/png;base64,' + heroBranding.background_img.data +')' }"
   >
     <div class="container-fluid container-fluid--cp-150">
       <div class="hero-branding">

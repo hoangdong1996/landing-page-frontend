@@ -2,12 +2,10 @@ import { getBusinessSection } from '@/api/businessSection'
 
 const state = {
   businessSection: {
-    section_title: '',
     video_url: '',
-    video_title: '',
-    image_url: '',
-    businessFeatureList: [
-    ]
+    image_url: {
+      data: ''
+    }
   }
 }
 
