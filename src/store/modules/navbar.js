@@ -14,7 +14,7 @@ const mutations ={
 const actions ={
     getLogoNavbar({commit}) {
         getNavbar().then(response => {
-            commit('UPDATE_LOGO', response.data.data.logo_src);
+            commit('UPDATE_LOGO', response.data.data.logo_src.data);
         });
     }
 }

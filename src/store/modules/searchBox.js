@@ -1,16 +1,12 @@
 import { getSearchBox } from '@/api/search-box'
 
 const state = {
-  searchBox: {
-    logo_src: '',
-    search_placeholder: ''
-  }
+  searchBox: null
 }
 
 const mutations = {
-  UPDATE_SEARCH_BOX: (state, { logo_src, search_placeholder }) => {
-    state.searchBox.logo_src = logo_src
-    state.searchBox.search_placeholder = search_placeholder
+  UPDATE_SEARCH_BOX: (state, obj) => {
+    state.searchBox = obj
   }
 }
 

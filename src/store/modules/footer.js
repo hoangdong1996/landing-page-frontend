@@ -1,11 +1,7 @@
 import { getFooter } from '@/api/footer'
 
 const state = {
-  footer: {
-    logo_src: '',
-    title: '',
-    footerLinkList: []
-  }
+  footer: null
 }
 
 const mutations = {

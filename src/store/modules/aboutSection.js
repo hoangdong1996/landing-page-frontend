@@ -6,7 +6,9 @@ const state = {
     text: '',
     aboutExpandList: [
       {
-        icon: '',
+        icon: {
+          data: ''
+        },
         title: '',
         href: ''
       }

@@ -1,5 +1,5 @@
 <template>
-  <div id="search-overlay" class="search-overlay">
+  <div id="search-overlay" class="search-overlay" v-if="searchBox">
     <div class="search-overlay__inner">
       <div class="search-overlay__header">
         <div class="container-fluid">
@@ -7,7 +7,7 @@
             <div class="col-md-6 col-8">
               <div class="logo">
                 <a :href="logoHref">
-                  <img :src="searchBox.logo_src" class="img-fluid" alt="site logo">
+                  <img :src="searchBox.logo_src.data | pngSrc" class="img-fluid" alt="site logo">
                   <!-- <img v-bind:src="logoScr" class="img-fluid" alt="site logo"> -->
                 </a>
               </div>

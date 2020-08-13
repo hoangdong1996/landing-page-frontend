@@ -11,7 +11,7 @@
       <b-navbar-toggle target="nav_collapse" />
       <b-navbar-brand class="navbar-brand" to="/">
         <!--         <img :src='"../assets/img/logo/logo-dark.png"' alt="logo">-->
-        <img :src="logoNavbar" alt="logo">
+        <img :src="logoNavbar | pngSrc" alt="logo">
       </b-navbar-brand>
       <b-btn-group class="header-config-wrapper">
         <b-btn class="header-config" @click="toggleClass('addClass', 'active')"><i class="far fa-search" /></b-btn>
@@ -49,7 +49,6 @@ export default {
       limitPosition: 200,
       scrolled: false,
       lastPosition: 500,
-      logo: this.$store.getters.logoSrc
     }
   },
   mounted() {
