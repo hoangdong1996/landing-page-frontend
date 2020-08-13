@@ -12,7 +12,7 @@
               <el-card>
                 <el-form-item label="Icon">
                   <el-upload
-                      class="upload-demo"
+                      class="upload-demo upload"
                       action="https://jsonplaceholder.typicode.com/posts/"
                       :on-preview="handlePreview"
                       :on-remove="handleRemove"
@@ -50,12 +50,10 @@ export default {
 </script>
 
 <style scoped>
-.text {
-  font-size: 14px;
-}
-
-.item {
-  margin-bottom: 18px;
+.upload{
+  border: 1px gainsboro solid;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .clearfix:before,

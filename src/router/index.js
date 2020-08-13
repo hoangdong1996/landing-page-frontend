@@ -4,6 +4,7 @@ import Dashboard from "@/pages/Dashboard";
 import NavbarForm from "@/components/FormInput/NavbarForm";
 import AboutSectionForm from "@/components/FormInput/AboutSectionForm";
 import HeroBrandingForm from "@/components/FormInput/HeroBrandingForm";
+import BusinessSectionForm from "@/components/FormInput/BusinessSectionForm";
 
 
 export const routes = [
@@ -36,6 +37,10 @@ export const routes = [
             {
                 path: "/hero-branding-form",
                 component: HeroBrandingForm
+            },
+            {
+                path:"/business-section-form",
+                component: BusinessSectionForm
             }
         ]
     },

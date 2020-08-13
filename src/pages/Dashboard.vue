@@ -42,6 +42,12 @@
             <span>About Section</span>
           </el-menu-item>
 
+          <el-menu-item index="" :route="{ path:'business-section-form'}">
+            <i class="el-icon-edit"></i>
+            <span>Business Section</span>
+          </el-menu-item>
+
+
         </el-menu>
       </el-aside>
 
