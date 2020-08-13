@@ -5,6 +5,7 @@ import NavbarForm from "@/components/FormInput/NavbarForm";
 import AboutSectionForm from "@/components/FormInput/AboutSectionForm";
 import HeroBrandingForm from "@/components/FormInput/HeroBrandingForm";
 import BusinessSectionForm from "@/components/FormInput/BusinessSectionForm";
+import RequirementSection from "@/components/FormInput/RequirementSection";
 
 
 export const routes = [
@@ -41,6 +42,10 @@ export const routes = [
             {
                 path:"/business-section-form",
                 component: BusinessSectionForm
+            },
+            {
+                path: "/requirement-section-form",
+                component: RequirementSection
             }
         ]
     },
