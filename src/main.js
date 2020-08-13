@@ -20,23 +20,28 @@ import '../src/assets/scss/style.scss'
 import 'slick-carousel/slick/slick.css'
 
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+
+Vue.use(ElementUI);
 Vue.config.productionTip = false
 Vue.config.productionSourceMap = false
 
-import { routes } from './router/index'
+import {routes} from './router/index'
 
 
 const router = new VueRouter({
     routes,
-    mode: 'history'
+    mode: 'history',
+    linkExactActiveClass: "nav-item active"
 })
-
 
 new Vue({
     render: h => h(App),
     router,
     store,
-    mounted(){
+    mounted() {
         new WOW().init();
     }
 }).$mount('#app')
