@@ -32,7 +32,12 @@
             <span>Navbar </span>
           </el-menu-item>
 
-          <el-menu-item index="2" :route="{ path:'about-section-form'}">
+          <el-menu-item index="2" :route="{ path:'hero-branding-form'}">
+            <i class="el-icon-edit"></i>
+            <span>Hero Branding</span>
+          </el-menu-item>
+
+          <el-menu-item index="3" :route="{ path:'about-section-form'}">
             <i class="el-icon-edit"></i>
             <span>About Section</span>
           </el-menu-item>
@@ -77,24 +82,6 @@ export default {
   data() {
     return {
       activeIndex: '2',
-      tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }]
-
     }
   },
   methods: {}

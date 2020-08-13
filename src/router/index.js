@@ -3,6 +3,7 @@ import NotFound from '../pages/elements/404'
 import Dashboard from "@/pages/Dashboard";
 import NavbarForm from "@/components/FormInput/NavbarForm";
 import AboutSectionForm from "@/components/FormInput/AboutSectionForm";
+import HeroBrandingForm from "@/components/FormInput/HeroBrandingForm";
 
 
 export const routes = [
@@ -31,6 +32,10 @@ export const routes = [
             {
                 path: "/about-section-form",
                 component: AboutSectionForm
+            },
+            {
+                path: "/hero-branding-form",
+                component: HeroBrandingForm
             }
         ]
     },
