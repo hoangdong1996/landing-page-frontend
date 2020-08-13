@@ -27,7 +27,7 @@
             text-color="#fff"
             active-text-color="#ffd04b">
 
-          <el-menu-item index="1" :route="{ path:'navbar-form'}">
+          <el-menu-item index="1" :route="{ path:'navbar-form'}" >
             <i class="el-icon-edit"></i>
             <span>Navbar </span>
           </el-menu-item>
