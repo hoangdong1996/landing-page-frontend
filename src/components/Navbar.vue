@@ -10,8 +10,7 @@
     <div class="container-fluid container-fluid--cp-150">
       <b-navbar-toggle target="nav_collapse" />
       <b-navbar-brand class="navbar-brand" to="/">
-        <!--         <img :src='"../assets/img/logo/logo-dark.png"' alt="logo">-->
-        <img :src="logoNavbar | pngSrc" alt="logo">
+        <img :src="navbar.logo_src.data | pngSrc" alt="logo">
       </b-navbar-brand>
       <b-btn-group class="header-config-wrapper">
         <b-btn class="header-config" @click="toggleClass('addClass', 'active')"><i class="far fa-search" /></b-btn>
@@ -32,17 +31,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 
 export default {
   name: 'Navbar',
-
-  computed: {
-    ...mapState({
-      logoNavbar: state => state.navbar.logoSrc
-    })
+  props: {
+    navbar: {
+      type: Object,
+      default: null
+    },
   },
-
   data() {
     return {
       load: true,
@@ -52,7 +49,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('navbar/getLogoNavbar');
+    
 
     (function() {
       scrollTo()
