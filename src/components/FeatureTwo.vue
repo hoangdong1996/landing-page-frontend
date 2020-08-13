@@ -1,5 +1,5 @@
 <template>
-  <div class="feature-slider-area section-space--pt_60">
+  <div class="feature-slider-area section-space--pt_60" v-if="featureCarouselSection">
     <div class="feature-slider position-relative">
       <div class="feature-slider__container">
         <div class="feature-slider__wrapper">
@@ -32,13 +32,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'FeatureTwo',
-  components: {},
-  computed: {
-    ...mapGetters(['featureCarouselSection'])
+  props: {
+    featureCarouselSection: {
+      type: Object,
+      default: null
+    }
   },
   data() {
     return {
@@ -57,9 +57,6 @@ export default {
         }
       }
     }
-  },
-  mounted() {
-    this.$store.dispatch('featureCarouselSection/getFeatureCarouselSection')
   }
 }
 </script>

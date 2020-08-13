@@ -4,31 +4,26 @@
     <Navbar :navbar="navbar"/>
 
     <!-- hero section -->
-    <HeroBranding />
+    <HeroBranding :heroBranding="heroBranding"/>
 
     <!-- about section -->
-    <AboutSection />
+    <AboutSection :aboutSection="aboutSection"/>
 
     <!-- business analytics start -->
-    <!-- Khác tên comp con business vs  FeatureList -->
-    <BusinessSection />
+    <BusinessSection :businessSection="businessSection"/>
 
     <!-- requirement section-->
-    <!-- khác tên model vs comp -->
-    <!-- thiếu property srcImage trong model -->
-    <RequireList />
+    <RequireList :requirementSection="requirementSection"/>
 
     <!-- feature carousel -->
-    <!-- khác tên model vs comp -->
-    <!-- thiếu property imgSrc trong model featureCarousel -->
-    <FeatureTwo />
+    <FeatureTwo :featureCarouselSection="featureCarouselSection"/>
 
     <!-- feature list progress bar -->
     <div class="feature-list-progress-area pb-30">
       <div class="container">
         <!-- progress feature component -->
         <!-- thiếu title, fill, class, class 2 trong model -->
-        <ProgressCircle />
+        <ProgressCircle :progressCircle="progressCircle"/>
       </div>
     </div>
     <!-- feature list progress bar -->
@@ -45,20 +40,20 @@
         />
       </template>
     </CurveShape>
-    <PricingSection />
+    <PricingSection :pricingSection="pricingSection"/>
     <!-- pricing section end-->
 
     <!-- partner client section -->
-    <PartnerClientSection />
+    <PartnerClientSection :partnerClientSection="partnerClientSection"/>
 
     <!-- newsletter section -->
-    <Newsletter />
+    <Newsletter :newsletter="newsletter"/>
 
     <!-- footer section -->
-    <FooterMain />
+    <FooterMain :footer="footer"/>
 
     <!-- offcanvas search component -->
-    <OffcanvasSearchBox />
+    <OffcanvasSearchBox :searchBox="searchBox"/>
   </div>
 </template>
 
@@ -98,10 +93,21 @@ export default {
     PartnerClientSection,
   },
   computed: {
-    ...mapGetters(['navbar'])
+    ...mapGetters(['navbar','heroBranding','aboutSection','businessSection','requirementSection','progressCircle','pricingSection','partnerClientSection','newsletter','footer','searchBox'])
   },
   mounted () {
-    this.$store.dispatch('navbar/getLogoNavbar');
+    this.$store.dispatch('navbar/getLogoNavbar')
+    this.$store.dispatch('heroBranding/getHeroBranding')
+    this.$store.dispatch('aboutSection/aboutSection')
+    this.$store.dispatch('businessSection/businessSection')
+    this.$store.dispatch('requirementSection/requirementSection')
+    this.$store.dispatch('featureCarouselSection/getFeatureCarouselSection')
+    this.$store.dispatch('updateProgressCircle')
+    this.$store.dispatch('updatePricingSection')
+    this.$store.dispatch('getPartnerClientSection')
+    this.$store.dispatch('newsletter/getNewsletter')
+    this.$store.dispatch('footer/getFooter')
+    this.$store.dispatch('searchBox/getSearchBox')
   },
 };
 </script>

@@ -1,5 +1,6 @@
 <template>
   <b-navbar
+    v-if="navbar"
     v-b-scrollspy:nav-scroller
     type="light"
     toggleable="xl"

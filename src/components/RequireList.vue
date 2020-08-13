@@ -37,19 +37,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'RequireList',
-  computed: {
-    ...mapGetters(['requirementSection'])
-  },
-  data() {
-    return {
+  props: {
+    requirementSection: {
+      type: Object,
+      default: null
     }
-  },
-  mounted() {
-    this.$store.dispatch('requirementSection/requirementSection')
   }
 }
 </script>
