@@ -17,23 +17,25 @@
         <el-form-item label="Button href">
           <el-input class="input-label" v-model="heroBranding.button_href"></el-input>
         </el-form-item>
-        <el-form-item label="Image">
+        <el-form-item label="Background">
           <el-upload
-              class="upload-demo upload"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
+            accept="image/*"
+            name="files"
+            ref="upload"
+            class="upload-demo upload"
+            action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+            :file-list="fileList"
+            :auto-upload="false"
+            list-type="picture"
+            :limit="1"
+            :on-success="handleSuccess"
           >
             <el-button size="small" type="primary">Click to upload</el-button>
-            <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a size
-              less than 500kb
-            </div>
           </el-upload>
         </el-form-item>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary">Create</el-button>
+          <el-button type="primary" @click="onSubmit()">Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
@@ -42,24 +44,56 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import { mapGetters } from "vuex";
+import { createHeroBranding } from "@/api/heroBranding";
 
 export default {
   computed: {
-    ...mapGetters(['heroBranding'])
-
+    ...mapGetters(["heroBranding"]),
   },
-  data () {
+  data() {
     return {
-    }
+      fileList: [],
+    };
   },
   created() {
-    this.$store.dispatch('heroBranding/getHeroBranding')
+    this.$store.dispatch("heroBranding/getHeroBranding");
   },
   methods: {
-  }
-}
-
+    onSubmit() {
+      this.$refs.upload.submit();
+    },
+    successNotify(){
+      this.$notify({
+          title: "Success",
+          message: "This is a success message",
+          type: "success",
+        })
+    },
+    errorNotify(){
+      this.$notify({
+            title: "Error",
+            message: "error",
+          });
+    },
+    handleSuccess (response) {
+      const requestForm = {
+        title: this.heroBranding.title,
+        description: this.heroBranding.description,
+        button_title: this.heroBranding.button_title,
+        button_href: this.heroBranding.button_href,
+        background_img: {
+          id: response.data[0].id,
+        },
+      };
+      createHeroBranding(requestForm).then(() => {
+        this.successNotify()
+      }).catch(() => {
+        this.errorNotify()
+      })
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -79,7 +113,6 @@ export default {
 
 .el-col {
   border-radius: 4px;
-
 }
 
 .row-bg {
