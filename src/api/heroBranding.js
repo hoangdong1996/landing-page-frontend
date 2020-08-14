@@ -6,3 +6,12 @@ export function getHeroBranding() {
         method: 'get'
     })
 }
+
+export function createHeroBranding (data) {
+    return request({
+        url: 'hero-branding-section/create',
+        method: 'post',
+        data: data
+    })
+
+}
