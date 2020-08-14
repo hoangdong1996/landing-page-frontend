@@ -2,19 +2,19 @@ import {getNavbar} from '@/api/navbar';
 
 
 const state = {
-    logoSrc: ""
+    navbar : null
 }
 
 const mutations ={
-    UPDATE_LOGO: (state, logoSrc) => {
-        state.logoSrc = logoSrc;
+    UPDATE_LOGO: (state, obj) => {
+        state.navbar = obj;
     }
 }
 
 const actions ={
     getLogoNavbar({commit}) {
         getNavbar().then(response => {
-            commit('UPDATE_LOGO', response.data.data.logo_src.data);
+            commit('UPDATE_LOGO', response.data.data);
         });
     }
 }

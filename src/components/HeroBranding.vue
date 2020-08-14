@@ -2,7 +2,7 @@
   <!-- <section class="hero-branding bg-cover" :style="bgImg" id="home"> -->
   <section
     id="home"
-
+    v-if="heroBranding"
     class="hero-branding bg-cover"
     :style="{ 'background-image': 'url(data:image/png;base64,' + heroBranding.background_img.data +')' }"
   >
@@ -23,24 +23,13 @@
 </template>
 
 <script>
-
-import { mapGetters } from 'vuex'
-
 export default {
-  computed: {
-    ...mapGetters(['heroBranding'])
+  props: {
+    heroBranding: {
+      type: Object,
+      default: null
+    },
   },
-
-  data() {
-    return {}
-  },
-
-  mounted() {
-    this.$store.dispatch('heroBranding/getHeroBranding')
-  },
-
-  created() {
-  }
 }
 </script>
 

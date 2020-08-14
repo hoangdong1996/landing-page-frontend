@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="partnerClientSection">
     <div class="brand-logo-area section-space--ptb_120" id="partner">
       <div class="container">
         <div class="row">
@@ -19,28 +19,22 @@
 
 <script>
 import BrandLogo from './BrandLogo'
-import {mapGetters} from 'vuex'
 
 export default {
+  props: {
+    partnerClientSection: {
+      type: Object,
+      default: null
+    }
+  },
   components: {
     BrandLogo
-  },
-  computed: {
-    ...mapGetters(['partnerClientSection'])
   },
   data() {
     return {
       sectionTitle: 'Trusted services from top-rated company',
       sectionText: 'It is about us being able to offer help with the branding campaign, product presentation, and advertisement running across social media.'
     }
-  },
-  mounted() {
-    this.$store.dispatch('getPartnerClientSection')
   }
-
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

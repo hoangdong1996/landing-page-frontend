@@ -1,5 +1,5 @@
 <template>
-  <div style="font-family: 'Helvetica Neue'">
+  <div v-if="aboutSection">
     <div id="about" class="box-image-area section-space--ptb_120">
       <div class="container">
         <div class="section-title-wrapper text-center section-space--mb_60 wow move-up">
@@ -15,26 +15,16 @@
 
 <script>
 import AboutExpand from './AboutExpand'
-import { mapGetters } from 'vuex'
 
 export default {
+  props: {
+    aboutSection: {
+      type: Object,
+      default: null
+    }
+  },
   components: {
     AboutExpand
   },
-  computed: {
-    ...mapGetters(['aboutSection'])
-  },
-  data() {
-    return {}
-  },
-  mounted() {
-    this.$store.dispatch('aboutSection/aboutSection')
-  }
 }
 </script>
-
-<style>
-.section-title{
-  font-size: 45px;
-}
-</style>

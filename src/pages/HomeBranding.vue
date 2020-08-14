@@ -1,34 +1,29 @@
 <template>
   <div class="main-container">
-    <!-- Navbar section -->       
-    <Navbar />
+    <!-- Navbar section -->
+    <Navbar :navbar="navbar" />
 
     <!-- hero section -->
-    <HeroBranding />
+    <HeroBranding :heroBranding="heroBranding" />
 
     <!-- about section -->
-    <AboutSection />
+    <AboutSection :aboutSection="aboutSection" />
 
     <!-- business analytics start -->
-    <!-- Khác tên comp con business vs  FeatureList -->
-    <BusinessSection />
+    <BusinessSection :businessSection="businessSection" />
 
     <!-- requirement section-->
-    <!-- khác tên model vs comp -->
-    <!-- thiếu property srcImage trong model -->
-    <RequireList />
+    <RequireList :requirementSection="requirementSection" />
 
     <!-- feature carousel -->
-    <!-- khác tên model vs comp -->
-    <!-- thiếu property imgSrc trong model featureCarousel -->
-    <FeatureTwo />
+    <FeatureTwo :featureCarouselSection="featureCarouselSection" />
 
     <!-- feature list progress bar -->
     <div class="feature-list-progress-area pb-30">
       <div class="container">
         <!-- progress feature component -->
         <!-- thiếu title, fill, class, class 2 trong model -->
-        <ProgressCircle />
+        <ProgressCircle :progressCircle="progressCircle" />
       </div>
     </div>
     <!-- feature list progress bar -->
@@ -45,56 +40,49 @@
         />
       </template>
     </CurveShape>
-    <PricingSection />
+    <PricingSection :pricingSection="pricingSection" />
     <!-- pricing section end-->
 
     <!-- partner client section -->
-    <PartnerClientSection />
+    <PartnerClientSection :partnerClientSection="partnerClientSection" />
 
     <!-- newsletter section -->
-    <Newsletter />
+    <Newsletter :newsletter="newsletter" />
 
     <!-- footer section -->
-    <FooterMain />
+    <FooterMain :footer="footer" />
 
     <!-- offcanvas search component -->
-    <OffcanvasSearchBox />
+    <OffcanvasSearchBox :searchBox="searchBox" />
   </div>
 </template>
 
 <script>
 import Navbar from "../components/Navbar";
 import HeroBranding from "../components/HeroBranding";
-// import AboutExpand from '../components/AboutExpand'
-// import FeatureList from '../components/FeatureList'
 import RequireList from "../components/RequireList";
 import FeatureTwo from "../components/FeatureTwo";
 import ProgressCircle from "../components/ProgressCircle";
 import CurveShape from "../components/CurveShape";
-// import Pricing from '../components/Pricing'
-// import BrandLogo from '../components/BrandLogo'
 import Newsletter from "../components/Newsletter";
 import FooterMain from "../components/FooterMain";
 import OffcanvasSearchBox from "../components/OffcanvasSearchBox";
-
 import AboutSection from "../components/AboutSection";
 import BusinessSection from "../components/BusinessSection";
 import PricingSection from "../components/PricingSection";
 import PartnerClientSection from "../components/PartnerClientSection";
+
+import { mapGetters } from "vuex";
 
 export default {
   name: "app",
   components: {
     Navbar,
     HeroBranding,
-    // AboutExpand,
-    // FeatureList,
     RequireList,
     FeatureTwo,
     ProgressCircle,
     CurveShape,
-    // Pricing,
-    // BrandLogo,
     Newsletter,
     FooterMain,
     OffcanvasSearchBox,
@@ -103,6 +91,35 @@ export default {
     BusinessSection,
     PricingSection,
     PartnerClientSection,
+  },
+  computed: {
+    ...mapGetters([
+      "navbar",
+      "heroBranding",
+      "aboutSection",
+      "businessSection",
+      "requirementSection",
+      "progressCircle",
+      "pricingSection",
+      "partnerClientSection",
+      "newsletter",
+      "footer",
+      "searchBox",
+    ]),
+  },
+  mounted() {
+    this.$store.dispatch("navbar/getLogoNavbar");
+    this.$store.dispatch("heroBranding/getHeroBranding");
+    this.$store.dispatch("aboutSection/aboutSection");
+    this.$store.dispatch("businessSection/businessSection");
+    this.$store.dispatch("requirementSection/requirementSection");
+    this.$store.dispatch("featureCarouselSection/getFeatureCarouselSection");
+    this.$store.dispatch("updateProgressCircle");
+    this.$store.dispatch("updatePricingSection");
+    this.$store.dispatch("getPartnerClientSection");
+    this.$store.dispatch("newsletter/getNewsletter");
+    this.$store.dispatch("footer/getFooter");
+    this.$store.dispatch("searchBox/getSearchBox");
   },
 };
 </script>

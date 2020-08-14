@@ -7,7 +7,6 @@
             <div class="footer-widget__logo mb-30">
               <router-link to="/">
                 <img :src="footer.logo_src.data | pngSrc" class="img-fluid logo-dark" alt>
-                <!-- <img src="../assets/img/logo/logo-light.png" class="img-fluid logo-light" alt> -->
               </router-link>
             </div>
 
@@ -17,18 +16,6 @@
                 <a :href="widgetList.href[index]" class="hover-style-link">{{ list }}</a>
               </li>
             </ul>
-            <!-- <ul class="footer-widget__list">
-              <li>58 Howard Street #2 San Francisco, CA 941</li>
-              <li>
-                <a href="#" class="hover-style-link">contact@aeroland.com</a>
-              </li>
-              <li>
-                <a href="#" class="hover-style-link">(+68)1221 09876</a>
-              </li>
-              <li>
-                <a href="#" class="hover-style-link hover-style-link--green">www.website.com</a>
-              </li>
-            </ul>-->
           </div>
 
           <div class="col-lg-2 col-md-6 footer-widget">
@@ -39,24 +26,6 @@
               </li>
             </ul>
           </div>
-          <!-- <div class="col-lg-2 col-md-6 footer-widget">
-                        <h6 class="footer-widget__title mb-20">Who we are</h6>
-                        <ul class="footer-widget__list">
-                            <li><a href="#" class="hover-style-link">About us</a></li>
-                            <li><a href="#" class="hover-style-link">Before you go</a></li>
-                            <li><a href="#" class="hover-style-link">Online check in</a></li>
-                            <li><a href="#" class="hover-style-link">FAQ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-2 col-md-6 footer-widget">
-                        <h6 class="footer-widget__title mb-20">Quick links</h6>
-                        <ul class="footer-widget__list">
-                            <li><a href="#" class="hover-style-link">Pick up locations</a></li>
-                            <li><a href="#" class="hover-style-link">Terms of Payment</a></li>
-                            <li><a href="#" class="hover-style-link">Privacy Policy</a></li>
-                            <li><a href="#" class="hover-style-link">Where to Find Us</a></li>
-                        </ul>
-          </div>-->
           <div class="col-lg-3 col-md-6 offset-lg-1 footer-widget">
             <div class="twitter-feed-slider">
               <div class="swiper-container twitter-feed-slider__container">
@@ -73,21 +42,6 @@
                         <span class="tweet__date">{{ tweet.date }}</span>
                       </div>
                     </div>
-
-                    <!-- <div class="tweet">
-                      <div class="tweet__text">
-                        "The ocean never ceases to amaze!" Feature: Ben Klea
-                        <a
-                          href="https://t.co/jSRMsZAdPW"
-                          target="_blank"
-                        >https://t.co/jSRMsZAdPW</a>
-                        <a href="https://t.co/2iDReuyPMt" target="_blank">https://t.co/2iDReuyPMt</a>
-                      </div>
-                      <div class="tweet__info">
-                        <h6 class="tweet__heading">Unsplash</h6>
-                        <span class="tweet__date">May 07, 2020</span>
-                      </div>
-                    </div>-->
                   </div>
                 </div>
               </div>
@@ -128,10 +82,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
   name: 'FooterMain',
-  props: ['FooterStyle'],
+  props: {
+    footer: {
+      type: Object,
+      default: null
+    },
+    FooterStyle: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       tweet: {
@@ -147,11 +109,5 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapGetters(['footer'])
-  },
-  mounted() {
-    this.$store.dispatch('footer/getFooter')
-  }
 }
 </script>

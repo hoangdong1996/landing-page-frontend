@@ -1,5 +1,5 @@
 <template>
-  <div id="contact" class="newsletter-section section-space--ptb_120 default-bg">
+  <div id="contact" class="newsletter-section section-space--ptb_120 default-bg" v-if="newsletter">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 ml-auto mr-auto">
@@ -26,9 +26,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+
 export default {
   name: 'Newsletter',
+  props: {
+    newsletter: {
+      type: Object,
+      default: null
+    }
+  },
   data() {
     return {
       title: '493 businesses signed up <br/> last week. Join them!',
@@ -37,12 +43,6 @@ export default {
       buttonTitle: 'Learn more',
       textTitle: ''
     }
-  },
-  computed: {
-    ...mapGetters(['newsletter'])
-  },
-  mounted() {
-    this.$store.dispatch('newsletter/getNewsletter')
   }
 }
 </script>

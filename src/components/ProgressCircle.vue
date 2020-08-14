@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" v-if="progressCircle">
     <div v-for="(progress, index) in progressCircle" class="col-md-6" :key="index">
       <div class="feature-list-progress section-space--pt_60">
         <div class="feature-list-progress__counter">
@@ -39,7 +39,6 @@
 
 <script>
 import VueCircle from 'vue2-circle-progress/src/index.vue'
-import {mapGetters} from 'vuex'
 
 const FILL = {gradient: ['#fad961', '#f76b1c']}
 const BLUE = {gradient: ['#9C7AF2', '#5E61E7']}
@@ -51,11 +50,11 @@ export default {
   components: {
     VueCircle
   },
-  computed: {
-    ...mapGetters(['progressCircle'])
-  },
-  mounted() {
-    this.$store.dispatch('updateProgressCircle')
+  props: {
+    progressCircle: {
+      type: Object,
+      default: null
+    }
   },
   data() {
     return {

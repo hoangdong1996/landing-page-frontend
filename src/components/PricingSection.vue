@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="pricingSection">
     <div id="pricing" class="pricing-table-area bg-gray-2 pt-30">
       <div class="pricing-table-title-area position-relative">
         <div class="container">
@@ -28,20 +28,16 @@
 
 <script>
 import Pricing from './Pricing'
-import {mapGetters} from 'vuex'
 
 export default {
+  props: {
+    pricingSection: {
+      type: Object,
+      default: null
+    }
+  },
   components: {
     Pricing
-  },
-  computed: {
-    ...mapGetters(['pricingSection'])
-  },
-  mounted() {
-    this.$store.dispatch('updatePricingSection')
-  },
-  data() {
-    return {}
   }
 }
 </script>
