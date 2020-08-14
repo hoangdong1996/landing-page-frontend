@@ -10,6 +10,6 @@ const getters = {
   footer: state => state.footer.footer,
   progressCircle: state => state.progressCircle.featureProgressList,
   pricingSection: state => state.pricingSection.pricingComponent,
-  partnerClientSection: state => state.partnerClientSection.partnerClientSection
+  partnerClientSection: state => state.partnerClientSection.partnerClientSection,
 }
 export default getters

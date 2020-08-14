@@ -7,8 +7,10 @@ export function getNewsletter() {
   })
 }
 
-export function changeNewsletter() {
+export function createNewsletter(data) {
   return request({
-    url: 'newsletter-section'
+    url: 'newsletter-section/create',
+    method:'post',
+    data: data
   })
 }

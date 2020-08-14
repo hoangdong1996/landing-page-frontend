@@ -24,7 +24,6 @@
               list-type="picture"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
-
           >
             <el-button size="small" type="primary">Click to upload</el-button>
             <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a size
@@ -52,19 +51,12 @@ export default {
   },
   data () {
     return {
-      // fileList: [ {name: this.background_img.data.name, url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-
     }
   },
   created() {
     this.$store.dispatch('heroBranding/getHeroBranding')
-
   },
   methods: {
-    handleRemove(file, fileList) {
-    },
-    handlePreview(file) {
-    }
   }
 }
 

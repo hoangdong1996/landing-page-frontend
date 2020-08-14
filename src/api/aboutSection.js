@@ -6,3 +6,11 @@ export function getAboutSection() {
     method: 'get'
   })
 }
+
+export function createAboutSection(data) {
+  return request({
+    url: 'about-section/create',
+    method: 'post',
+    data: data
+  })
+}

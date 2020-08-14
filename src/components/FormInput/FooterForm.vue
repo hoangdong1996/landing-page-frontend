@@ -22,6 +22,30 @@
           <el-input class="input-label" v-model="footer.title"></el-input>
         </el-form-item>
 
+        <el-form-item label="List text">
+          <div class="list-require" style="border: gainsboro 1px solid; border-radius: 5px; padding: 5px">
+            <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="120px"
+                     class="demo-dynamic">
+              <el-form-item style="padding-top: 5px"
+                            v-for="(domain) in dynamicValidateForm.domain"
+                            :label="'Text'"
+                            :key="domain.key"
+                            :rules="{required: true, trigger: 'blur'}">
+                <el-row>
+                  <el-col :span="12">
+                    <el-input v-model="domain.value"></el-input>
+                  </el-col>
+                  <el-col :span="12 ">
+                    <el-button @click.prevent="removeDomain(domain)">Delete</el-button>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+              <el-form-item>
+                <el-button @click="addDomain()">New text</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+        </el-form-item>
         <el-form-item style="text-align: center">
           <el-button type="primary">Create</el-button>
           <el-button>Cancel</el-button>
@@ -41,6 +65,13 @@ export default {
   },
   data () {
     return{
+      dynamicValidateForm:
+        {
+          domain: [{
+            key: 1,
+            value:''
+          }]
+        }
     }
   },
   created() {
@@ -48,7 +79,20 @@ export default {
 
   },
   methods: {
-  }
+    removeDomain(index1,item) {
+      var index = this.dynamicValidateForm[index1].domain.indexOf(item);
+      if (index !== -1) {
+        this.dynamicValidateForm[index1].domain.splice(index, 1);
+      }
+    }
+    ,
+    addDomain(index1) {
+      this.dynamicValidateForm[index1].domain.push({
+        key: 1,
+        value: ''
+      });
+    }
+  },
 }
 
 </script>

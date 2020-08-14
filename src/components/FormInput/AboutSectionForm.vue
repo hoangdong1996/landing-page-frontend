@@ -16,15 +16,23 @@
           <el-col :span="24"><span>About Expand</span></el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" v-for="(about, index) in aboutSection.aboutExpandList" :key="index" style="padding-right: 10px">
+          <el-col :span="8" v-for="(about, index) in aboutSection.aboutExpandList" :key="index"
+                  style="padding-right: 10px">
             <div>
               <el-card>
                 <el-form-item label="Icon">
                   <el-upload
                       class="upload-demo upload"
-                      action="https://jsonplaceholder.typicode.com/posts/"
+                      name="files"
+                      accept="image/*"
+                      :ref="'upload' + index"
+                      action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+                      :file-list="fileList"
+                      :auto-upload="false"
                       list-type="picture"
-                      v-model="about.icon">
+                      :limit="1"
+                      :on-success="handleSuccess"
+                  >
                     <el-button size="small" type="primary">Click to upload</el-button>
                     <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
                   </el-upload>
@@ -41,7 +49,7 @@
         </el-row>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary" >Create</el-button>
+          <el-button type="primary" @click="onSubmit()">Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
@@ -58,30 +66,33 @@ export default {
   },
   data() {
     return {
-    //   aboutSection: {
-    //     title: '',
-    //     description: '',
-    //     aboutExpandList: [
-    //       {
-    //         icon: '',
-    //         title: '',
-    //         href: ''
-    //       },
-    //       {
-    //         icon: '',
-    //         title: '',
-    //         href: ''
-    //       },
-    //       {
-    //         icon: '',
-    //         title: '',
-    //         href: ''
-    //       }
-    //     ]
-    //   }
+      fileList: [],
+      response: null
     }
   },
-  methods: {},
+  methods: {
+    onSubmit() {
+      this.$refs.upload1.submit();
+      this.$refs.upload2.submit();
+      this.$refs.upload3.submit();
+    },
+    handleSuccess(response){
+      // const aboutSectionForm = {
+      //   title: this.aboutSection.title,
+      //   description: this.aboutSection.description,
+      //   aboutExpandList: [
+      //     {
+      //       icon: {
+      //         id: response.data[0].id,
+      //       },
+      //       title: this.aboutSection.aboutExpandList.title,
+      //       href: this.aboutSection.aboutExpandList.href
+      //     }
+      //   ]
+      // }
+      // console.log('a', aboutSectionForm)
+    },
+  },
   mounted() {
     this.$store.dispatch('aboutSection/aboutSection')
   }
