@@ -11,7 +11,7 @@ const state = {
     }
 }
 
-const mutations ={
+const mutations = {
     UPDATE_HERO_BRANDING: (state, obj) => {
         state.title = obj.title
         state.description = obj.description
@@ -23,7 +23,7 @@ const mutations ={
 
 const actions = {
      getHeroBranding({commit}) {
-        getHeroBranding().then(response => {
+        return getHeroBranding().then(response => {
             commit('UPDATE_HERO_BRANDING', response.data.data);
         });
     }

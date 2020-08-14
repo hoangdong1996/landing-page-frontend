@@ -12,20 +12,19 @@
           <el-input class="input-label" type="textarea" v-model="heroBranding.description"></el-input>
         </el-form-item>
         <el-form-item label="Button title">
-          <el-input class="input-label" v-model="heroBranding.buttonTitle"></el-input>
+          <el-input class="input-label" v-model="heroBranding.button_title"></el-input>
         </el-form-item>
         <el-form-item label="Button href">
-          <el-input class="input-label" v-model="heroBranding.buttonHref"></el-input>
+          <el-input class="input-label" v-model="heroBranding.button_href"></el-input>
         </el-form-item>
         <el-form-item label="Image">
           <el-upload
               class="upload-demo upload"
               action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
-              :file-list="fileList"
-              list-type="picture"
-              v-model="heroBranding.image"
+
           >
             <el-button size="small" type="primary">Click to upload</el-button>
             <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a size
@@ -35,7 +34,7 @@
         </el-form-item>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary" @click="onSubmit">Create</el-button>
+          <el-button type="primary">Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
@@ -44,20 +43,29 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
-  data() {
+  computed: {
+    ...mapGetters(['heroBranding'])
+  },
+  data () {
     return {
-      heroBranding: {
-        title: '',
-        description: '',
-        buttonTitle: '',
-        buttonHref: '',
-        image: ''
-      }
+      // fileList: ['url(data:image/png;base64,' + this.heroBranding.background_img.data +')']
     }
   },
-  methods: {}
+  mounted() {
+    this.$store.dispatch('heroBranding/getHeroBranding')
+    // console.log(this.fileList)
+  },
+  methods: {
+    handleRemove(file, fileList) {
+    },
+    handlePreview(file) {
+    }
+  }
 }
+
 </script>
 
 <style lang="scss" scoped>

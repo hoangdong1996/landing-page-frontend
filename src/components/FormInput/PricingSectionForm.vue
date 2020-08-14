@@ -25,9 +25,6 @@
                   <el-upload
                       class="upload-demo upload"
                       action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
                       list-type="picture" v-model="pricing.icon">
                     <el-button size="small" type="primary">Click to upload</el-button>
                       <div slot="tip" class="el-upload__tip">jpg/png files with a size 500kb</div>
@@ -51,7 +48,7 @@
         </el-row>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary" @click="onSubmit">Create</el-button>
+          <el-button type="primary" >Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>

@@ -67,6 +67,11 @@
             <span>Pricing Section</span>
           </el-menu-item>
 
+          <el-menu-item index="9" :route="{ path:'partner-client-section-form'}">
+            <i class="el-icon-edit"></i>
+            <span>Partner Client Section</span>
+          </el-menu-item>
+
         </el-menu>
       </el-aside>
 

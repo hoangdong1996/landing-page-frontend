@@ -13,9 +13,6 @@
                   <el-upload
                       class="upload-demo upload"
                       action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
                       list-type="picture"
                       v-model="feature.icon"
                   >
@@ -35,7 +32,7 @@
         </el-row>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary" @click="onSubmit">Create</el-button>
+          <el-button type="primary" >Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>

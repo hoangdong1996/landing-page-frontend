@@ -14,9 +14,6 @@
                   <el-upload
                       class="upload-demo upload"
                       action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
                       list-type="picture"
                       v-model="navbar.logoSrc"
                   >
@@ -29,7 +26,7 @@
           </el-col>
         </el-row>
         <el-form-item style="margin-top: 20px">
-          <el-button type="primary" @click="onSubmit">Create</el-button>
+          <el-button type="primary" >Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>

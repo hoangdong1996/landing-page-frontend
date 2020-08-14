@@ -12,7 +12,7 @@
           <el-input class="input-label" v-model="businessSection.videoUrl"></el-input>
         </el-form-item>
         <el-form-item label="Video title" >
-          <el-input class="input-label" v-model="businessSection.title"></el-input>
+          <el-input class="input-label" v-model="businessSection.videoTitle"></el-input>
         </el-form-item>
         <el-form-item label="Image ">
           <el-input class="input-label" v-model="businessSection.image"></el-input>
@@ -28,9 +28,6 @@
                   <el-upload
                       class="upload-demo upload"
                       action="https://jsonplaceholder.typicode.com/posts/"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
                       list-type="picture"
                       v-model="feature.icon"
                   >
@@ -50,7 +47,7 @@
         </el-row>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary" @click="onSubmit">Create</el-button>
+          <el-button type="primary">Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
