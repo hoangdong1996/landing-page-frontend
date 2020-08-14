@@ -6,3 +6,11 @@ export function getNavbar() {
         method: 'get'
     })
 }
+
+export function createNavbar(data) {
+    return request({
+        url: 'navbar-section/create',
+        method: 'post',
+        data: data
+    })
+}
