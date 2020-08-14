@@ -9,7 +9,7 @@
           <el-input class="input-label" v-model="aboutSection.title"></el-input>
         </el-form-item>
         <el-form-item label="Description">
-          <el-input class="input-label" type="textarea" v-model="aboutSection.desc"></el-input>
+          <el-input class="input-label" type="textarea" v-model="aboutSection.text"></el-input>
         </el-form-item>
 
         <el-row style="text-align: center">
@@ -50,33 +50,41 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
+  computed: {
+    ...mapGetters(['aboutSection'])
+  },
   data() {
     return {
-      aboutSection: {
-        title: '',
-        description: '',
-        aboutExpandList: [
-          {
-            icon: '',
-            title: '',
-            href: ''
-          },
-          {
-            icon: '',
-            title: '',
-            href: ''
-          },
-          {
-            icon: '',
-            title: '',
-            href: ''
-          }
-        ]
-      }
+    //   aboutSection: {
+    //     title: '',
+    //     description: '',
+    //     aboutExpandList: [
+    //       {
+    //         icon: '',
+    //         title: '',
+    //         href: ''
+    //       },
+    //       {
+    //         icon: '',
+    //         title: '',
+    //         href: ''
+    //       },
+    //       {
+    //         icon: '',
+    //         title: '',
+    //         href: ''
+    //       }
+    //     ]
+    //   }
     }
   },
-  methods: {}
+  methods: {},
+  mounted() {
+    this.$store.dispatch('aboutSection/aboutSection')
+  }
 }
 </script>
 

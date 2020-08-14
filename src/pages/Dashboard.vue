@@ -72,6 +72,16 @@
             <span>Partner Client Section</span>
           </el-menu-item>
 
+          <el-menu-item index="10" :route="{ path:'newsletter-form'}">
+            <i class="el-icon-edit"></i>
+            <span>Newsletter Section</span>
+          </el-menu-item>
+
+          <el-menu-item index="11" :route="{ path:'footer-form'}">
+            <i class="el-icon-edit"></i>
+            <span>Footer Section</span>
+          </el-menu-item>
+
         </el-menu>
       </el-aside>
 

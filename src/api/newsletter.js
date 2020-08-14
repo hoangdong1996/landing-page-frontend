@@ -6,3 +6,9 @@ export function getNewsletter() {
     method: 'get'
   })
 }
+
+export function changeNewsletter() {
+  return request({
+    url: 'newsletter-section'
+  })
+}

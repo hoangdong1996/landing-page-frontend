@@ -2,35 +2,24 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>Hero Branding</span>
+        <span>Footer</span>
       </div>
-      <el-form ref="form" :model="heroBranding" label-width="120px">
-        <el-form-item label="Title">
-          <el-input class="input-label" v-model="heroBranding.title"></el-input>
-        </el-form-item>
-        <el-form-item label="Description">
-          <el-input class="input-label" type="textarea" v-model="heroBranding.description"></el-input>
-        </el-form-item>
-        <el-form-item label="Button title">
-          <el-input class="input-label" v-model="heroBranding.button_title"></el-input>
-        </el-form-item>
-        <el-form-item label="Button href">
-          <el-input class="input-label" v-model="heroBranding.button_href"></el-input>
-        </el-form-item>
+      <el-form ref="form" :model="footer" label-width="120px">
         <el-form-item label="Image">
           <el-upload
               class="upload-demo upload"
               action="https://jsonplaceholder.typicode.com/posts/"
               list-type="picture"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-
           >
             <el-button size="small" type="primary">Click to upload</el-button>
             <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a size
               less than 500kb
             </div>
           </el-upload>
+        </el-form-item>
+
+        <el-form-item label="Title">
+          <el-input class="input-label" v-model="footer.title"></el-input>
         </el-form-item>
 
         <el-form-item style="text-align: center">
@@ -47,24 +36,18 @@ import {mapGetters} from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters(['heroBranding'])
+    ...mapGetters(['footer'])
 
   },
   data () {
-    return {
-      // fileList: [ {name: this.background_img.data.name, url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
-
+    return{
     }
   },
   created() {
-    this.$store.dispatch('heroBranding/getHeroBranding')
+    this.$store.dispatch('footer/getFooter')
 
   },
   methods: {
-    handleRemove(file, fileList) {
-    },
-    handlePreview(file) {
-    }
   }
 }
 

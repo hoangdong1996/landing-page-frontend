@@ -18,12 +18,13 @@ const mutations = {
 }
 
 const actions = {
-  getNewsletter({ commit }) {
+  getNewsletter({commit}) {
     getNewsletter().then(response => {
       commit('UPDATE_NEWSLETTER', response.data.data)
     })
-  }
+  },
 }
+
 
 export default {
   namespaced: true,

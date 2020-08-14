@@ -11,6 +11,9 @@ import ProgressCircleForm from "@/components/FormInput/ProgressCircleForm";
 import PricingSectionForm from "@/components/FormInput/PricingSectionForm";
 import PartnerClientSection from "@/components/PartnerClientSection";
 import PartnerClientSectionForm from "@/components/FormInput/PartnerClientSectionForm";
+import Newsletter from "@/components/Newsletter";
+import NewsletterForm from "@/components/FormInput/NewsletterForm";
+import FooterForm from "@/components/FormInput/FooterForm";
 
 
 export const routes = [
@@ -67,6 +70,14 @@ export const routes = [
             {
                 path: "/partner-client-section-form",
                 component: PartnerClientSectionForm
+            },
+            {
+                path: "/newsletter-form",
+                component: NewsletterForm
+            },
+            {
+                path: "/footer-form",
+                component: FooterForm
             }
         ]
     },
