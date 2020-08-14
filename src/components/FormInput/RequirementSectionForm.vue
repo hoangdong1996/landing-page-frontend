@@ -65,27 +65,37 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
+  computed: {
+    ...mapGetters(['requirementSection'])
+  },
+  created() {
+
+  },
   data() {
     return {
-      requirementSection: {
-        title: '',
-        description: '',
-        image: '',
-        button_title: '',
-        button_href: '',
-        requirementList: []
-      },
+      // requirementSection: {
+      //   title: '',
+      //   description: '',
+      //   image: '',
+      //   button_title: '',
+      //   button_href: '',
+      //   requirementList: ['a', 'b]
+      // },
       dynamicValidateForm: {
-        domains: [{
-          key: 1,
-          value: ''
-        }],
-        email: ''
+        domains: [
+          {
+            key: 0,
+            value: 'a'
+          },
+          {}
+        ],
       },
+
     };
   },
-
   methods: {
     removeDomain(item) {
       let index = this.dynamicValidateForm.domains.indexOf(item);
@@ -99,6 +109,21 @@ export default {
         value: ''
       });
     }
+  },
+  async mounted() {
+    await this.$store.dispatch('requirementSection/requirementSection')
+    // for (let item in this.requirementSection.requirementList) {
+    //   let i = 0;
+    //   this.dynamicValidateForm.domains.$set(this.dynamicValidateForm.domains, i, item),
+    //       this.dynamicValidateForm.domains.key += 1
+    //   i++
+    // }
+    let i = 0
+    this.requirementSection.requirementList.forEach(e => {
+      this.dynamicValidateForm.domains[i].value = e
+      this.dynamicValidateForm.domains[i].key = ++i
+    })
+    console.log(this.dynamicValidateForm.domains)
   }
 }
 </script>
