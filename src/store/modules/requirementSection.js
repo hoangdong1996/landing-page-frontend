@@ -1,14 +1,7 @@
 import {getRequirementSection} from '@/api/requirementSection'
 
 const state = {
-    requirementSection: {
-        title: '',
-        description: '',
-        image: '',
-        button_title: '',
-        button_href: '',
-        requirementList: []
-    },
+    requirementSection: null,
 }
 
 const mutations = {

@@ -4,8 +4,8 @@
       <div slot="header" class="clearfix">
         <span>Progress Circle</span>
       </div>
-      <el-form ref="form" :model="progressCircle" label-width="120px">
-        <el-card v-for="(progress, index) in progressCircle" :key="index">
+      <el-form ref="form"   label-width="120px">
+        <el-card v-for="(progress, index) in progressCircle.featureProgressList" :key="index">
           <el-form-item label="Progress">
             <el-input-number v-model="progress.progress"
                              :min="1" :max="100"></el-input-number>
@@ -16,7 +16,7 @@
 
           <el-form-item label="List text">
             <div class="list-require" style="border: gainsboro 1px solid; border-radius: 5px; padding: 5px">
-              <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="120px"
+              <el-form :model="dynamicValidateForm[index]" ref="dynamicValidateForm" label-width="120px"
                        class="demo-dynamic">
                 <el-form-item style="padding-top: 5px"
                               v-for="(domain) in dynamicValidateForm[index].domain"
@@ -41,7 +41,7 @@
         </el-card>
 
         <el-form-item style="text-align: center; padding-top: 10px">
-          <el-button type="primary">Create</el-button>
+          <el-button type="primary" @click="onSubmit()">Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
@@ -51,6 +51,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {createProgressCircle} from "@/api/progressCircle";
 
 export default {
   computed: {
@@ -63,20 +64,50 @@ export default {
         {
           domain: [{
             key: 1,
-            value:''
-          }]
+            value: ''
+          },{},{},{}]
         },
         {
           domain: [{
             key: 1,
-            value:''
-          }]
+            value: ''
+          },{},{},{}]
         }
       ]
     }
   },
   methods: {
-    removeDomain(index1,item) {
+    onSubmit() {
+      let listFeature = [[], []]
+      for (let i = 0; i <= 1; i++) {
+        this.dynamicValidateForm[i].domain.forEach(e => {
+          listFeature[i].push(e.value)
+        })
+      }
+      let progressOne = 0
+      let progressTow = 1
+      const progressForm = {
+        featureProgressList: [
+        {
+          progress: this.progressCircle.featureProgressList[progressOne].progress,
+          featureListTitle: this.progressCircle.featureProgressList[progressOne].featureListTitle,
+          featureList: listFeature[progressOne]
+        },
+        {
+          progress: this.progressCircle.featureProgressList[progressTow].progress,
+          featureListTitle: this.progressCircle.featureProgressList[progressTow].featureListTitle,
+          featureList: listFeature[progressTow]
+        },
+      ]
+      };
+      createProgressCircle(progressForm).then((response) => {
+        console.log(response)
+      }).catch((erorr) => {
+        console.log(erorr)
+      })
+    },
+
+    removeDomain(index1, item) {
       var index = this.dynamicValidateForm[index1].domain.indexOf(item);
       if (index !== -1) {
         this.dynamicValidateForm[index1].domain.splice(index, 1);
@@ -90,8 +121,15 @@ export default {
       });
     }
   },
-  mounted() {
-    this.$store.dispatch('updateProgressCircle')
+  async mounted() {
+    await this.$store.dispatch('updateProgressCircle')
+    for (let i = 0; i <= 1; i++) {
+      let index = 0;
+      this.progressCircle.featureProgressList[i].featureList.forEach(e => {
+        this.dynamicValidateForm[i].domain[index].value = e
+        this.dynamicValidateForm[i].domain[index].key = ++index
+      })
+    }
   }
 }
 </script>

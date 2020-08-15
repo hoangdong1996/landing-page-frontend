@@ -8,7 +8,7 @@ const getters = {
   searchBox: state => state.searchBox.searchBox,
   newsletter: state => state.newsletter.newsletter,
   footer: state => state.footer.footer,
-  progressCircle: state => state.progressCircle.featureProgressList,
+  progressCircle: state => state.progressCircle.progressCircleSection,
   pricingSection: state => state.pricingSection.pricingComponent,
   partnerClientSection: state => state.partnerClientSection.partnerClientSection,
 }

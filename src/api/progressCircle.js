@@ -6,3 +6,11 @@ export function getProgressCircle() {
     method: 'get'
   })
 }
+
+export function createProgressCircle(data) {
+  return request({
+    url: 'progress-circle-section/create',
+    method: 'post',
+    data: data
+  })
+}
