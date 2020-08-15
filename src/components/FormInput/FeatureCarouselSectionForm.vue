@@ -49,6 +49,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {createFeatureCarouselSection} from "@/api/featureCarouselSection";
 
 export default {
   computed: {
@@ -56,7 +57,9 @@ export default {
   },
   data() {
     return {
-      fileList: []
+      fileList: [],
+      imageList: [],
+      featureCarouselForm: []
     }
   },
   methods: {
@@ -65,8 +68,32 @@ export default {
         child.submit()
       })
     },
-    handleSuccess() {
+    handleSuccess(response) {
+      this.imageList.push({
+            id: response.data[0].id
+          }
+      )
 
+      let listFeatureCarousel = []
+      this.featureCarouselSection.featureCarouselList.forEach(e => {
+        if (this.imageList.length < 3) {
+          return;
+        }
+        let obj = {
+          title: e.title,
+          description: e.description,
+        }
+        listFeatureCarousel.push(obj)
+      })
+      for (let i = 0; i < 3; i++) {
+        listFeatureCarousel[i].image_url = this.imageList[i]
+      }
+      console.log(listFeatureCarousel)
+      createFeatureCarouselSection(listFeatureCarousel).then(() => {
+        console.log('done')
+      }).catch(erorr => {
+        console.log(erorr)
+      })
     }
   },
   mounted() {

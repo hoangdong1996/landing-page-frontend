@@ -6,3 +6,11 @@ export function getFeatureCarouselSection() {
     method: 'get'
   })
 }
+
+export function createFeatureCarouselSection(data) {
+  return request({
+    url: 'feature-carousel-section/create',
+    method:'post',
+    data:data
+  })
+}
