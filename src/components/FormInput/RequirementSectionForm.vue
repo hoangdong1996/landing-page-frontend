@@ -17,15 +17,20 @@
         <el-form-item label="Button href">
           <el-input class="input-label" v-model="requirementSection.button_href"></el-input>
         </el-form-item>
-        <el-form-item label="Icon" v-model="requirementSection.image">
+        <el-form-item label="Image">
           <el-upload
+              accept="image/*"
+              name="files"
+              ref="upload"
               class="upload-demo upload"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture">
+              action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+              :file-list="fileList"
+              :auto-upload="false"
+              list-type="picture"
+              :limit="1"
+              :on-success="handleSuccess"
+          >
             <el-button size="small" type="primary">Click to upload</el-button>
-            <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a size
-              less than 500kb
-            </div>
           </el-upload>
         </el-form-item>
 
@@ -56,7 +61,7 @@
         </el-form-item>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary">Create</el-button>
+          <el-button type="primary" @click="onSubmit()">Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
@@ -66,6 +71,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import { createRequirementSection } from "@/api/requirementSection";
 
 export default {
   computed: {
@@ -76,27 +82,43 @@ export default {
   },
   data() {
     return {
-      // requirementSection: {
-      //   title: '',
-      //   description: '',
-      //   image: '',
-      //   button_title: '',
-      //   button_href: '',
-      //   requirementList: ['a', 'b]
-      // },
+      fileList: [],
       dynamicValidateForm: {
         domains: [
           {
-            key: 0,
-            value: 'a'
+            key: null,
+            value: ''
           },
-          {}
+          {}, {}
         ],
       },
-
     };
   },
   methods: {
+    onSubmit() {
+      // console.log('submit')
+      this.$refs.upload.submit()
+    },
+    handleSuccess(response) {
+      let listRequirement = [];
+      this.dynamicValidateForm.domains.forEach(e => {
+        listRequirement.push(e.value)
+      })
+      const requirementForm = {
+        title: this.requirementSection.title,
+        description: this.requirementSection.description,
+        image_url: {
+          id: response.data[0].id
+        },
+        button_title: this.requirementSection.button_title,
+        button_href: this.requirementSection.button_href,
+        requirementList:listRequirement
+      };
+      createRequirementSection(requirementForm).then(() => {
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     removeDomain(item) {
       let index = this.dynamicValidateForm.domains.indexOf(item);
       if (index !== -1) {
@@ -108,24 +130,18 @@ export default {
         key: Date.now(),
         value: ''
       });
-    }
+    },
   },
   async mounted() {
     await this.$store.dispatch('requirementSection/requirementSection')
-    // for (let item in this.requirementSection.requirementList) {
-    //   let i = 0;
-    //   this.dynamicValidateForm.domains.$set(this.dynamicValidateForm.domains, i, item),
-    //       this.dynamicValidateForm.domains.key += 1
-    //   i++
-    // }
     let i = 0
     this.requirementSection.requirementList.forEach(e => {
       this.dynamicValidateForm.domains[i].value = e
       this.dynamicValidateForm.domains[i].key = ++i
     })
-    console.log(this.dynamicValidateForm.domains)
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
