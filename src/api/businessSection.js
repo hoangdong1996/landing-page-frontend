@@ -6,3 +6,11 @@ export function getBusinessSection() {
     method: 'get'
   })
 }
+
+export function createBusinessSection(data) {
+  return request({
+    url: 'business-section/create',
+    method: 'post',
+    data: data
+  })
+}

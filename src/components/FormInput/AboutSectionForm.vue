@@ -103,9 +103,9 @@ export default {
       this.imageList.push({
         id: response.data[0].id}
       )
-      this.checkConfirmCreate()
+      this.submitFormRequest()
     },
-    checkConfirmCreate() {
+    submitFormRequest() {
       const imageCount = this.imageList.length
       if(imageCount < 3){ 
         return;
