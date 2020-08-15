@@ -72,7 +72,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import {createRequirementSection} from "@/api/requirementSection";
-
+import {successNotify, errorNotify} from '@/function/notify'
 export default {
   computed: {
     ...mapGetters(['requirementSection'])
@@ -108,9 +108,9 @@ export default {
         requirementList: listRequirement
       };
       createRequirementSection(requirementForm).then(() => {
-        console.log('done')
-      }).catch((error) => {
-        console.log(error)
+        successNotify(this)
+      }).catch(() => {
+        errorNotify(this)
       })
     },
     removeDomain(item) {
