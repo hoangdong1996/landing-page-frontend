@@ -7,9 +7,16 @@
       <el-form ref="form" :model="footer" label-width="120px" v-if="footer != null">
         <el-form-item label="Image">
           <el-upload
+              accept="image/*"
+              name="files"
+              ref="upload"
               class="upload-demo upload"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+              :file-list="fileList"
+              :auto-upload="false"
               list-type="picture"
+              :limit="1"
+              :on-success="handleSuccess"
           >
             <el-button size="small" type="primary">Click to upload</el-button>
             <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a size
@@ -50,7 +57,7 @@
           </div>
         </el-form-item>
         <el-form-item style="text-align: center">
-          <el-button type="primary">Create</el-button>
+          <el-button type="primary" @click="onSubmit">Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
@@ -60,18 +67,20 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {createFooter} from "@/api/footer";
 
 export default {
   computed: {
     ...mapGetters(['footer'])
 
   },
-  data () {
-    return{
+  data() {
+    return {
+      fileList: [],
       dynamicValidateForm:
-        {
-          domain: []
-        }
+          {
+            domain: []
+          }
     }
   },
   async created() {
@@ -88,6 +97,33 @@ export default {
     })
   },
   methods: {
+    onSubmit() {
+      console.log('sub')
+      this.$refs.upload.submit()
+    },
+    handleSuccess(response) {
+      let listFooter = [];
+      this.dynamicValidateForm.domain.forEach(e => {
+        let obj = {
+          title: e.text,
+          href: e.href
+        }
+        listFooter.push(obj)
+      })
+      const footerForm = {
+        title: this.footer.title,
+        logo_src: {
+          id: response.data[0].id
+        },
+        footerLinkList: listFooter
+      };
+      console.log(footerForm.footerLinkList)
+      createFooter(footerForm).then(() => {
+        console.log('done')
+      }).catch((error) => {
+        console.log(error)
+      })
+    },
     removeDomain(item) {
       var index = this.dynamicValidateForm.domain.indexOf(item);
       if (index !== -1) {
@@ -99,7 +135,7 @@ export default {
       this.dynamicValidateForm.domain.push({
         key: Date.now(),
         text: '',
-        href:''
+        href: ''
       });
     }
   },

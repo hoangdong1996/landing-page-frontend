@@ -1,17 +1,16 @@
-// import HomeBranding from '../pages/HomeBranding'
+
 import NotFound from '../pages/elements/404'
 import Dashboard from "@/pages/Dashboard";
 import NavbarForm from "@/components/FormInput/NavbarForm";
-import AboutSectionForm from "@/components/FormInput/AboutSectionForm";
+// import AboutSectionForm from "@/components/FormInput/AboutSectionForm";
 // import HeroBrandingForm from "@/components/FormInput/HeroBrandingForm";
 import BusinessSectionForm from "@/components/FormInput/BusinessSectionForm";
 import FeatureCarouselSectionForm from "@/components/FormInput/FeatureCarouselSectionForm";
 import RequirementSectionForm from "@/components/FormInput/RequirementSectionForm";
 import ProgressCircleForm from "@/components/FormInput/ProgressCircleForm";
 import PricingSectionForm from "@/components/FormInput/PricingSectionForm";
-import PartnerClientSection from "@/components/PartnerClientSection";
+
 import PartnerClientSectionForm from "@/components/FormInput/PartnerClientSectionForm";
-import Newsletter from "@/components/Newsletter";
 import NewsletterForm from "@/components/FormInput/NewsletterForm";
 import FooterForm from "@/components/FormInput/FooterForm";
 
@@ -42,7 +41,7 @@ export const routes = [
             },
             {
                 path: "/about-section-form",
-                component: AboutSectionForm
+                component: import(/* webpackChunkName: "about-section */ "../components/FormInput/AboutSectionForm")
             },
             {
                 path: "/hero-branding-form",
