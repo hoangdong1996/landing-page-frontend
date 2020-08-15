@@ -13,7 +13,7 @@
     <BusinessSection :businessSection="businessSection" />
 
     <!-- requirement section-->
-    <RequireList :requirementSection="requirementSection" />
+    <RequireList v-if="requirementSection != null" :requirementSection="requirementSection" />
 
     <!-- feature carousel -->
     <FeatureTwo :featureCarouselSection="featureCarouselSection" />
@@ -47,7 +47,7 @@
     <PartnerClientSection :partnerClientSection="partnerClientSection" />
 
     <!-- newsletter section -->
-    <Newsletter :newsletter="newsletter" />
+    <Newsletter  :newsletter="newsletter" />
 
     <!-- footer section -->
     <FooterMain :footer="footer" />

@@ -9,22 +9,36 @@
           <el-input class="input-label" v-model="aboutSection.title"></el-input>
         </el-form-item>
         <el-form-item label="Description">
-          <el-input class="input-label" type="textarea" v-model="aboutSection.text"></el-input>
+          <el-input class="input-label" v-model="aboutSection.text"></el-input>
         </el-form-item>
 
         <el-row style="text-align: center">
-          <el-col :span="24"><span>About Expand</span></el-col>
+          <el-col :span="24">
+            <span>About Expand</span>
+          </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8" v-for="(about, index) in aboutSection.aboutExpandList" :key="index" style="padding-right: 10px">
+          <el-col
+            :span="8"
+            v-for="(about, index) in aboutSection.aboutExpandList"
+            :key="index"
+            style="padding-right: 10px"
+          >
             <div>
               <el-card>
                 <el-form-item label="Icon">
                   <el-upload
-                      class="upload-demo upload"
-                      action="https://jsonplaceholder.typicode.com/posts/"
-                      list-type="picture"
-                      v-model="about.icon">
+                    accept="image/*"
+                    name="files"
+                    ref="upload"
+                    class="upload-demo upload"
+                    action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+                    :file-list="fileList"
+                    :auto-upload="false"
+                    list-type="picture"
+                    :limit="1"
+                    :on-success="handleSuccess"
+                  >
                     <el-button size="small" type="primary">Click to upload</el-button>
                     <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
                   </el-upload>
@@ -41,7 +55,7 @@
         </el-row>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary" >Create</el-button>
+          <el-button type="primary" @click="onSubmit">Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
@@ -50,42 +64,72 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-
+import { mapGetters } from "vuex";
+import { createAboutSection } from '@/api/aboutSection'
 export default {
   computed: {
-    ...mapGetters(['aboutSection'])
+    ...mapGetters(["aboutSection"]),
   },
   data() {
     return {
-    //   aboutSection: {
-    //     title: '',
-    //     description: '',
-    //     aboutExpandList: [
-    //       {
-    //         icon: '',
-    //         title: '',
-    //         href: ''
-    //       },
-    //       {
-    //         icon: '',
-    //         title: '',
-    //         href: ''
-    //       },
-    //       {
-    //         icon: '',
-    //         title: '',
-    //         href: ''
-    //       }
-    //     ]
-    //   }
+      fileList: [],
+      requestForm: null,
+      imageList: [],
+    };
+  },
+  methods: {
+    onSubmit() {
+      // reset back
+      this.imageList = [];
+      // submit upload all file
+      this.$refs.upload.forEach(child => {
+        child.submit();
+      }) 
+    },
+    successNotify(){
+      this.$notify({
+        title: "Success",
+        message: "This is a success message",
+        type: "success",
+      })
+    },
+    errorNotify(){
+      this.$notify({
+        title: "Error",
+        message: "error",
+      });
+    },
+    handleSuccess (response) {
+      this.imageList.push({
+        id: response.data[0].id}
+      )
+      this.checkConfirmCreate()
+    },
+    checkConfirmCreate() {
+      const imageCount = this.imageList.length
+      if(imageCount < 3){ 
+        return;
+      } else if (imageCount === 3) {
+        let list = this.requestForm.aboutExpandList
+        for(let i = 0; i < list.length; i++) {
+          // list.id = null
+          list[i].icon = this.imageList[i]
+        }
+        createAboutSection(this.requestForm)
+        .then(() => this.successNotify())
+        .catch(() => this.errorNotify())
+      }
     }
   },
-  methods: {},
-  mounted() {
-    this.$store.dispatch('aboutSection/aboutSection')
-  }
-}
+  async mounted() {
+    await this.$store.dispatch("aboutSection/aboutSection");
+    this.requestForm = {
+      title: this.aboutSection.title,
+      text: this.aboutSection.text,
+      aboutExpandList: this.aboutSection.aboutExpandList
+    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>
