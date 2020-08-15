@@ -17,7 +17,7 @@ const mutations = {
 
 const actions = {
   businessSection({ commit }) {
-    getBusinessSection().then(response => {
+    return getBusinessSection().then(response => {
       commit('UPDATE_BUSINESS_SECTION', response.data.data)
     })
   }
