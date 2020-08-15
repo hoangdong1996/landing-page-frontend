@@ -12,7 +12,7 @@ const mutations = {
 
 const actions = {
   getFooter({ commit }) {
-    getFooter().then(response => {
+    return getFooter().then(response => {
       commit('UPDATE_FOOTER', response.data.data)
     })
   }

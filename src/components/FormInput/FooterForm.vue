@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span>Footer</span>
       </div>
-      <el-form ref="form" :model="footer" label-width="120px">
+      <el-form ref="form" :model="footer" label-width="120px" v-if="footer != null">
         <el-form-item label="Image">
           <el-upload
               class="upload-demo upload"
@@ -32,10 +32,13 @@
                             :key="domain.key"
                             :rules="{required: true, trigger: 'blur'}">
                 <el-row>
-                  <el-col :span="12">
-                    <el-input v-model="domain.value"></el-input>
+                  <el-col :span="8">
+                    <el-input v-model="domain.text" placeholder="Text  "></el-input>
                   </el-col>
-                  <el-col :span="12 ">
+                  <el-col :span="8">
+                    <el-input v-model="domain.href" placeholder="Href"></el-input>
+                  </el-col>
+                  <el-col :span="8 ">
                     <el-button @click.prevent="removeDomain(domain)">Delete</el-button>
                   </el-col>
                 </el-row>
@@ -67,29 +70,36 @@ export default {
     return{
       dynamicValidateForm:
         {
-          domain: [{
-            key: 1,
-            value:''
-          }]
+          domain: []
         }
     }
   },
-  created() {
-    this.$store.dispatch('footer/getFooter')
-
+  async created() {
+    await this.$store.dispatch('footer/getFooter')
+    let i = 1
+    this.footer.footerLinkList.forEach(e => {
+      let obj = {
+        key: i,
+        text: e.title,
+        href: e.href
+      }
+      this.dynamicValidateForm.domain.push(obj)
+      i = i + 1
+    })
   },
   methods: {
-    removeDomain(index1,item) {
-      var index = this.dynamicValidateForm[index1].domain.indexOf(item);
+    removeDomain(item) {
+      var index = this.dynamicValidateForm.domain.indexOf(item);
       if (index !== -1) {
-        this.dynamicValidateForm[index1].domain.splice(index, 1);
+        this.dynamicValidateForm.domain.splice(index, 1);
       }
     }
     ,
-    addDomain(index1) {
-      this.dynamicValidateForm[index1].domain.push({
-        key: 1,
-        value: ''
+    addDomain() {
+      this.dynamicValidateForm.domain.push({
+        key: Date.now(),
+        text: '',
+        href:''
       });
     }
   },

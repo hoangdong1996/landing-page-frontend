@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span>Requirement Section</span>
       </div>
-      <el-form ref="form" :model="requirementSection" label-width="120px">
+      <el-form ref="form" :model="requirementSection" label-width="120px" v-if="requirementSection">
         <el-form-item label="Title">
           <el-input class="input-label" v-model="requirementSection.title"></el-input>
         </el-form-item>
@@ -71,7 +71,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import { createRequirementSection } from "@/api/requirementSection";
+import {createRequirementSection} from "@/api/requirementSection";
 
 export default {
   computed: {
@@ -84,19 +84,12 @@ export default {
     return {
       fileList: [],
       dynamicValidateForm: {
-        domains: [
-          {
-            key: null,
-            value: ''
-          },
-          {}, {}
-        ],
+        domains: [],
       },
     };
   },
   methods: {
     onSubmit() {
-      // console.log('submit')
       this.$refs.upload.submit()
     },
     handleSuccess(response) {
@@ -112,9 +105,10 @@ export default {
         },
         button_title: this.requirementSection.button_title,
         button_href: this.requirementSection.button_href,
-        requirementList:listRequirement
+        requirementList: listRequirement
       };
       createRequirementSection(requirementForm).then(() => {
+        console.log('done')
       }).catch((error) => {
         console.log(error)
       })
@@ -134,10 +128,14 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('requirementSection/requirementSection')
-    let i = 0
+    let index = 0
     this.requirementSection.requirementList.forEach(e => {
-      this.dynamicValidateForm.domains[i].value = e
-      this.dynamicValidateForm.domains[i].key = ++i
+      let obj = {
+        key: index,
+        value: e
+      }
+      this.dynamicValidateForm.domains.push(obj)
+      index++
     })
   }
 }

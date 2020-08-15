@@ -1,9 +1,9 @@
-import HomeBranding from '../pages/HomeBranding'
+// import HomeBranding from '../pages/HomeBranding'
 import NotFound from '../pages/elements/404'
 import Dashboard from "@/pages/Dashboard";
 import NavbarForm from "@/components/FormInput/NavbarForm";
 import AboutSectionForm from "@/components/FormInput/AboutSectionForm";
-import HeroBrandingForm from "@/components/FormInput/HeroBrandingForm";
+// import HeroBrandingForm from "@/components/FormInput/HeroBrandingForm";
 import BusinessSectionForm from "@/components/FormInput/BusinessSectionForm";
 import FeatureCarouselSectionForm from "@/components/FormInput/FeatureCarouselSectionForm";
 import RequirementSectionForm from "@/components/FormInput/RequirementSectionForm";
@@ -16,11 +16,12 @@ import NewsletterForm from "@/components/FormInput/NewsletterForm";
 import FooterForm from "@/components/FormInput/FooterForm";
 
 
+
 export const routes = [
     {
         path:'/',
         name: 'HomeBranding',
-        component: HomeBranding
+        component: () => import("../pages/HomeBranding")
     },
     {
         path:'*',
@@ -45,7 +46,8 @@ export const routes = [
             },
             {
                 path: "/hero-branding-form",
-                component: HeroBrandingForm
+                component: () => import("../components/FormInput/HeroBrandingForm")
+                // component: HeroBrandingForm
             },
             {
                 path:"/business-section-form",

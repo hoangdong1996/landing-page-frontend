@@ -62,16 +62,10 @@ export default {
       num: 1,
       dynamicValidateForm: [
         {
-          domain: [{
-            key: 1,
-            value: ''
-          },{},{},{}]
+          domain: []
         },
         {
-          domain: [{
-            key: 1,
-            value: ''
-          },{},{},{}]
+          domain: []
         }
       ]
     }
@@ -116,7 +110,7 @@ export default {
     ,
     addDomain(index1) {
       this.dynamicValidateForm[index1].domain.push({
-        key: 1,
+        key: Date.now(),
         value: ''
       });
     }
@@ -126,8 +120,12 @@ export default {
     for (let i = 0; i <= 1; i++) {
       let index = 0;
       this.progressCircle.featureProgressList[i].featureList.forEach(e => {
-        this.dynamicValidateForm[i].domain[index].value = e
-        this.dynamicValidateForm[i].domain[index].key = ++index
+        let obj = {
+          key: index,
+          value: e
+        }
+        this.dynamicValidateForm[i].domain.push(obj)
+        index++
       })
     }
   }

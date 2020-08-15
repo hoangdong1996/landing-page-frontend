@@ -6,3 +6,11 @@ export function getFooter() {
     method: 'get'
   })
 }
+
+export function createFooter(data) {
+  return request({
+    url: 'footer-section/create',
+    method: 'post',
+    data: data
+  })
+}
