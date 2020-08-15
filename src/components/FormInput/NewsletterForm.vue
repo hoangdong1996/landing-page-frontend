@@ -35,7 +35,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import {createNewsletter} from "@/api/newsletter";
-
+import {successNotify, errorNotify} from '@/function/notify'
 export default {
   computed: {
     ...mapGetters(['newsletter'])
@@ -54,9 +54,9 @@ export default {
         description_button_href: this.newsletter.description_button_href
       }
       createNewsletter(newsletter).then(() => {
-        console.log(newsletter)
-      }).catch(error => {
-        console.log(error)
+        successNotify(this)
+      }).catch(() => {
+        errorNotify(this)
       })
     },
 
