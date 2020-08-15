@@ -6,3 +6,11 @@ export function getRequirementSection() {
     method: 'get'
   })
 }
+
+export function createRequirementSection(data) {
+  return request({
+    url: 'requirement-section/create',
+    method: 'post',
+    data: data
+  })
+}

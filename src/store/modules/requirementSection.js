@@ -1,7 +1,7 @@
 import {getRequirementSection} from '@/api/requirementSection'
 
 const state = {
-    requirementSection: null
+    requirementSection: null,
 }
 
 const mutations = {

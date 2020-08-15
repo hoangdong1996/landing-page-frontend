@@ -1,6 +1,6 @@
 <template>
   <div class="row" v-if="progressCircle">
-    <div v-for="(progress, index) in progressCircle" class="col-md-6" :key="index">
+    <div v-for="(progress, index) in progressCircle.featureProgressList" class="col-md-6" :key="index">
       <div class="feature-list-progress section-space--pt_60">
         <div class="feature-list-progress__counter">
           <div class="circle-progress-wrapper">
