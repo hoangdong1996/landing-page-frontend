@@ -52,7 +52,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import {createProgressCircle} from "@/api/progressCircle";
-
+import {successNotify, errorNotify} from '@/function/notify'
 export default {
   computed: {
     ...mapGetters(['progressCircle'])
@@ -94,10 +94,10 @@ export default {
         },
       ]
       };
-      createProgressCircle(progressForm).then((response) => {
-        console.log(response)
-      }).catch((erorr) => {
-        console.log(erorr)
+      createProgressCircle(progressForm).then(() => {
+        successNotify(this)
+      }).catch(() => {
+        errorNotify(this)
       })
     },
 
