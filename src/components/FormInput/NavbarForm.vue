@@ -53,7 +53,7 @@ export default {
           id: response.data[0].id,
         },
       };
-      createNavbar(navbar).then((response) => {
+      createNavbar(navbar).then(() => {
         this.$notify({
           title: "Success",
           message: "This is a success message",
