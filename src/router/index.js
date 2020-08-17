@@ -41,12 +41,11 @@ export const routes = [
             },
             {
                 path: "/about-section-form",
-                component: import(/* webpackChunkName: "about-section */ "../components/FormInput/AboutSectionForm")
+                component: () => import("@/components/FormInput/AboutSectionForm")
             },
             {
                 path: "/hero-branding-form",
-                component: () => import("../components/FormInput/HeroBrandingForm")
-                // component: HeroBrandingForm
+                component: () => import("@/components/FormInput/HeroBrandingForm")
             },
             {
                 path:"/business-section-form",
