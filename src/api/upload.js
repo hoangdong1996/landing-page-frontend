@@ -4,7 +4,7 @@ export function uploadFile(file) {
     const formData = new FormData()
     formData.append('file', file)
     return request({
-        url: 'api/image/uploadFile',
+        url: 'image/uploadFile',
         method: 'post',
         data: formData
     })
@@ -16,7 +16,7 @@ export function uploadMultiFile(files) {
         formData.append('files',file)
     });
     return request({
-        url: 'api/image/uploadMultiFile',
+        url: 'image/uploadMultiFile',
         method: 'post',
         data: formData
     })

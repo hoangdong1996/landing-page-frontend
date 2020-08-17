@@ -26,7 +26,7 @@
             text-color="#fff"
             active-text-color="#ffd04b">
 
-          <el-menu-item index="1" :route="{ path:'navbar-form'}" >
+          <el-menu-item index="1" :route="{ path:'navbar-form'}">
             <i class="el-icon-edit"></i>
             <span>Navbar </span>
           </el-menu-item>
@@ -56,10 +56,12 @@
             <span>Feature Carousel Section</span>
           </el-menu-item>
 
-          <el-menu-item index="7" :route="{ path:'progress-circle-form'}">
-            <i class="el-icon-edit"></i>
-            <span>Progress Circle</span>
-          </el-menu-item>
+          <el-submenu index="7" :route="{ path:'progress-circle-form'}">
+<!--            <i class="el-icon-edit"></i>-->
+            <template slot="title">Progress Circle</template>
+            <el-menu-item index="7-1">Progress one</el-menu-item>
+            <el-menu-item index="7-2">Progress Tow</el-menu-item>
+          </el-submenu>
 
           <el-menu-item index="8" :route="{ path:'pricing-section-form'}">
             <i class="el-icon-edit"></i>

@@ -1,28 +1,27 @@
-
 import NotFound from '../pages/elements/404'
 import Dashboard from "@/pages/Dashboard";
 import NavbarForm from "@/components/FormInput/NavbarForm";
 // import HeroBrandingForm from "@/components/FormInput/HeroBrandingForm";
-import BusinessSectionForm from "@/components/FormInput/BusinessSectionForm";
-import FeatureCarouselSectionForm from "@/components/FormInput/FeatureCarouselSectionForm";
-import RequirementSectionForm from "@/components/FormInput/RequirementSectionForm";
-import ProgressCircleForm from "@/components/FormInput/ProgressCircleForm";
-import PricingSectionForm from "@/components/FormInput/PricingSectionForm";
-
-import PartnerClientSectionForm from "@/components/FormInput/PartnerClientSectionForm";
-import NewsletterForm from "@/components/FormInput/NewsletterForm";
-import FooterForm from "@/components/FormInput/FooterForm";
-
+// import BusinessSectionForm from "@/components/FormInput/BusinessSectionForm";
+// import FeatureCarouselSectionForm from "@/components/FormInput/FeatureCarouselSectionForm";
+// import RequirementSectionForm from "@/components/FormInput/RequirementSectionForm";
+// import ProgressCircleForm from "@/components/FormInput/ProgressCircleForm";
+// import PricingSectionForm from "@/components/FormInput/PricingSectionForm";
+//
+// import PartnerClientSectionForm from "@/components/FormInput/PartnerClientSectionForm";
+// import NewsletterForm from "@/components/FormInput/NewsletterForm";
+// import FooterForm from "@/components/FormInput/FooterForm";
+// import ProgressListForm from "@/components/FormInput/ProgressListForm";
 
 
 export const routes = [
     {
-        path:'/',
+        path: '/',
         name: 'HomeBranding',
         component: () => import("../pages/HomeBranding")
     },
     {
-        path:'*',
+        path: '*',
         name: 'NotFound',
         component: NotFound
     },
@@ -36,7 +35,7 @@ export const routes = [
             },
             {
                 path: "/navbar-form",
-                component: NavbarForm
+                component: () => import("@/components/FormInput/NavbarForm")
             },
             {
                 path: "/about-section-form",
@@ -47,36 +46,36 @@ export const routes = [
                 component: () => import("@/components/FormInput/HeroBrandingForm")
             },
             {
-                path:"/business-section-form",
-                component: BusinessSectionForm
+                path: "/business-section-form",
+                component: () => import("@/components/FormInput/BusinessSectionForm")
             },
             {
                 path: "/requirement-section-form",
-                component: RequirementSectionForm
+                component: () => import("@/components/FormInput/RequirementSectionForm")
             },
             {
                 path: "/feature-carousel-section-form",
-                component: FeatureCarouselSectionForm
+                component: () => import("@/components/FormInput/FeatureCarouselSectionForm")
             },
             {
                 path: "/progress-circle-form",
-                component: ProgressCircleForm
+                component: () => import("@/components/FormInput/ProgressCircleForm"),
             },
             {
                 path: "/pricing-section-form",
-                component: PricingSectionForm
+                component: () => import("@/components/FormInput/PricingSectionForm")
             },
             {
                 path: "/partner-client-section-form",
-                component: PartnerClientSectionForm
+                component: () => import("@/components/FormInput/PartnerClientSectionForm")
             },
             {
                 path: "/newsletter-form",
-                component: NewsletterForm
+                component: () => import("@/components/FormInput/NewsletterForm")
             },
             {
                 path: "/footer-form",
-                component: FooterForm
+                component: () => import("@/components/FormInput/FooterForm")
             }
         ]
     },

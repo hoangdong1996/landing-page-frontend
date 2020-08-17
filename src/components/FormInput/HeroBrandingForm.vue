@@ -19,16 +19,16 @@
         </el-form-item>
         <el-form-item label="Background">
           <el-upload
-            accept="image/*"
-            name="files"
-            ref="upload"
-            class="upload-demo upload"
-            action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-            :file-list="fileList"
-            :auto-upload="false"
-            list-type="picture"
-            :limit="1"
-            :on-success="handleSuccess"
+              accept="image/*"
+              name="files"
+              ref="upload"
+              class="upload-demo upload"
+              action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+              :file-list="fileList "
+              :auto-upload="false"
+              list-type="picture"
+              :limit="1"
+              :on-success="handleSuccess"
           >
             <el-button size="small" type="primary">Click to upload</el-button>
           </el-upload>
@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { createHeroBranding } from "@/api/heroBranding";
+import {mapGetters} from "vuex";
+import {createHeroBranding} from "@/api/heroBranding";
 
 export default {
   computed: {
@@ -56,27 +56,29 @@ export default {
       fileList: [],
     };
   },
-  created() {
-    this.$store.dispatch("heroBranding/getHeroBranding");
+  async mounted() {
+    await this.$store.dispatch("heroBranding/getHeroBranding");
+    // this.fileList[0] = this.heroBranding.background_img
+    // console.log(this.fileList)
   },
   methods: {
     onSubmit() {
       this.$refs.upload.submit();
     },
-    successNotify(){
+    successNotify() {
       this.$notify({
-          title: "Success",
-          message: "This is a success message",
-          type: "success",
-        })
+        title: "Success",
+        message: "This is a success message",
+        type: "success",
+      })
     },
-    errorNotify(){
+    errorNotify() {
       this.$notify({
-            title: "Error",
-            message: "error",
-          });
+        title: "Error",
+        message: "error",
+      });
     },
-    handleSuccess (response) {
+    handleSuccess(response) {
       const requestForm = {
         title: this.heroBranding.title,
         description: this.heroBranding.description,
