@@ -16,7 +16,7 @@ const mutations = {
 
 const actions = {
     getPartnerClientSection({commit}) {
-        getPartnerClientSection().then(response => {
+        return getPartnerClientSection().then(response => {
             commit('UPDATE_PARTNER_CLIENT_SECTION', response.data.data)
         })
     }

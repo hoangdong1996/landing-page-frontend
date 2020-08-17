@@ -13,11 +13,15 @@
         </el-form-item>
         <el-form-item label="List Logo">
           <el-upload
+              accept="image/*"
+              name="files"
+              ref="upload"
               class="upload-demo upload"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+              :file-list="fileList"
+              :auto-upload="false"
               list-type="picture"
-              v-model="partnerClientSection.brandLogoList"
-          >
+              :on-success="handleSuccess">
             <el-button size="small" type="primary">Click to upload</el-button>
             <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a
               size
@@ -27,7 +31,7 @@
         </el-form-item>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary">Create</el-button>
+          <el-button type="primary" @click="onSubmit()">Create</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
@@ -36,21 +40,44 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+import {createPartnerClientSection} from "@/api/partnerClientSection";
+
 export default {
+  computed: {
+    ...mapGetters(['partnerClientSection'])
+  },
   data() {
     return {
-      partnerClientSection: {
-        title: '',
-        text: '',
-        brandLogoList: [
-          {
-            data: ''
-          }
-        ]
-      }
+      fileList: [],
+      imageList: [],
     }
   },
   methods: {
+    onSubmit() {
+      this.$refs.upload.forEach(child => {
+        child.submit();
+      })
+    },
+    handleSuccess(response) {
+      this.imageList.push({
+        id: response.data[0].id
+      })
+      this.submitFormRequest()
+    },
+    submitFormRequest() {
+      for (let i = 0; i < this.imageList.length; i++) {
+        this.partnerClientSection.brandLogoList[i] = this.imageList[i]
+      }
+      createPartnerClientSection(this.partnerClientSection).then(() => {
+        console.log('done')
+      }).catch(erorr => {
+        console.log(erorr)
+      })
+    }
+  },
+  async mounted() {
+    await this.$store.dispatch('getPartnerClientSection')
   }
 }
 </script>

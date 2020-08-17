@@ -35,7 +35,6 @@
                     action="http://192.168.1.122:8081/api/image/uploadMultiFile"
                     :file-list="fileList"
                     :auto-upload="false"
-                    :on-change="fileOnChange"
                     list-type="picture"
                     :limit="1"
                     :on-success="handleSuccess"

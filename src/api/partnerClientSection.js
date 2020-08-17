@@ -6,3 +6,11 @@ export function getPartnerClientSection() {
         method: 'get'
     })
 }
+
+export function createPartnerClientSection(data) {
+    return request({
+        url: 'partner-client-section/create',
+        method: 'post',
+        data: data
+    })
+}
