@@ -6,3 +6,11 @@ export function getPricingSection() {
     method: 'get'
   })
 }
+
+export function createPricingSection(data) {
+  return request({
+    url: 'pricing-component-section/create',
+    method: 'post',
+    data: data
+  })
+}

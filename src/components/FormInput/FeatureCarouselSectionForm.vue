@@ -78,7 +78,7 @@ export default {
       if (this.imageList.length < 3) {
         return
       }
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < this.featureCarouselSection.featureCarouselList; i++) {
         this.featureCarouselSection.featureCarouselList[i].image_url = this.imageList[i]
       }
       createFeatureCarouselSection(this.featureCarouselSection).then(() => {

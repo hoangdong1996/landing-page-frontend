@@ -18,7 +18,7 @@ const mutations = {
 
 const actions = {
     updatePricingSection({commit}) {
-        getPricingSection().then(response => {
+        return getPricingSection().then(response => {
             commit('UPDATE_PRICING', response.data.data)
         })
     }
