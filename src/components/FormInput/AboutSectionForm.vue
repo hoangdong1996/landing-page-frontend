@@ -84,7 +84,7 @@ export default {
       // submit upload all file
       this.$refs.upload.forEach(child => {
         child.submit();
-      }) 
+      })
     },
     successNotify(){
       this.$notify({
@@ -107,7 +107,7 @@ export default {
     },
     submitFormRequest() {
       const imageCount = this.imageList.length
-      if(imageCount < 3){ 
+      if(imageCount < 3){
         return;
       } else if (imageCount === 3) {
         let list = this.requestForm.aboutExpandList

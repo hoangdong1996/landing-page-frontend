@@ -59,7 +59,7 @@ export default {
     return {
       fileList: [],
       imageList: [],
-      featureCarouselForm: []
+      featureCarousel: null
     }
   },
   methods: {
@@ -70,34 +70,30 @@ export default {
     },
     handleSuccess(response) {
       this.imageList.push({
-            id: response.data[0].id
-          }
-      )
-
-      let listFeatureCarousel = []
-      this.featureCarouselSection.featureCarouselList.forEach(e => {
-        if (this.imageList.length < 3) {
-          return;
-        }
-        let obj = {
-          title: e.title,
-          description: e.description,
-        }
-        listFeatureCarousel.push(obj)
+        id: response.data[0].id
       })
-      for (let i = 0; i < 3; i++) {
-        listFeatureCarousel[i].image_url = this.imageList[i]
+      this.submitFormRequest()
+    },
+    submitFormRequest() {
+      if (this.imageList.length < 3) {
+        return
       }
-      console.log(listFeatureCarousel)
-      createFeatureCarouselSection(listFeatureCarousel).then(() => {
+      for (let i = 0; i < 3; i++) {
+        this.featureCarouselSection.featureCarouselList[i].image_url = this.imageList[i]
+      }
+      createFeatureCarouselSection(this.featureCarouselSection).then(() => {
         console.log('done')
       }).catch(erorr => {
         console.log(erorr)
       })
     }
   },
-  mounted() {
-    this.$store.dispatch('featureCarouselSection/getFeatureCarouselSection')
+  async mounted() {
+    await this.$store.dispatch('featureCarouselSection/getFeatureCarouselSection')
+    this.featureCarouselSection.id = null;
+    this.featureCarouselSection.featureCarouselList.forEach(feature => {
+      feature.id = null
+    })
   }
 }
 </script>
