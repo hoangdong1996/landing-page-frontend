@@ -14,7 +14,7 @@ const mutations = {
 
 const actions = {
   getFeatureCarouselSection({ commit }) {
-    getFeatureCarouselSection().then(response => {
+    return getFeatureCarouselSection().then(response => {
       commit('UPDATE_FEATURE_CAROUSEL_SECTION', response.data.data)
     })
   }
