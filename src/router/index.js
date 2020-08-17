@@ -12,7 +12,6 @@ import PricingSectionForm from "@/components/FormInput/PricingSectionForm";
 import PartnerClientSectionForm from "@/components/FormInput/PartnerClientSectionForm";
 import NewsletterForm from "@/components/FormInput/NewsletterForm";
 import FooterForm from "@/components/FormInput/FooterForm";
-import AboutSectionForm from "@/components/FormInput/AboutSectionForm";
 
 
 
@@ -41,12 +40,11 @@ export const routes = [
             },
             {
                 path: "/about-section-form",
-                component: AboutSectionForm
+                component: () => import("@/components/FormInput/AboutSectionForm")
             },
             {
                 path: "/hero-branding-form",
-                component: () => import("../components/FormInput/HeroBrandingForm")
-                // component: HeroBrandingForm
+                component: () => import("@/components/FormInput/HeroBrandingForm")
             },
             {
                 path:"/business-section-form",
