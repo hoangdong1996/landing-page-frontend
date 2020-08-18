@@ -169,7 +169,7 @@ export default {
       for (let i = 0; i < this.pricingSection.pricingTableList.length; i++) {
         this.pricingSection.pricingTableList[i].price = listPricing[i]
         if (this.resImageList[i] !== undefined) {
-          this.pricingSection.pricingTableList[i].thumb = this.resImageList[i]
+          this.pricingSection.pricingTableList[i].image = this.resImageList[i]
         }
       }
       createPricingSection(this.pricingSection)

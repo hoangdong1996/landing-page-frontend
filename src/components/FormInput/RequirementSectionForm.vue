@@ -117,7 +117,7 @@ export default {
     submitFormRequest() {
       this.pushListRequirement()
       if (this.resImageSection !== null) {
-        this.requirementSection.image_url = this.resImageSection
+        this.requirementSection.image = this.resImageSection
       }
       createRequirementSection(this.requirementSection)
           .then(() => successNotify(this))

@@ -141,11 +141,11 @@ export default {
     },
     submitFormRequest() {
       if (this.resSectionImage !== null) {
-        this.businessSection.image_url = this.resSectionImage;
+        this.businessSection.image = this.resSectionImage;
       }
       for (let i = 0; i < this.businessSection.businessFeatureList.length; i++) {
         if (this.resImageList[i] !== undefined) {
-          this.businessSection.businessFeatureList[i].icon = this.resImageList[i];
+          this.businessSection.businessFeatureList[i].image = this.resImageList[i];
         }
       }
       createBusinessSection(this.businessSection)

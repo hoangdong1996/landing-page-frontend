@@ -79,7 +79,7 @@
                 class="col-md-4 box-image position-relative text-center wow move-up"
               >
                 <div class="box-image__media">
-                  <img :src="about.icon.data | pngSrc" class="img-fluid" alt="about icon" />
+                  <img :src="about.image.data | pngSrc" class="img-fluid" alt="about icon" />
                 </div>
                 <div class="box-image__content">
                   <h6 class="box-image__title">
@@ -151,7 +151,7 @@ export default {
       let list = this.aboutSection.aboutExpandList;
       for (let i = 0; i < list.length; i++) {
         if (this.resImageList[i] !== undefined) {
-          list[i].icon = this.resImageList[i];
+          list[i].image = this.resImageList[i];
         }
       }
       await createAboutSection(this.aboutSection)
@@ -165,7 +165,7 @@ export default {
       for (let i = 0; i < list.length; i++) {
         if(this.imageList[i] !== undefined) {
           await getBase64(this.imageList[i]).then((data) => {
-            list[i].icon.data = data
+            list[i].image.data = data
           })
         }
       }
@@ -179,8 +179,8 @@ export default {
     });
     this.aboutSection.aboutExpandList.forEach(e => {
       let obj ={
-        name: e.icon.name,
-        url: getImageUrl(e.icon)
+        name: e.image.name,
+        url: getImageUrl(e.image)
       }
       this.fileList.push([obj])
     })

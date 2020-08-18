@@ -97,7 +97,7 @@ export default {
     submitFormRequest() {
       for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
         if (this.resImageList[i] !== undefined)
-          this.featureCarouselSection.featureCarouselList[i].image_url = this.resImageList[i]
+          this.featureCarouselSection.featureCarouselList[i].image = this.resImageList[i]
       }
       createFeatureCarouselSection(this.featureCarouselSection)
           .then(() => successNotify(this)

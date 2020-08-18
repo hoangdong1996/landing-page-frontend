@@ -45,7 +45,7 @@
         id="home"
         class="hero-branding bg-cover"
         style="position: relative"
-        :style="{ 'background-image': 'url(data:image/png;base64,' + preview.background_img.data +')' }"
+        :style="{ 'background-image': 'url(data:image/png;base64,' + preview.image.data +')' }"
       >
         <div class="container-fluid container-fluid--cp-150">
           <div class="hero-branding">
@@ -109,7 +109,7 @@ export default {
     },
     async submitFormRequest() {
       if (this.resImageSection !== null) {
-        this.heroBranding.background_img = this.resImageSection
+        this.heroBranding.image = this.resImageSection
       }
       await createHeroBranding(this.heroBranding)
           .then(() => successNotify(this))
@@ -120,7 +120,7 @@ export default {
     async onPreview() {
       if (this.imageSection != null) {
         await getBase64(this.imageSection).then((data) => {
-          this.preview.background_img.data = data;
+          this.preview.image.data = data;
         });
       }
     },
@@ -130,7 +130,7 @@ export default {
     this.heroBranding.id = null
     this.fileList.push({
       name: this.heroBranding.background_img.name,
-      url: getImageUrl(this.heroBranding.background_img)
+      url: getImageUrl(this.heroBranding.image)
     })
   },
 };

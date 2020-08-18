@@ -123,7 +123,7 @@ export default {
       if (this.imageRes === null || this.imageRes === undefined) {
         return;
       }
-      this.navbar.logo_src = this.imageRes;
+      this.navbar.image = this.imageRes;
       await createNavbar(this.navbar)
         .then(() => {
           successNotify(this);

@@ -99,7 +99,7 @@ export default {
     submitFormRequest() {
       for (let i = 0; i < this.imageList.length; i++) {
         if (this.resImageList[i] !== undefined )
-        this.partnerClientSection.brandLogoList[i].logo = this.resImageList[i]
+        this.partnerClientSection.brandLogoList[i].image = this.resImageList[i]
       }
       createPartnerClientSection(this.partnerClientSection)
       .then(() => successNotify(this))

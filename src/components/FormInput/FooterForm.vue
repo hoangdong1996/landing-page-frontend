@@ -119,7 +119,7 @@ export default {
     },
     submitFormRequest() {
       if (this.resImageSection !== null) {
-        this.footer.logo_src = this.resImageSection
+        this.footer.image = this.resImageSection
       }
       this.pushListFooter()
       createFooter(this.footer)
