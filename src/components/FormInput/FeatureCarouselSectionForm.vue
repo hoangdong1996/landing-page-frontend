@@ -4,10 +4,16 @@
       <div slot="header" class="clearfix">
         <span>Feature Carousel Section</span>
       </div>
-      <el-form ref="form" :model="featureCarouselSection" label-width="120px">
+      <el-row style="">
+        <el-button @click.prevent="featureCarouselSectionIndex = 0">1</el-button>
+        <el-button @click.prevent="featureCarouselSectionIndex = 1">2</el-button>
+        <el-button @click.prevent="featureCarouselSectionIndex = 2">3</el-button>
+      </el-row>
+      <el-form ref="form" label-width="120px">
         <el-row>
-          <el-col :span="8" v-for="(feature, index) in featureCarouselSection.featureCarouselList" :key="index"
-                  style="padding-right: 10px">
+          <el-col v-for="(feature, index) in featureCarouselSection.featureCarouselList" :key="index"
+                  style="padding-right: 10px"
+                  v-show="featureCarouselSectionIndex === index">
             <div>
               <el-card>
                 <el-form-item label="Image">
@@ -21,7 +27,7 @@
                       :auto-upload="false"
                       list-type="picture"
                       :limit="1"
-                      :on-success="handleSuccess"
+                      :on-change="handleChange"
                   >
                     <el-button size="small" type="primary">Click to upload</el-button>
                     <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
@@ -37,7 +43,6 @@
             </div>
           </el-col>
         </el-row>
-
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit()">Create</el-button>
           <el-button>Cancel</el-button>
@@ -50,6 +55,8 @@
 <script>
 import {mapGetters} from 'vuex'
 import {createFeatureCarouselSection} from "@/api/featureCarouselSection";
+import {uploadFile} from "@/api/upload";
+import {errorNotify, successNotify} from "@/function/notify";
 
 export default {
   computed: {
@@ -58,34 +65,43 @@ export default {
   data() {
     return {
       fileList: [],
-      imageList: [],
-      featureCarousel: null
+      imageList: new Array(3),
+      resImageList: new Array(3),
+      featureCarouselSectionIndex: 0
     }
   },
   methods: {
-    onSubmit() {
-      this.$refs.upload.forEach(child => {
-        child.submit()
-      })
+    handleChange(file) {
+      this.imageList[this.featureCarouselSectionIndex] = file.raw
     },
-    handleSuccess(response) {
-      this.imageList.push({
-        id: response.data[0].id
-      })
+    async onSubmit() {
+      await this.uploadFile()
       this.submitFormRequest()
     },
+    async uploadFile() {
+      for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
+        if (this.imageList[i] !== undefined) {
+          await uploadFile(this.imageList[i]).then(res => {
+            this.resImageList[i] = res.data.data
+          }).catch(() => {
+            this.resetAll()
+            return
+          })
+        }
+      }
+    },
+    resetAll() {
+      this.resImageList = new Array(3)
+      this.imageList = new Array(3)
+    },
     submitFormRequest() {
-      if (this.imageList.length < 3) {
-        return
+      for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
+        if (this.resImageList[i] !== undefined)
+          this.featureCarouselSection.featureCarouselList[i].image_url = this.resImageList[i]
       }
-      for (let i = 0; i < this.featureCarouselSection.featureCarouselList; i++) {
-        this.featureCarouselSection.featureCarouselList[i].image_url = this.imageList[i]
-      }
-      createFeatureCarouselSection(this.featureCarouselSection).then(() => {
-        console.log('done')
-      }).catch(erorr => {
-        console.log(erorr)
-      })
+      createFeatureCarouselSection(this.featureCarouselSection)
+          .then(() => successNotify(this)
+          ).catch(() => errorNotify(this))
     }
   },
   async mounted() {

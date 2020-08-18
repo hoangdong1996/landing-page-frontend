@@ -18,8 +18,15 @@
           <el-col :span="24"><span>Pricing List</span></el-col>
         </el-row>
         <el-row>
-          <el-col  v-for="(pricing, index) in pricingSection.pricingTableList" :key="index"
-                  style="padding-right: 10px">
+          <el-button @click.prevent="pricingSectionIndex = 0">1</el-button>
+          <el-button @click.prevent="pricingSectionIndex = 1">2</el-button>
+          <el-button @click.prevent="pricingSectionIndex= 2">3</el-button>
+          <el-button @click.prevent="pricingSectionIndex= 3">4</el-button>
+        </el-row>
+        <el-row>
+          <el-col v-for="(pricing, index) in pricingSection.pricingTableList" :key="index"
+                  style="padding-right: 10px"
+                  v-show="pricingSectionIndex === index">
             <div>
               <el-card>
                 <el-form-item label="Icon">
@@ -33,7 +40,8 @@
                       :auto-upload="false"
                       list-type="picture"
                       :limit="1"
-                      :on-success="handleSuccess">
+                      :on-change="handleChange"
+                  >
                     <el-button size="small" type="primary">Click to upload</el-button>
                     <div slot="tip" class="el-upload__tip">jpg/png files with a size 500kb</div>
                   </el-upload>
@@ -44,12 +52,12 @@
                 <el-form-item label="Value">
                   <el-input class="input-label" v-model="pricing.value"></el-input>
                 </el-form-item>
-                <!--                <el-form-item label="isPopular">-->
-                <!--                  <el-input class="input-label" v-model="pricing.isPopular"></el-input>-->
-                <!--                </el-form-item>-->
-                <!--                <el-form-item label="isActive">-->
-                <!--                  <el-input class="input-label" v-model="pricing.isActive"></el-input>-->
-                <!--                </el-form-item>-->
+                <el-form-item label="Is Popular">
+                  <el-switch v-model="pricing.isPopular"></el-switch>
+                </el-form-item>
+                <el-form-item label="Is Active">
+                  <el-switch v-model="pricing.isActive"></el-switch>
+                </el-form-item>
                 <el-form-item label="Duration">
                   <el-input class="input-label" v-model="pricing.duration"></el-input>
                 </el-form-item>
@@ -95,6 +103,8 @@
 <script>
 import {mapGetters} from 'vuex'
 import {createPricingSection} from "@/api/pricingSection";
+import {uploadFile} from "@/api/upload";
+import {errorNotify, successNotify} from "@/function/notify";
 
 export default {
   computed: {
@@ -102,9 +112,11 @@ export default {
   },
   data() {
     return {
+      pricingSectionIndex: 0,
       fileList: [],
-      imageList: [],
       pricingSectionForm: null,
+      imageList: new Array(4),
+      resImageList: new Array(4),
       dynamicValidateForm: [
         {
           domains: []
@@ -122,29 +134,48 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-        this.$refs.upload.forEach(child =>{
-          child.submit()
+    async onSubmit() {
+      await this.uploadFile()
+      this.submitFormRequest();
+    },
+    handleChange(file) {
+      this.imageList[this.pricingSectionIndex] = file.raw;
+    },
+    async uploadFile() {
+      for (let i = 0; i < this.imageList.length; i++) {
+        if (this.imageList[i] !== undefined)
+          await uploadFile(this.imageList[i]).then(res => {
+            this.resImageList[i] = res.data.data
+          }).catch(() => {
+            this.resetAll()
+            return
+          })
+      }
+    },
+    resetAll() {
+      this.resImageList = new Array(4)
+      this.imageList = new Array(4)
+    },
+    submitFormRequest() {
+      let listPricing = [[], [], [], []]
+      for (let i = 0; i < this.dynamicValidateForm.length; i++) {
+        this.dynamicValidateForm[i].domains.forEach(e => {
+          listPricing[i].push(e.value)
         })
-    },
-    handleSuccess(response){
-      this.imageList.push({
-        id: response.data[0].id
-      })
-    this.submitFormRequest()
-    },
-    submitFormRequest(){
-      if (this.imageList.length < this.pricingSection.pricingTableList.length){
+      }
+      if (this.imageList.length < this.pricingSection.pricingTableList.length) {
         return
       }
       for (let i = 0; i < this.pricingSection.pricingTableList.length; i++) {
-        this.pricingSection.pricingTableList[i].thumb = this.imageList[i]
+        this.pricingSection.pricingTableList[i].price = listPricing[i]
+        if (this.resImageList[i] !== undefined) {
+          this.pricingSection.pricingTableList[i].thumb = this.resImageList[i]
+        }
       }
-      createPricingSection(this.pricingSection).then(() => {
-        console.log('done')
-      }).catch(erorr => {
-        console.log(erorr)
-      })
+      createPricingSection(this.pricingSection)
+          .then(() => successNotify(this)
+          ).catch(() => errorNotify(this)
+      )
     },
     removeDomain(index1, item) {
       let index = this.dynamicValidateForm[index1].domains.indexOf(item);
