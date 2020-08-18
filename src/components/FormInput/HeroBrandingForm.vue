@@ -81,7 +81,7 @@ export default {
     },
     submitFormRequest() {
       if (this.resImageSection !== null) {
-      this.heroBranding.background_img = this.resImageSection
+        this.heroBranding.background_img = this.resImageSection
       }
       createHeroBranding(this.heroBranding)
           .then(() => successNotify(this))

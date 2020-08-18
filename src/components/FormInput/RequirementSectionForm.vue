@@ -28,7 +28,7 @@
               :auto-upload="false"
               list-type="picture"
               :limit="1"
-              :on-success="handleSuccess"
+              :on-change="handleChange"
           >
             <el-button size="small" type="primary">Click to upload</el-button>
           </el-upload>
@@ -41,9 +41,7 @@
                             v-for="(domain) in dynamicValidateForm.domains"
                             :label="'Text'"
                             :key="domain.key"
-                            :rules="{
-                required: true, message: 'domain can not be null', trigger: 'blur'
-                }">
+                            :rules="{ required: true, message: 'domain can not be null', trigger: 'blur'}">
                 <el-row>
                   <el-col :span="12">
                     <el-input v-model="domain.value"></el-input>
@@ -73,45 +71,57 @@
 import {mapGetters} from 'vuex'
 import {createRequirementSection} from "@/api/requirementSection";
 import {successNotify, errorNotify} from '@/function/notify'
+import {uploadFile} from "@/api/upload";
+
 export default {
   computed: {
     ...mapGetters(['requirementSection'])
   },
-  created() {
-
-  },
   data() {
     return {
       fileList: [],
+      imageSection: null,
+      resImageSection: null,
       dynamicValidateForm: {
         domains: [],
       },
     };
   },
   methods: {
-    onSubmit() {
-      this.$refs.upload.submit()
+    handleChange(file) {
+      this.imageSection = file.raw
     },
-    handleSuccess(response) {
+    async onSubmit() {
+      await this.uploadFile()
+      this.submitFormRequest()
+    },
+    async uploadFile() {
+      if (this.imageSection !== null) {
+        await uploadFile(this.imageSection).then(res => {
+          this.resImageSection = res.data.data
+        }).catch(() => this.resetAll()
+        )
+      }
+    },
+    resetAll() {
+      this.imageSection = null
+      this.resImageSection = null
+    },
+    pushListRequirement() {
       let listRequirement = [];
       this.dynamicValidateForm.domains.forEach(e => {
         listRequirement.push(e.value)
       })
-      const requirementForm = {
-        title: this.requirementSection.title,
-        description: this.requirementSection.description,
-        image_url: {
-          id: response.data[0].id
-        },
-        button_title: this.requirementSection.button_title,
-        button_href: this.requirementSection.button_href,
-        requirementList: listRequirement
-      };
-      createRequirementSection(requirementForm).then(() => {
-        successNotify(this)
-      }).catch(() => {
-        errorNotify(this)
-      })
+      this.requirementSection.requirementList = listRequirement
+    },
+    submitFormRequest() {
+      this.pushListRequirement()
+      if (this.resImageSection !== null) {
+        this.requirementSection.image_url = this.resImageSection
+      }
+      createRequirementSection(this.requirementSection)
+          .then(() => successNotify(this))
+          .catch(() => errorNotify(this))
     },
     removeDomain(item) {
       let index = this.dynamicValidateForm.domains.indexOf(item);
@@ -124,7 +134,8 @@ export default {
         key: Date.now(),
         value: ''
       });
-    },
+    }
+    ,
   },
   async mounted() {
     await this.$store.dispatch('requirementSection/requirementSection')
