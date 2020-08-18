@@ -37,6 +37,7 @@
                     class="upload-demo upload"
                     action="http://192.168.1.122:8081/api/image/uploadMultiFile"
                     :auto-upload="false"
+                    :file-list="fileList[index]"
                     list-type="picture"
                     :limit="1"
                     :on-change="handleChange"
@@ -98,7 +99,7 @@
 import { mapGetters } from "vuex";
 import { createAboutSection } from "@/api/aboutSection";
 import { uploadFile } from "@/api/upload";
-import { getBase64 } from "@/function/data";
+import {getBase64, getImageUrl} from "@/function/data";
 import { successNotify, errorNotify } from "@/function/notify";
 
 export default {
@@ -110,6 +111,7 @@ export default {
   },
   data() {
     return {
+      fileList:[],
       loading: false,
       aboutExpandIndex: 0,
       requestForm: null,
@@ -174,6 +176,13 @@ export default {
     this.aboutSection.aboutExpandList.forEach((item) => {
       item.id = null;
     });
+    this.aboutSection.aboutExpandList.forEach(e => {
+      let obj ={
+        name: e.icon.name,
+        url: getImageUrl(e.icon)
+      }
+      this.fileList.push([obj])
+    })
   },
 };
 </script>
