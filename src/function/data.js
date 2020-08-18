@@ -6,7 +6,6 @@ export function getBase64(file) {
     reader.onerror = (error) => reject(error);
   });
 }
-// export function getBase64(file) {
-//     const reader = new FileReader();
-//     return reader.readAsDataURL(file);
-// }
+export function getImageUrl(image) {
+  return `http://192.168.1.122:8081/api/image/${image.id}`
+}

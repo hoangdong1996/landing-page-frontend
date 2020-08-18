@@ -76,7 +76,7 @@
         </div>
       </b-navbar>
       </div>
-      
+
     </el-card>
   </div>
 </template>
@@ -86,7 +86,7 @@ import { createNavbar } from "@/api/navbar";
 import { mapGetters } from "vuex";
 import { successNotify, errorNotify } from "@/function/notify";
 import { uploadFile } from "@/api/upload";
-import { getBase64 } from "@/function/data";
+import {getBase64, getImageUrl} from "@/function/data";
 export default {
   name: "navbar-form",
   data() {
@@ -108,6 +108,10 @@ export default {
   async mounted() {
     await this.$store.dispatch("navbar/getLogoNavbar");
     this.navbar.id = null;
+    this.fileList.push({
+      name: this.navbar.logo_src.name,
+      url: getImageUrl(this.navbar.logo_src)
+    })
   },
   methods: {
     async onSubmit() {
