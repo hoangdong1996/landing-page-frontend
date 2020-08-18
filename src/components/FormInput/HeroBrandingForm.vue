@@ -70,7 +70,7 @@ import {mapGetters} from "vuex";
 import {createHeroBranding} from "@/api/heroBranding";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
-import { getBase64 } from "@/function/data";
+import {getBase64, getImageUrl} from "@/function/data";
 export default {
   computed: {
     ...mapGetters(["heroBranding"]),
@@ -128,6 +128,10 @@ export default {
   async mounted() {
     await this.$store.dispatch("heroBranding/getHeroBranding");
     this.heroBranding.id = null
+    this.fileList.push({
+      name: this.heroBranding.background_img.name,
+      url: getImageUrl(this.heroBranding.background_img)
+    })
   },
 };
 </script>

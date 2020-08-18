@@ -57,7 +57,7 @@
                       ref="upload"
                       class="upload-demo upload"
                       action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-                      :file-list="fileList"
+                      :file-list="fileList[index]"
                       :auto-upload="false"
                       list-type="picture"
                       :limit="1"
@@ -160,6 +160,7 @@ export default {
   async mounted() {
     await this.$store.dispatch("businessSection/businessSection");
     this.businessSection.id = null;
+
   }
 };
 </script>
