@@ -23,7 +23,7 @@
               name="files"
               ref="upload"
               class="upload-demo upload"
-              action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+              action="http://192.168.1.122:8081/api/image/uploadFile"
               :file-list="fileList "
               :auto-upload="false"
               list-type="picture"
@@ -57,9 +57,8 @@ export default {
     };
   },
   async mounted() {
-    await this.$store.dispatch("heroBranding/getHeroBranding");
-    // this.fileList[0] = this.heroBranding.background_img
-    // console.log(this.fileList)
+    await this.$store.dispatch("heroBranding/getHeroBranding")
+    this.heroBranding.id = null
   },
   methods: {
     onSubmit() {
@@ -79,16 +78,8 @@ export default {
       });
     },
     handleSuccess(response) {
-      const requestForm = {
-        title: this.heroBranding.title,
-        description: this.heroBranding.description,
-        button_title: this.heroBranding.button_title,
-        button_href: this.heroBranding.button_href,
-        background_img: {
-          id: response.data[0].id,
-        },
-      };
-      createHeroBranding(requestForm).then(() => {
+      this.heroBranding.background_img = response.data
+      createHeroBranding(this.heroBranding).then(() => {
         this.successNotify()
       }).catch(() => {
         this.errorNotify()
