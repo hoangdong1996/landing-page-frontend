@@ -19,16 +19,16 @@
         </el-form-item>
         <el-form-item label="Background">
           <el-upload
-            accept="image/*"
-            name="files"
-            ref="upload"
-            class="upload-demo upload"
-            action="http://192.168.1.122:8081/api/image/uploadFile"
-            :file-list="fileList "
-            :auto-upload="false"
-            list-type="picture"
-            :limit="1"
-            :on-success="handleSuccess"
+              accept="image/*"
+              name="files"
+              ref="upload"
+              class="upload-demo upload"
+              action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+              :file-list="fileList "
+              :auto-upload="false"
+              list-type="picture"
+              :limit="1"
+              :on-change="handleChange"
           >
             <el-button size="small" type="primary">Click to upload</el-button>
           </el-upload>
@@ -66,8 +66,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { createHeroBranding } from "@/api/heroBranding";
+import {mapGetters} from "vuex";
+import {createHeroBranding} from "@/api/heroBranding";
+import {uploadFile} from "@/api/upload";
+import {errorNotify, successNotify} from "@/function/notify";
 
 export default {
   computed: {
@@ -79,39 +81,40 @@ export default {
   data() {
     return {
       fileList: [],
+      imageSection: null,
+      resImageSection: null
     };
+  },
+  methods: {
+    handleChange(file) {
+      this.imageSection = file.raw
+    },
+    async onSubmit() {
+      await this.uploadFile()
+      this.submitFormRequest()
+    },
+    async uploadFile() {
+      if (this.imageSection !== null) {
+        await uploadFile(this.imageSection).then(res => {
+          this.resImageSection = res.data.data
+        }).catch(() => this.resetAll())
+      }
+    },
+    resetAll() {
+      this.imageSection = null
+      this.resImageSection = null
+    },
+    submitFormRequest() {
+      if (this.resImageSection !== null) {
+        this.heroBranding.background_img = this.resImageSection
+      }
+      createHeroBranding(this.heroBranding)
+          .then(() => successNotify(this))
+          .catch(() => errorNotify(this))
+    },
   },
   async mounted() {
     await this.$store.dispatch("heroBranding/getHeroBranding");
-    this.heroBranding.id = null;
-  },
-  methods: {
-    onSubmit() {
-      this.$refs.upload.submit();
-    },
-    successNotify() {
-      this.$notify({
-        title: "Success",
-        message: "This is a success message",
-        type: "success",
-      });
-    },
-    errorNotify() {
-      this.$notify({
-        title: "Error",
-        message: "error",
-      });
-    },
-    handleSuccess(response) {
-      this.heroBranding.background_img = response.data;
-      createHeroBranding(this.heroBranding)
-        .then(() => {
-          this.successNotify();
-        })
-        .catch(() => {
-          this.errorNotify();
-        });
-    },
   },
 };
 </script>

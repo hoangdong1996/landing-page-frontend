@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span>Partner Client Section</span>
       </div>
-      <el-form ref="form" :model="partnerClientSection" label-width="120px">
+      <el-form ref="form" label-width="120px">
         <el-form-item label="Title">
           <el-input class="input-label" v-model="partnerClientSection.title"></el-input>
         </el-form-item>
@@ -21,7 +21,7 @@
               :file-list="fileList"
               :auto-upload="false"
               list-type="picture"
-              :on-success="handleSuccess">
+              :on-change="handleChange">
             <el-button size="small" type="primary">Click to upload</el-button>
             <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a
               size
@@ -42,6 +42,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import {createPartnerClientSection} from "@/api/partnerClientSection";
+import {uploadFile} from "@/api/upload";
 
 export default {
   computed: {
@@ -51,19 +52,27 @@ export default {
     return {
       fileList: [],
       imageList: [],
+      resImageList: []
     }
   },
   methods: {
-    onSubmit() {
-      this.$refs.upload.forEach(child => {
-        child.submit();
-      })
+    handleChange(file) {
+      this.imageList = file.raw
     },
-    handleSuccess(response) {
-      this.imageList.push({
-        id: response.data[0].id
-      })
+    async onSubmit() {
+      await this.uploadFile()
       this.submitFormRequest()
+    },
+    async uploadFile() {
+      if (this.imageList !== undefined) {
+        await uploadFile(this.imageList).then(res => {
+          this.resImageList = res.data.data
+        }).catch(() => this.resetAll())
+      }
+    },
+    resetAll() {
+      this.imageList = null
+      this.resImageList = null
     },
     submitFormRequest() {
       for (let i = 0; i < this.imageList.length; i++) {

@@ -16,7 +16,7 @@
               :auto-upload="false"
               list-type="picture"
               :limit="1"
-              :on-success="handleSuccess"
+              :on-change="handleChange"
           >
             <el-button size="small" type="primary">Click to upload</el-button>
             <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a size
@@ -68,6 +68,8 @@
 <script>
 import {mapGetters} from 'vuex'
 import {createFooter} from "@/api/footer";
+import {uploadFile} from "@/api/upload";
+import {errorNotify, successNotify} from "@/function/notify";
 
 export default {
   computed: {
@@ -77,13 +79,68 @@ export default {
   data() {
     return {
       fileList: [],
+      imageSection: null,
+      resImageSection: null,
       dynamicValidateForm:
           {
             domain: []
           }
     }
   },
-  async created() {
+  methods: {
+    handleChange(file) {
+      this.imageSection = file.raw
+    },
+    async onSubmit() {
+      await this.uploadFile()
+      this.submitFormRequest()
+    },
+    async uploadFile() {
+        if (this.imageSection !== null) {
+          await uploadFile(this.imageSection).then(res => {
+            this.resImageSection = res.data.data
+          }).catch(() => this.resetAll())
+        }
+    },
+    resetAll(){
+      this.imageSection = null
+      this.resImageSection = null
+    },
+    pushListFooter() {
+      let listFooter = [];
+      this.dynamicValidateForm.domain.forEach(e => {
+        let obj = {
+          title: e.text,
+          href: e.href
+        }
+        listFooter.push(obj)
+      })
+      this.footer.footerLinkList = listFooter
+    },
+    submitFormRequest() {
+      if (this.resImageSection !== null) {
+        this.footer.logo_src = this.resImageSection
+      }
+      this.pushListFooter()
+      createFooter(this.footer)
+      .then(() => successNotify(this))
+      .catch(() => errorNotify(this))
+    },
+    removeDomain(item) {
+      let index = this.dynamicValidateForm.domain.indexOf(item);
+      if (index !== -1) {
+        this.dynamicValidateForm.domain.splice(index, 1);
+      }
+    },
+    addDomain() {
+      this.dynamicValidateForm.domain.push({
+        key: Date.now(),
+        text: '',
+        href: ''
+      });
+    }
+  },
+  async mounted() {
     await this.$store.dispatch('footer/getFooter')
     let i = 1
     this.footer.footerLinkList.forEach(e => {
@@ -95,49 +152,6 @@ export default {
       this.dynamicValidateForm.domain.push(obj)
       i = i + 1
     })
-  },
-  methods: {
-    onSubmit() {
-      console.log('sub')
-      this.$refs.upload.submit()
-    },
-    handleSuccess(response) {
-      let listFooter = [];
-      this.dynamicValidateForm.domain.forEach(e => {
-        let obj = {
-          title: e.text,
-          href: e.href
-        }
-        listFooter.push(obj)
-      })
-      const footerForm = {
-        title: this.footer.title,
-        logo_src: {
-          id: response.data[0].id
-        },
-        footerLinkList: listFooter
-      };
-      console.log(footerForm.footerLinkList)
-      createFooter(footerForm).then(() => {
-        console.log('done')
-      }).catch((error) => {
-        console.log(error)
-      })
-    },
-    removeDomain(item) {
-      var index = this.dynamicValidateForm.domain.indexOf(item);
-      if (index !== -1) {
-        this.dynamicValidateForm.domain.splice(index, 1);
-      }
-    }
-    ,
-    addDomain() {
-      this.dynamicValidateForm.domain.push({
-        key: Date.now(),
-        text: '',
-        href: ''
-      });
-    }
   },
 }
 
