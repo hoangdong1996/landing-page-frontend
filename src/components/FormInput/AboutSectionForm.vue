@@ -125,7 +125,6 @@ export default {
     submitFormRequest() {
       let list = this.aboutSection.aboutExpandList
       for (let i = 0; i < list.length; i++) {
-        // list.id = null
         if (this.resImageList[i] !== undefined) {
           list[i].icon = this.resImageList[i]
         }

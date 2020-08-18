@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span>Hero Branding</span>
       </div>
-      <el-form ref="form" :model="heroBranding" label-width="120px">
+      <el-form ref="form" :model="heroBranding" label-width="120px" >
         <el-form-item label="Title">
           <el-input class="input-label" v-model="heroBranding.title"></el-input>
         </el-form-item>
