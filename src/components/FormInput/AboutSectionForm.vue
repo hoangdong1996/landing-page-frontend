@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="box-card">
+    <el-card class="box-card" v-loading.fullscreen.lock="loading">
       <div slot="header" class="clearfix">
         <span>About Section</span>
       </div>
@@ -17,32 +17,29 @@
             <span>About Expand</span>
           </el-col>
         </el-row>
-        <el-row style="">
-          <el-button @click.prevent="aboutExpandIndex = 0">1</el-button>
-          <el-button @click.prevent="aboutExpandIndex = 1">2</el-button>
-          <el-button @click.prevent="aboutExpandIndex = 2">3</el-button>
+        <el-row style="text-align: center">
+          <el-button @click.prevent="aboutExpandIndex = 0">Expand 1</el-button>
+          <el-button @click.prevent="aboutExpandIndex = 1">Expand 2</el-button>
+          <el-button @click.prevent="aboutExpandIndex = 2">Expand 3</el-button>
         </el-row>
         <el-row>
           <el-col
-              v-for="(about, index) in aboutSection.aboutExpandList"
-              :key="index"
-              style="padding-right: 10px"
-              v-show="aboutExpandIndex === index"
+            v-for="(about, index) in aboutSection.aboutExpandList"
+            :key="index"
+            style="padding-right: 10px"
+            v-show="aboutExpandIndex === index"
           >
             <div>
               <el-card>
                 <el-form-item label="Icon">
                   <el-upload
-                      accept="image/*"
-                      name="files"
-                      ref="upload"
-                      class="upload-demo upload"
-                      action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-                      :file-list="fileList"
-                      :auto-upload="false"
-                      list-type="picture"
-                      :limit="1"
-                      :on-change="handleChange"
+                    accept="image/*"
+                    class="upload-demo upload"
+                    action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+                    :auto-upload="false"
+                    list-type="picture"
+                    :limit="1"
+                    :on-change="handleChange"
                   >
                     <el-button size="small" type="primary">Click to upload</el-button>
                     <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
@@ -60,27 +57,61 @@
         </el-row>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary" @click="onSubmit">Create</el-button>
-          <el-button>Cancel</el-button>
+          <el-button type="primary" @click.prevent="onSubmit">Create</el-button>
+          <el-button @click.prevent="onPreview">Preview</el-button>
         </el-form-item>
       </el-form>
+    </el-card>
+    <el-card class="box-card">
+      <div>
+        <div id="about" class="box-image-area section-space--ptb_120">
+          <div class="container">
+            <div class="section-title-wrapper text-center section-space--mb_60 wow move-up">
+              <h2 class="section-title mb-15">{{ preview.title }}</h2>
+              <span class="section-text">{{ preview.text }}</span>
+            </div>
+            <!-- about component -->
+            <div class="row box-image-wrapper">
+              <div
+                v-for="(about, index) in preview.aboutExpandList"
+                :key="index"
+                class="col-md-4 box-image position-relative text-center wow move-up"
+              >
+                <div class="box-image__media">
+                  <img :src="about.icon.data | pngSrc" class="img-fluid" alt="about icon" />
+                </div>
+                <div class="box-image__content">
+                  <h6 class="box-image__title">
+                    <a class="stretched-link">{{ about.title }}</a>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </el-card>
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {createAboutSection} from '@/api/aboutSection'
-import {uploadFile} from '@/api/upload'
+import { mapGetters } from "vuex";
+import { createAboutSection } from "@/api/aboutSection";
+import { uploadFile } from "@/api/upload";
+import { getBase64 } from "@/function/data";
+import { successNotify, errorNotify } from "@/function/notify";
 
 export default {
   computed: {
     ...mapGetters(["aboutSection"]),
+    preview() {
+      return { ...this.aboutSection };
+    },
   },
   data() {
     return {
+      loading: false,
       aboutExpandIndex: 0,
-      fileList: [],
       requestForm: null,
       imageList: new Array(3),
       resImageList: new Array(3),
@@ -92,55 +123,57 @@ export default {
     },
     async uploadFile() {
       for (let i = 0; i < this.imageList.length; i++) {
-        if (this.imageList[i] !== undefined)
-          await uploadFile(this.imageList[i]).then(res => {
-            this.resImageList[i] = res.data.data
-          }).catch(() => {
-            this.resetAll()
-            return
-          })
-      }
-    },
-    resetAll() {
-      this.resImageList = new Array(3)
-      this.imageList = new Array(3)
-    },
-    async onSubmit() {
-      await this.uploadFile()
-      this.submitFormRequest();
-    },
-    successNotify() {
-      this.$notify({
-        title: "Success",
-        message: "This is a success message",
-        type: "success",
-      })
-    },
-    errorNotify() {
-      this.$notify({
-        title: "Error",
-        message: "error",
-      });
-    },
-    submitFormRequest() {
-      let list = this.aboutSection.aboutExpandList
-      for (let i = 0; i < list.length; i++) {
-        // list.id = null
-        if (this.resImageList[i] !== undefined) {
-          list[i].icon = this.resImageList[i]
+        if (this.imageList[i] !== undefined) {
+          await uploadFile(this.imageList[i])
+            .then((res) => {
+              this.resImageList[i] = res.data.data;
+            })
+            .catch(() => {
+              this.resetAll();
+              return;
+            });
         }
       }
-      createAboutSection(this.aboutSection)
-          .then(() => this.successNotify())
-          .catch(() => this.errorNotify())
-    }
+    },
+    async resetAll() {
+      await this.$store.dispatch("aboutSection/aboutSection");
+      this.resImageList = new Array(3);
+      this.imageList = new Array(3);
+    },
+    async onSubmit() {
+      this.loading = true;
+      await this.uploadFile();
+      this.submitFormRequest();
+    },
+    async submitFormRequest() {
+      let list = this.aboutSection.aboutExpandList;
+      for (let i = 0; i < list.length; i++) {
+        if (this.resImageList[i] !== undefined) {
+          list[i].icon = this.resImageList[i];
+        }
+      }
+      await createAboutSection(this.aboutSection)
+        .then(() => successNotify(this))
+        .catch(() => errorNotify(this));
+      this.loading = false
+    },
+    async onPreview() {
+      let list = this.aboutSection.aboutExpandList;
+      for (let i = 0; i < list.length; i++) {
+        if(this.imageList[i] !== undefined) {
+          await getBase64(this.imageList[i]).then((data) => {
+            list[i].icon.data = data
+          })
+        }
+      }
+    },
   },
   async mounted() {
     await this.$store.dispatch("aboutSection/aboutSection");
-    this.aboutSection.id = null
-    this.aboutSection.aboutExpandList.forEach(item => {
-      item.id = null
-    })
+    this.aboutSection.id = null;
+    this.aboutSection.aboutExpandList.forEach((item) => {
+      item.id = null;
+    });
   },
 };
 </script>
