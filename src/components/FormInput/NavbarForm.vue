@@ -5,18 +5,15 @@
         <span>Navbar</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
-      <el-form ref="form" :model="form" label-width="120px">
+      <el-form label-width="120px">
         <el-form-item label="Brand Icon">
           <el-upload
             accept="image/*"
-            name="files"
-            ref="upload"
             class="upload-demo upload"
-            action="http://192.168.1.122:8081/api/image/uploadFile"
+            action
             :file-list="fileList"
             :auto-upload="false"
             list-type="picture"
-            :multiple="false"
             :limit="1"
             :on-change="handleChange"
           >
@@ -24,13 +21,62 @@
           </el-upload>
         </el-form-item>
         <el-form-item style="margin-top: 20px">
-          <el-button type="primary" @click="onSubmit">Save</el-button>
-          <el-button @click.prevent="onPreview" :disabled="dis">Preview</el-button>
+          <el-button
+            type="primary"
+            @click.prevent="onSubmit"
+            v-loading.fullscreen.lock="loading"
+          >Save</el-button>
+          <el-button @click.prevent="onPreview" :disabled="loading">Preview</el-button>
         </el-form-item>
       </el-form>
     </el-card>
     <el-card class="box-card">
-      <Navbar :navbar="preview" style="position: relative;" />
+      <div class="preview" >
+        <b-navbar
+        v-b-scrollspy:nav-scroller
+        type="light"
+        toggleable="xl"
+        fixed="top"
+        class="header-area"
+        style="position: relative"
+      >
+        <div class="container-fluid container-fluid--cp-150">
+          <b-navbar-toggle target="nav_collapse" />
+          <b-navbar-brand class="navbar-brand" to="/">
+            <img v-if="preview.logo_src" :src="preview.logo_src.data | pngSrc" alt="logo" />
+          </b-navbar-brand>
+          <b-btn-group class="header-config-wrapper">
+            <b-btn class="header-config">
+              <i class="far fa-search" />
+            </b-btn>
+            <b-link class="ht-btn ht-btn--outline hire-btn d-none d-xl-block">Hire Us Now</b-link>
+          </b-btn-group>
+          <b-collapse id="nav_collapse" class="default-nav justify-content-center" is-nav>
+            <b-navbar-nav class="navbar-nav main-menu">
+              <b-nav-item>
+                <span>LANDING</span>
+              </b-nav-item>
+              <b-nav-item class="scroll">
+                <span>HOME</span>
+              </b-nav-item>
+              <b-nav-item class="scroll">
+                <span>ABOUT</span>
+              </b-nav-item>
+              <b-nav-item class="scroll">
+                <span>REQUIREMENTS</span>
+              </b-nav-item>
+              <b-nav-item class="scroll">
+                <span>PRICING</span>
+              </b-nav-item>
+              <b-nav-item class="scroll">
+                <span>PARTNERS</span>
+              </b-nav-item>
+            </b-navbar-nav>
+          </b-collapse>
+        </div>
+      </b-navbar>
+      </div>
+      
     </el-card>
   </div>
 </template>
@@ -39,14 +85,10 @@
 import { createNavbar } from "@/api/navbar";
 import { mapGetters } from "vuex";
 import { successNotify, errorNotify } from "@/function/notify";
-import Navbar from "@/components/Navbar";
 import { uploadFile } from "@/api/upload";
 import { getBase64 } from "@/function/data";
 export default {
   name: "navbar-form",
-  components: {
-    Navbar,
-  },
   data() {
     return {
       form: {},
@@ -54,7 +96,7 @@ export default {
       response: null,
       image: null,
       imageRes: null,
-      dis: false
+      loading: false,
     };
   },
   computed: {
@@ -69,7 +111,7 @@ export default {
   },
   methods: {
     async onSubmit() {
-      this.dis = true
+      this.loading = true;
       await this.upload();
       this.submitForm();
     },
@@ -87,7 +129,7 @@ export default {
           errorNotify(this);
         });
       this.$store.dispatch("navbar/getLogoNavbar");
-      this.dis = false
+      this.loading = false;
     },
     resetAll() {
       this.image = null;
@@ -126,9 +168,5 @@ export default {
 }
 .clearfix:after {
   clear: both;
-}
-
-.preview {
-  position: relative;
 }
 </style>
