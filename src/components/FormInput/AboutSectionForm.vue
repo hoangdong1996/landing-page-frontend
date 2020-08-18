@@ -155,6 +155,7 @@ export default {
       await createAboutSection(this.aboutSection)
         .then(() => successNotify(this))
         .catch(() => errorNotify(this));
+      this.resetAll();
       this.loading = false
     },
     async onPreview() {
