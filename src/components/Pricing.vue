@@ -7,7 +7,7 @@
         </div>
         <div class="pricing-table__header">
           <div class="pricing-table__image">
-            <img :src="pricing.thumb.data | pngSrc " class="img-fluid" :alt="pricing.alt">
+            <img :src="pricing.image.data | pngSrc " class="img-fluid" :alt="pricing.alt">
           </div>
           <h5 class="pricing-table__title">{{ pricing.title }}</h5>
           <div class="pricing-table__price-wrap">
@@ -41,48 +41,7 @@ export default {
   },
   data() {
     return {
-      pricingTable: [
-        {
-          thumb: require('../assets/img/pricing/aeroland-branding-pricing-image-01.png'),
-          title: 'Free',
-          value: '0',
-          duration: 'mo',
-          alt: 'Pricing Thumb',
-          isPopular: true,
-          active: false,
-          price: ['03 projects', 'Power And Predictive Dialing', 'Quality & Customer Experience', 'Try for free, forever!']
-        },
-        {
-          thumb: require('../assets/img/pricing/aeroland-branding-pricing-image-02.png'),
-          title: 'Personal',
-          value: '19',
-          duration: 'mo',
-          alt: 'Pricing Thumb',
-          isPopular: true,
-          active: false,
-          price: ['30 project', 'Power And Predictive Dialing', 'Quality & Customer Experience', '24/7 phone and email support']
-        },
-        {
-          thumb: require('../assets/img/pricing/aeroland-branding-pricing-image-03.png'),
-          title: 'Group',
-          value: '29',
-          duration: 'mo',
-          alt: 'Pricing Thumb',
-          isPopular: false,
-          active: true,
-          price: ['50 projects', 'Power And Predictive Dialing', 'Quality & Customer Experience', '24/7 phone and email support']
-        },
-        {
-          thumb: require('../assets/img/pricing/aeroland-branding-pricing-image-04.png'),
-          title: 'Enterprise',
-          value: '49',
-          duration: 'mo',
-          alt: 'Pricing Thumb',
-          isPopular: false,
-          active: true,
-          price: ['Unlimited projects', 'Power And Predictive Dialing', 'Quality & Customer Experience', '24/7 phone and email support']
-        }
-      ]
+      pricingTable: []
     }
   }
 }

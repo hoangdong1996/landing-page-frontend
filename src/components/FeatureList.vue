@@ -15,7 +15,7 @@
               class="single-feature-icon wow move-up"
             >
               <div class="single-feature-icon__media">
-                <img :src="feature.icon.data | pngSrc" class="img-fluid" alt>
+                <img :src="feature.image.data | pngSrc" class="img-fluid" alt>
               </div>
               <div class="single-feature-icon__content">
                 <h6 class="title">{{ feature.title }}</h6>

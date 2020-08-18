@@ -10,7 +10,7 @@
     <div class="container-fluid container-fluid--cp-150">
       <b-navbar-toggle target="nav_collapse" />
       <b-navbar-brand class="navbar-brand" to="/">
-        <img v-if="navbar.logo_src" :src="navbar.logo_src.data | pngSrc" alt="logo" />
+        <img v-if="navbar.image" :src="navbar.image.data | pngSrc" alt="logo" />
       </b-navbar-brand>
       <b-btn-group class="header-config-wrapper">
         <b-btn class="header-config" @click="toggleClass('addClass', 'active')">
