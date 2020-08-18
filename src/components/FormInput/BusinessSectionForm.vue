@@ -16,16 +16,16 @@
         </el-form-item>
         <el-form-item label="Image ">
           <el-upload
-            accept="image/*"
-            name="files"
-            ref="mainUpload"
-            class="upload-demo upload"
-            action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-            :file-list="fileList"
-            :auto-upload="false"
-            list-type="picture"
-            :limit="1"
-            :on-success="handleSectionSuccess"
+              accept="image/*"
+              name="files"
+              ref="mainUpload"
+              class="upload-demo upload"
+              action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+              :file-list="fileList"
+              :auto-upload="false"
+              list-type="picture"
+              :limit="1"
+              :on-change="handleSectionChange"
           >
             <el-button size="small" type="primary">Click to upload</el-button>
             <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
@@ -37,26 +37,31 @@
           </el-col>
         </el-row>
         <el-row>
+          <el-button @click.prevent="businessSectionIndex = 0">1</el-button>
+          <el-button @click.prevent="businessSectionIndex = 1">2</el-button>
+          <el-button @click.prevent="businessSectionIndex= 2">3</el-button>
+        </el-row>
+        <el-row>
           <el-col
-            :span="8"
-            v-for="(feature, index) in businessSection.businessFeatureList"
-            :key="index"
-            style="padding-right: 10px"
+              v-for="(feature, index) in businessSection.businessFeatureList"
+              :key="index"
+              style="padding-right: 10px"
+              v-show="businessSectionIndex === index"
           >
             <div>
               <el-card>
                 <el-form-item label="Icon">
                   <el-upload
-                    accept="image/*"
-                    name="files"
-                    ref="upload"
-                    class="upload-demo upload"
-                    action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-                    :file-list="fileList"
-                    :auto-upload="false"
-                    list-type="picture"
-                    :limit="1"
-                    :on-success="handleSuccess"
+                      accept="image/*"
+                      name="files"
+                      ref="upload"
+                      class="upload-demo upload"
+                      action="http://192.168.1.122:8081/api/image/uploadMultiFile"
+                      :file-list="fileList"
+                      :auto-upload="false"
+                      list-type="picture"
+                      :limit="1"
+                      :on-change="handleChange"
                   >
                     <el-button size="small" type="primary">Click to upload</el-button>
                     <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
@@ -83,72 +88,79 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { createBusinessSection } from "@/api/businessSection";
+import {mapGetters} from "vuex";
+import {createBusinessSection} from "@/api/businessSection";
+import {uploadFile} from "@/api/upload";
+import {errorNotify, successNotify} from "@/function/notify";
+
 export default {
   computed: {
     ...mapGetters(["businessSection"]),
-  },
-  async mounted() {
-    await this.$store.dispatch("businessSection/businessSection");
-    this.businessSection.id = null;
   },
   data() {
     return {
       fileList: [],
       sectionImage: null,
-      imageList: [],
-      requestForm: null,
+      resSectionImage: null,
+      imageList: new Array(3),
+      resImageList: new Array(3),
+      businessSectionForm: null,
+      businessSectionIndex: 0
     };
   },
   methods: {
+    handleSectionChange(file) {
+      this.sectionImage = file.raw
+    },
+    handleChange(file) {
+      this.imageList[this.businessSectionIndex] = file.raw;
+    },
     async onSubmit() {
-      this.sectionImage = null;
-      this.imageList = [];
-      this.$refs.mainUpload.submit();
+      await this.uploadFile()
+      this.submitFormRequest();
     },
-    handleSectionSuccess(response) {
-      this.sectionImage = response.data[0];
-      this.$refs.upload.forEach((element) => {
-        element.submit();
-      });
-    },
-    handleSuccess(response) {
-      this.imageList.push(response.data[0]);
-      this.submitForm();
-    },
-    submitForm() {
-      if (this.imageList.length != 3 || this.sectionImage == null) {
-        return;
-      } else {
-        this.businessSection.image_url = this.sectionImage;
-        let list = this.businessSection.businessFeatureList;
-        for (let i = 0; i < list.length; i++) {
-          list[i].icon = this.imageList[i];
-        }
-        createBusinessSection(this.businessSection)
-          .then(() => this.successNotify())
-          .catch(() => this.errorNotify());
+    async uploadFile() {
+      if (this.sectionImage !== null) {
+        await uploadFile(this.sectionImage).then(res => {
+          this.resSectionImage = res.data.data
+        })
+      }
+      for (let i = 0; i < this.imageList.length; i++) {
+        if (this.imageList[i] !== undefined)
+          await uploadFile(this.imageList[i]).then(res => {
+            this.resImageList[i] = res.data.data
+          }).catch(() => {
+            this.resetAll()
+            return
+          })
       }
     },
-    errorNotify() {
-      this.$notify({
-        title: "Error",
-        message: "error",
-      });
+    resetAll() {
+      this.resImageList = new Array(3)
+      this.imageList = new Array(3)
     },
-    successNotify() {
-      this.$notify({
-        title: "Success",
-        message: "This is a success message",
-        type: "success",
-      });
+    submitFormRequest() {
+      if (this.resSectionImage !== null) {
+        this.businessSection.image_url = this.resSectionImage;
+      }
+      for (let i = 0; i < this.businessSection.businessFeatureList.length; i++) {
+        if (this.resImageList[i] !== undefined) {
+          this.businessSection.businessFeatureList[i].icon = this.resImageList[i];
+        }
+      }
+      createBusinessSection(this.businessSection)
+          .then(() => successNotify(this))
+          .catch(() => errorNotify(this));
     },
     async reset() {
       await this.$store.dispatch("businessSection/businessSection");
       this.businessSection.id = null;
     },
   },
+  async mounted() {
+    await this.$store.dispatch("businessSection/businessSection");
+    this.businessSection.id = null;
+  }
 };
 </script>
 

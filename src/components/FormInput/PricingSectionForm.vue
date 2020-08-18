@@ -172,11 +172,10 @@ export default {
           this.pricingSection.pricingTableList[i].thumb = this.resImageList[i]
         }
       }
-      createPricingSection(this.pricingSection).then(() => {
-        successNotify(this)
-      }).catch(() => {
-        errorNotify(this)
-      })
+      createPricingSection(this.pricingSection)
+          .then(() => successNotify(this)
+          ).catch(() => errorNotify(this)
+      )
     },
     removeDomain(index1, item) {
       let index = this.dynamicValidateForm[index1].domains.indexOf(item);
