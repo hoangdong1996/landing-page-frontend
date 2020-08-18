@@ -10,7 +10,7 @@
                   <div class="row align-items-center">
                     <div class="col-md-6 wow move-up">
                       <div class="image">
-                        <img :src="item.image_url.data | pngSrc " class="img-fluid" alt="">
+                        <img :src="item.image.data | pngSrc " class="img-fluid" alt="">
                       </div>
                     </div>
                     <div class="col-md-6 wow move-up">
