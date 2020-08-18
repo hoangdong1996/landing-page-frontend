@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="box-card" >
+    <el-card class="box-card" v-loading.fullscreen.lock="loading">
       <div slot="header" class="clearfix">
         <span>Hero Branding</span>
       </div>
@@ -35,8 +35,8 @@
         </el-form-item>
 
         <el-form-item style="text-align: center">
-          <el-button type="primary" @click="onSubmit()">Create</el-button>
-          <el-button>Cancel</el-button>
+          <el-button type="primary" @click.prevent="onSubmit">Create</el-button>
+          <el-button @click.prevent="onPreview">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -53,9 +53,9 @@
               <h2 class="h1 hero-content-title">{{ preview.title }}</h2>
               <h6 class="hero-content-subtitle mt-20">{{ preview.description }}</h6>
               <div class="slider-button mt-30">
-                <router-link
+                <a
                   class="ht-btn ht-btn-md"
-                >{{ preview.button_title }}</router-link>
+                >{{ preview.button_title }}</a>
               </div>
             </div>
           </div>
@@ -70,7 +70,7 @@ import {mapGetters} from "vuex";
 import {createHeroBranding} from "@/api/heroBranding";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
-
+import { getBase64 } from "@/function/data";
 export default {
   computed: {
     ...mapGetters(["heroBranding"]),
@@ -80,6 +80,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       fileList: [],
       imageSection: null,
       resImageSection: null
@@ -90,6 +91,7 @@ export default {
       this.imageSection = file.raw
     },
     async onSubmit() {
+      this.loading = true
       await this.uploadFile()
       this.submitFormRequest()
     },
@@ -103,18 +105,29 @@ export default {
     resetAll() {
       this.imageSection = null
       this.resImageSection = null
+      this.$store.dispatch("heroBranding/getHeroBranding");
     },
-    submitFormRequest() {
+    async submitFormRequest() {
       if (this.resImageSection !== null) {
         this.heroBranding.background_img = this.resImageSection
       }
-      createHeroBranding(this.heroBranding)
+      await createHeroBranding(this.heroBranding)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
+      this.resetAll()
+      this.loading = false
+    },
+    async onPreview() {
+      if (this.imageSection != null) {
+        await getBase64(this.imageSection).then((data) => {
+          this.preview.background_img.data = data;
+        });
+      }
     },
   },
   async mounted() {
     await this.$store.dispatch("heroBranding/getHeroBranding");
+    this.heroBranding.id = null
   },
 };
 </script>
