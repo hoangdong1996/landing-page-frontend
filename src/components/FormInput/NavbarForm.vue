@@ -42,7 +42,7 @@
       >
         <div class="container-fluid container-fluid--cp-150">
           <b-navbar-toggle target="nav_collapse" />
-          <b-navbar-brand class="navbar-brand" to="/">
+          <b-navbar-brand class="navbar-brand">
             <img v-if="preview.image" :src="preview.image.data | pngSrc" alt="logo" />
           </b-navbar-brand>
           <b-btn-group class="header-config-wrapper">
@@ -86,7 +86,8 @@ import { createNavbar } from "@/api/navbar";
 import { mapGetters } from "vuex";
 import { successNotify, errorNotify } from "@/function/notify";
 import { uploadFile } from "@/api/upload";
-import {getBase64, getImageUrl} from "@/function/data";
+import { getBase64, getImageUrl} from "@/function/data"
+
 export default {
   name: "navbar-form",
   data() {
@@ -101,7 +102,7 @@ export default {
   },
   computed: {
     ...mapGetters(["navbar"]),
-    preview() {
+    preview () {
       return { ...this.navbar };
     },
   },

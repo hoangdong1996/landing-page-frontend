@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span>Hero Branding</span>
       </div>
-      <el-form ref="form" :model="heroBranding" label-width="120px">
+      <el-form ref="form" v-if="heroBranding" :model="heroBranding" label-width="120px">
         <el-form-item label="Title">
           <el-input class="input-label" v-model="heroBranding.title"></el-input>
         </el-form-item>
@@ -24,7 +24,7 @@
               ref="upload"
               class="upload-demo upload"
               action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-              :file-list="fileList "
+              :file-list="fileList"
               :auto-upload="false"
               list-type="picture"
               :limit="1"
@@ -36,7 +36,7 @@
 
         <el-form-item style="text-align: center">
           <el-button type="primary" @click.prevent="onSubmit">Create</el-button>
-          <el-button @click.prevent="onPreview">Cancel</el-button>
+          <el-button @click.prevent="onPreview">Preview</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -45,6 +45,7 @@
         id="home"
         class="hero-branding bg-cover"
         style="position: relative"
+        v-if="preview.image"
         :style="{ 'background-image': 'url(data:image/png;base64,' + preview.image.data +')' }"
       >
         <div class="container-fluid container-fluid--cp-150">
@@ -73,7 +74,7 @@ import {errorNotify, successNotify} from "@/function/notify";
 import {getBase64, getImageUrl} from "@/function/data";
 export default {
   computed: {
-    ...mapGetters(["heroBranding"]),
+    ...mapGetters(['heroBranding']),
     preview(){
       return {...this.heroBranding}
     }
