@@ -111,10 +111,9 @@ export default {
       this.$store.dispatch('footer/getFooter')
     },
     async submitFormRequest() {
-      if (this.resImageSection === null) {
-        return
+      if (this.resImageSection !== null) {
+        this.footer.image = this.resImageSection
       }
-      this.footer.image = this.resImageSection
       await createFooter(this.footer)
               .then(() => successNotify(this))
               .catch(() => errorNotify(this))

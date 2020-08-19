@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div v-if="requirementSection" v-loading="loading">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Requirement Section</span>
       </div>
-      <el-form ref="form" :model="requirementSection" label-width="120px" v-if="requirementSection">
+      <el-form ref="form" label-width="120px" >
         <el-form-item label="Title">
           <el-input class="input-label" v-model="requirementSection.title"></el-input>
         </el-form-item>
@@ -20,8 +20,6 @@
         <el-form-item label="Image">
           <el-upload
               accept="image/*"
-              name="files"
-              ref="upload"
               class="upload-demo upload"
               action="http://192.168.1.122:8081/api/image/uploadMultiFile"
               :file-list="fileList"
