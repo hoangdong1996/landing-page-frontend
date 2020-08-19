@@ -135,7 +135,7 @@ export default {
       createFooter(this.footer)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
-      this.$store.dispatch('footer/getFooter').then(() => {
+      await this.$store.dispatch('footer/getFooter').then(() => {
         this.k = this.k + 1
       })
       this.loading = false

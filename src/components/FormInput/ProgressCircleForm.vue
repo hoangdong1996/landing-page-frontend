@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="box-card">
+    <el-card class="box-card" on-change="onChange">
       <div slot="header" class="clearfix">
         <span>Progress Circle</span>
       </div>
@@ -42,9 +42,13 @@
 
         <el-form-item style="text-align: center; padding-top: 10px">
           <el-button type="primary" @click="onSubmit()">Create</el-button>
+          <el-button @click="onPreview()">Preview</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
+    </el-card>
+    <el-card>
+      <ProgressCirclePreview :progressCircle="progressCircle"></ProgressCirclePreview>
     </el-card>
   </div>
 </template>
@@ -54,8 +58,12 @@
 import {mapGetters} from 'vuex'
 import {createProgressCircle} from "@/api/progressCircle";
 import {successNotify, errorNotify} from '@/function/notify'
+import ProgressCirclePreview from "@/components/previews/ProgressCirclePreview";
 
 export default {
+  components: {
+    ProgressCirclePreview
+  },
   computed: {
     ...mapGetters(['progressCircle'])
   },
@@ -73,7 +81,7 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
+    onPreview() {
       let listFeature = [[], []]
       for (let i = 0; i <= 1; i++) {
         this.dynamicValidateForm[i].domain.forEach(e => {
@@ -96,7 +104,10 @@ export default {
           },
         ]
       };
-      createProgressCircle(progressForm).then(() => {
+      this.progressCircle = progressForm
+    },
+    onSubmit() {
+      createProgressCircle(this.progressCircle).then(() => {
         successNotify(this)
       }).catch(() => {
         errorNotify(this)
@@ -119,6 +130,11 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('updateProgressCircle')
+    this.progressCircle.id = null
+    this.progressCircle.featureProgressList.forEach(e => {
+      e.id = null
+    })
+
     for (let i = 0; i <= 1; i++) {
       let index = 0;
       this.progressCircle.featureProgressList[i].featureList.forEach(e => {
