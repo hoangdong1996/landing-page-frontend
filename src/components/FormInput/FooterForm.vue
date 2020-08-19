@@ -1,15 +1,13 @@
 <template>
-  <div>
+  <div v-if="footer">
     <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Footer</span>
       </div>
-      <el-form ref="form" :model="footer" label-width="120px" v-if="footer != null">
+      <el-form ref="form" :model="footer" label-width="120px">
         <el-form-item label="Image">
           <el-upload
               accept="image/*"
-              name="files"
-              ref="upload"
               class="upload-demo upload"
               action="http://192.168.1.122:8081/api/image/uploadMultiFile"
               :file-list="fileList"
@@ -31,27 +29,27 @@
 
         <el-form-item label="List text">
           <div class="list-require" style="border: gainsboro 1px solid; border-radius: 5px; padding: 5px">
-            <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="120px"
+            <el-form label-width="120px"
                      class="demo-dynamic">
               <el-form-item style="padding-top: 5px"
-                            v-for="(domain) in dynamicValidateForm.domain"
+                            v-for="(footerLink, index) in footer.footerLinkList"
                             :label="'Text'"
-                            :key="domain.key"
+                            :key="index"
                             :rules="{required: true, trigger: 'blur'}">
                 <el-row>
                   <el-col :span="8">
-                    <el-input v-model="domain.text" placeholder="Text  "></el-input>
+                    <el-input v-model="footerLink.title" placeholder="Text  "></el-input>
                   </el-col>
                   <el-col :span="8">
-                    <el-input v-model="domain.href" placeholder="Href"></el-input>
+                    <el-input v-model="footerLink.href" placeholder="Href"></el-input>
                   </el-col>
                   <el-col :span="8 ">
-                    <el-button @click.prevent="removeDomain(domain)">Delete</el-button>
+                    <el-button @click.prevent="removeFooterLink(index)">Delete</el-button>
                   </el-col>
                 </el-row>
               </el-form-item>
               <el-form-item>
-                <el-button @click="addDomain()">New text</el-button>
+                <el-button @click="addFooterLink">New text</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -63,7 +61,7 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <FooterSectionPreview :footer="footer" :render="k" />
+    <FooterSectionPreview :footer="footer" />
   </div>
 </template>
 
@@ -84,16 +82,11 @@ export default {
   },
   data() {
     return {
-      k: 0,
       imageFooter: null,
       fileList: [],
       imageSection: null,
       resImageSection: null,
-      loading: false,
-      dynamicValidateForm:
-          {
-            domain: []
-          }
+      loading: true,
     }
   },
   methods: {
@@ -115,29 +108,17 @@ export default {
     resetAll() {
       this.imageSection = null
       this.resImageSection = null
-    },
-    pushListFooter() {
-      let listFooter = [];
-      this.dynamicValidateForm.domain.forEach(e => {
-        let obj = {
-          title: e.text,
-          href: e.href
-        }
-        listFooter.push(obj)
-      })
-      this.footer.footerLinkList = listFooter
+      this.$store.dispatch('footer/getFooter')
     },
     async submitFormRequest() {
-      if (this.resImageSection !== null) {
-        this.footer.image = this.resImageSection
+      if (this.resImageSection === null) {
+        return
       }
-      this.pushListFooter()
-      createFooter(this.footer)
-          .then(() => successNotify(this))
-          .catch(() => errorNotify(this))
-      await this.$store.dispatch('footer/getFooter').then(() => {
-        this.k = this.k + 1
-      })
+      this.footer.image = this.resImageSection
+      await createFooter(this.footer)
+              .then(() => successNotify(this))
+              .catch(() => errorNotify(this))
+      this.$store.dispatch('footer/getFooter')
       this.loading = false
     },
     async onPreview() {
@@ -147,40 +128,26 @@ export default {
         })
       }
     },
-    removeDomain(item) {
-      let index = this.dynamicValidateForm.domain.indexOf(item);
+    removeFooterLink(index) {
       if (index !== -1) {
-        this.dynamicValidateForm.domain.splice(index, 1);
+        this.footer.footerLinkList.splice(index, 1);
       }
     },
-    addDomain() {
-      this.dynamicValidateForm.domain.push({
-        key: Date.now(),
-        text: '',
+    addFooterLink() {
+      this.footer.footerLinkList.push({
+        title: '',
         href: ''
-      });
+      })
     }
-  }
-  ,
+  },
   async mounted() {
     await this.$store.dispatch('footer/getFooter')
-    this.footer.id = null
-
-    let i = 1
-    this.footer.footerLinkList.forEach(e => {
-      let obj = {
-        key: i,
-        text: e.title,
-        href: e.href
-      }
-      this.dynamicValidateForm.domain.push(obj)
-      i = i + 1
-    })
-
+    delete this.footer.id
     this.fileList.push({
       name: this.footer.image.name,
       url: getImageUrl(this.footer.image)
     })
+    this.loading = false
   }
 }
 
