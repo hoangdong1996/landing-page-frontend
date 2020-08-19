@@ -20,7 +20,7 @@
                 <el-form-item style="padding-top: 5px"
                               v-for="(list, index2) in progress.featureList"
                               :label="'Text'"
-                              :key="index + index2"
+                              :key="index2"
                               :rules="{required: true, trigger: 'blur'}">
                   <el-row>
                     <el-col :span="12">
@@ -32,7 +32,7 @@
                   </el-row>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="addFeatureList(index)">New text</el-button>
+                  <el-button :disabled="progress.featureList[progress.featureList.length-1]===''" @click="addFeatureList(index)">New text</el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -64,12 +64,13 @@ export default {
   components: {
     ProgressCirclePreview
   },
-  // computed: {
-  //   ...mapGetters(['progressCircle'])
-  // },
+  computed: {
+    ...mapGetters(['progressCircle'])
+  },
   data() {
     return {
       num: 1,
+      disable: false,
       progressCircle: {}
     }
   },
@@ -82,17 +83,18 @@ export default {
       })
     },
     removeFeatureList(index1, item) {
-      // var index = this.progressCircle.featureProgressList[index1].featureList.indexOf(item);
-      // if (index !== -1) {
-        this.progressCircle.featureProgressList[index1].featureList.splice(item, 1);
-      // }
+      this.progressCircle.featureProgressList[index1].featureList.splice(item, 1);
     },
     addFeatureList(index1) {
-      this.progressCircle.featureProgressList[index1].featureList.push();
+      this.progressCircle.featureProgressList[index1].featureList.push('');
     }
   },
   // mounted() {
-  //   console.log('sadsadadadas', this.progressCircle);
+  //   this.$store.dispatch('getProgressCircle')
+  //   this.progressCircle.id = null
+  //   this.progressCircle.featureProgressList.forEach(e => {
+  //     e.id = null
+  //   })
   // },
   created() {
     getProgressCircle().then(resp => {
@@ -101,7 +103,6 @@ export default {
       this.progressCircle.featureProgressList.forEach(e => {
         e.id = null
       })
-      console.log('dadasdsa', this.progressCircle)
     })
   }
 }
