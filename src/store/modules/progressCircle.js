@@ -1,9 +1,7 @@
 import {getProgressCircle} from '@/api/progressCircle'
 
 const state = {
-    progressCircleSection: {
-        featureProgressList: null
-    }
+    progressCircleSection: null
 }
 const mutations = {
     UPDATE_PROGRESS_CIRCLE: (state, obj) => {
@@ -14,7 +12,6 @@ const mutations = {
 const actions = {
     updateProgressCircle({commit}) {
         return getProgressCircle().then(response => {
-            // console.log(response.data.data)
             commit('UPDATE_PROGRESS_CIRCLE', response.data.data)
         })
     }
