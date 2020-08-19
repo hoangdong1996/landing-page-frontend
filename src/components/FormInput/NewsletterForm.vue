@@ -25,10 +25,12 @@
         </el-form-item>
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit">Create</el-button>
+          <el-button @click="onPreview">Preview</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
+    <NewsletterPreview :newsletter="newsletter"></NewsletterPreview>
   </div>
 </template>
 
@@ -36,7 +38,11 @@
 import {mapGetters} from 'vuex'
 import {createNewsletter} from "@/api/newsletter";
 import {successNotify, errorNotify} from '@/function/notify'
+import NewsletterPreview from "@/components/previews/NewsletterPreview";
 export default {
+  components:{
+    NewsletterPreview
+  },
   computed: {
     ...mapGetters(['newsletter'])
   },
@@ -51,6 +57,9 @@ export default {
         errorNotify(this)
       })
     },
+    onPreview() {
+
+    }
   },
   async mounted() {
    await this.$store.dispatch('newsletter/getNewsletter')
