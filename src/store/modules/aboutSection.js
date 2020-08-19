@@ -1,19 +1,7 @@
 import { getAboutSection } from '@/api/aboutSection'
 
 const state = {
-  aboutSection: {
-    title: '',
-    text: '',
-    aboutExpandList: [
-      {
-        icon: {
-          data: ''
-        },
-        title: '',
-        href: ''
-      }
-    ]
-  }
+  aboutSection: null
 }
 
 const mutations = {

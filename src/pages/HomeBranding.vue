@@ -1,10 +1,10 @@
 <template>
   <div class="main-container">
     <!-- Navbar section -->
-    <Navbar :navbar="navbar"/>
+    <Navbar v-if="navbar" :navbar="navbar"/>
 
     <!-- hero section -->
-    <HeroBranding :heroBranding="heroBranding"/>
+    <HeroBranding v-if="heroBranding" :heroBranding="heroBranding"/>
 
     <!-- about section -->
     <AboutSection :aboutSection="aboutSection"/>

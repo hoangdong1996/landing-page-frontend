@@ -1,6 +1,6 @@
 const getters = {
   navbar: state => state.navbar.navbar,
-  heroBranding: state => state.heroBranding,
+  heroBranding: state => state.heroBranding.heroBranding,
   aboutSection: state => state.aboutSection.aboutSection,
   businessSection: state => state.businessSection.businessSection,
   requirementSection: state => state.requirementSection.requirementSection,
