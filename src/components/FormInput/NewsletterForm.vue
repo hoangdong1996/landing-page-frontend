@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span>Newsletter Section</span>
       </div>
-      <el-form ref="form" :model="newsletter" label-width="120px">
+      <el-form ref="form" label-width="120px" v-if="newsletter">
         <el-form-item label="Title">
           <el-input class="input-label" v-model="newsletter.title"></el-input>
         </el-form-item>
@@ -25,10 +25,12 @@
         </el-form-item>
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit">Create</el-button>
+          <el-button @click="onPreview">Preview</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
+    <NewsletterPreview :newsletter="newsletter"></NewsletterPreview>
   </div>
 </template>
 
@@ -36,7 +38,11 @@
 import {mapGetters} from 'vuex'
 import {createNewsletter} from "@/api/newsletter";
 import {successNotify, errorNotify} from '@/function/notify'
+import NewsletterPreview from "@/components/previews/NewsletterPreview";
 export default {
+  components:{
+    NewsletterPreview
+  },
   computed: {
     ...mapGetters(['newsletter'])
   },
@@ -45,24 +51,19 @@ export default {
   },
   methods: {
     onSubmit() {
-      const newsletter = {
-        title: this.newsletter.title,
-        button_title: this.newsletter.button_title,
-        button_href: this.newsletter.button_href,
-        description: this.newsletter.description,
-        description_button_title: this.newsletter.description_button_title,
-        description_button_href: this.newsletter.description_button_href
-      }
-      createNewsletter(newsletter).then(() => {
+      createNewsletter(this.newsletter).then(() => {
         successNotify(this)
       }).catch(() => {
         errorNotify(this)
       })
     },
+    onPreview() {
 
+    }
   },
-  mounted() {
-    this.$store.dispatch('newsletter/newsletter')
+  async mounted() {
+   await this.$store.dispatch('newsletter/getNewsletter')
+    this.newsletter.id = null
   }
 }
 </script>

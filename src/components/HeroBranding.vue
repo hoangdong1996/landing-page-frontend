@@ -23,14 +23,25 @@
 </template>
 
 <script>
+import {getImageUrl} from "@/function/data";
+
 export default {
+  data() {
+    return {
+      image: null
+    }
+  },
   props: {
     heroBranding: {
       type: Object,
       default: null
     },
   },
+  mounted() {
+    this.image = getImageUrl(this.heroBranding.image)
+  }
 }
+
 </script>
 
 <style lang="scss" scoped>
