@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="aboutSection">
     <el-card class="box-card" v-loading.fullscreen.lock="loading">
       <div slot="header" class="clearfix">
         <span>About Section</span>
@@ -112,7 +112,7 @@ export default {
   data() {
     return {
       fileList:[],
-      loading: false,
+      loading: true,
       aboutExpandIndex: 0,
       requestForm: null,
       imageList: new Array(3),
@@ -184,6 +184,7 @@ export default {
       }
       this.fileList.push([obj])
     })
+    this.loading = false;
   },
 };
 </script>

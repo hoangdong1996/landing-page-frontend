@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div v-if="heroBranding">
     <el-card class="box-card" v-loading.fullscreen.lock="loading">
       <div slot="header" class="clearfix">
         <span>Hero Branding</span>
       </div>
-      <el-form ref="form" v-if="heroBranding" :model="heroBranding" label-width="120px">
+      <el-form ref="form" :model="heroBranding" label-width="120px">
         <el-form-item label="Title">
           <el-input class="input-label" v-model="heroBranding.title"></el-input>
         </el-form-item>
@@ -45,7 +45,6 @@
         id="home"
         class="hero-branding bg-cover"
         style="position: relative"
-        v-if="preview.image"
         :style="{ 'background-image': 'url(data:image/png;base64,' + preview.image.data +')' }"
       >
         <div class="container-fluid container-fluid--cp-150">
