@@ -121,9 +121,11 @@ export default {
   methods: {
     handleSectionChange(file) {
       this.sectionImage = file.raw
+      this.onPreview()
     },
     handleChange(file) {
       this.imageList[this.businessSectionIndex] = file.raw;
+      this.onPreview()
     },
     async onSubmit() {
       await this.uploadFile()
@@ -199,8 +201,6 @@ export default {
         url: getImageUrl(list[i].image)
       }])
     }
-    console.log(this.businessSection)
-
   }
 };
 </script>

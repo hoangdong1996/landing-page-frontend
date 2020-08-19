@@ -122,6 +122,7 @@ export default {
   methods: {
     handleChange(file) {
       this.imageList[this.aboutExpandIndex] = file.raw;
+      this.onPreview()
     },
     async uploadFile() {
       for (let i = 0; i < this.imageList.length; i++) {

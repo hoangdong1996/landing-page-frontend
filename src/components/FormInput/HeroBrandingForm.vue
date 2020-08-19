@@ -89,6 +89,7 @@ export default {
   methods: {
     handleChange(file) {
       this.imageSection = file.raw
+      this.onPreview()
     },
     async onSubmit() {
       this.loading = true
