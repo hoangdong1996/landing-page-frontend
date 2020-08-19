@@ -43,7 +43,7 @@
         <div class="container-fluid container-fluid--cp-150">
           <b-navbar-toggle target="nav_collapse" />
           <b-navbar-brand class="navbar-brand" to="/">
-            <img v-if="preview.logo_src" :src="preview.logo_src.data | pngSrc" alt="logo" />
+            <img v-if="preview.image" :src="preview.image.data | pngSrc" alt="logo" />
           </b-navbar-brand>
           <b-btn-group class="header-config-wrapper">
             <b-btn class="header-config">
@@ -109,15 +109,15 @@ export default {
     await this.$store.dispatch("navbar/getLogoNavbar");
     this.navbar.id = null;
     this.fileList.push({
-      name: this.navbar.logo_src.name,
-      url: getImageUrl(this.navbar.logo_src)
+      name: this.navbar.image.name,
+      url: getImageUrl(this.navbar.image)
     })
   },
   methods: {
     async onSubmit() {
-      this.loading = true;
-      await this.upload();
-      this.submitForm();
+      this.loading = true
+      await this.upload()
+      this.submitForm()
     },
     async submitForm() {
       if (this.imageRes === null || this.imageRes === undefined) {
