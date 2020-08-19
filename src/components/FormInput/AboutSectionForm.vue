@@ -1,6 +1,6 @@
 <template>
-  <div v-if="aboutSection">
-    <el-card class="box-card" v-loading.fullscreen.lock="loading">
+  <div v-if="aboutSection" v-loading.fullscreen.lock="loading">
+    <el-card class="box-card" >
       <div slot="header" class="clearfix">
         <span>About Section</span>
       </div>
@@ -173,6 +173,7 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch("aboutSection/aboutSection");
+    this.loading = false;
     this.aboutSection.id = null;
     this.aboutSection.aboutExpandList.forEach((item) => {
       item.id = null;
@@ -184,7 +185,6 @@ export default {
       }
       this.fileList.push([obj])
     })
-    this.loading = false;
   },
 };
 </script>
