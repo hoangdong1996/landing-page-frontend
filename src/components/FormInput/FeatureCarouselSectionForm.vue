@@ -9,7 +9,7 @@
         <el-button @click.prevent="featureCarouselSectionIndex = 1">2</el-button>
         <el-button @click.prevent="featureCarouselSectionIndex = 2">3</el-button>
       </el-row>
-      <el-form ref="form" label-width="120px">
+      <el-form ref="form" label-width="120px" v-loading="loading">
         <el-row>
           <el-col v-for="(feature, index) in featureCarouselSection.featureCarouselList" :key="index"
                   style="padding-right: 10px"
@@ -23,7 +23,7 @@
                       ref="upload"
                       class="upload-demo upload"
                       action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-                      :file-list="fileList"
+                      :file-list="fileList[index]"
                       :auto-upload="false"
                       list-type="picture"
                       :limit="1"
@@ -49,6 +49,9 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <el-card>
+      <FeatureCarouselSectionPreview :featureCarouselSection="featureCarouselSection"></FeatureCarouselSectionPreview>
+    </el-card>
   </div>
 </template>
 
@@ -57,13 +60,19 @@ import {mapGetters} from 'vuex'
 import {createFeatureCarouselSection} from "@/api/featureCarouselSection";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
+import FeatureCarouselSectionPreview from "@/components/previews/FeatureCarouselSectionPreview";
+import {getBase64, getImageUrl} from "@/function/data";
 
 export default {
+  components: {
+    FeatureCarouselSectionPreview
+  },
   computed: {
     ...mapGetters(['featureCarouselSection'])
   },
   data() {
     return {
+      loading: true,
       fileList: [],
       imageList: new Array(3),
       resImageList: new Array(3),
@@ -73,6 +82,7 @@ export default {
   methods: {
     handleChange(file) {
       this.imageList[this.featureCarouselSectionIndex] = file.raw
+      this.onPreview()
     },
     async onSubmit() {
       await this.uploadFile()
@@ -94,20 +104,36 @@ export default {
       this.resImageList = new Array(3)
       this.imageList = new Array(3)
     },
-    submitFormRequest() {
+    async submitFormRequest() {
       for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
         if (this.resImageList[i] !== undefined)
           this.featureCarouselSection.featureCarouselList[i].image = this.resImageList[i]
       }
-      createFeatureCarouselSection(this.featureCarouselSection)
+      await createFeatureCarouselSection(this.featureCarouselSection)
           .then(() => successNotify(this)
           ).catch(() => errorNotify(this))
+      this.loading = false
+    },
+    async onPreview() {
+      for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
+        if (this.imageList[i] !== undefined) {
+          await getBase64(this.imageList[i]).then((data) => {
+            this.featureCarouselSection.featureCarouselList[i].image.data = data
+          })
+        }
+      }
     }
   },
   async mounted() {
     await this.$store.dispatch('featureCarouselSection/getFeatureCarouselSection')
+    this.loading = false;
     this.featureCarouselSection.id = null;
     this.featureCarouselSection.featureCarouselList.forEach(feature => {
+      let obj = {
+        name: feature.image.name,
+        url: getImageUrl(feature.image)
+      }
+      this.fileList.push([obj])
       feature.id = null
     })
   }
