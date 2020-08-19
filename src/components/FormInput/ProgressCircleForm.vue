@@ -7,7 +7,7 @@
       <el-form ref="form" label-width="120px">
         <el-card v-for="(progress, index) in progressCircle.featureProgressList" :key="index">
           <el-form-item label="Progress">
-            <el-input-number v-model="progress.progress" :min="1" :max="100"></el-input-number>
+            <el-input-number v-model="progress.progress"  @change="render += 1" :min="1" :max="100"></el-input-number>
           </el-form-item>
           <el-form-item label="Title">
             <el-input class="input-label" v-model="progress.featureListTitle"></el-input>
@@ -47,7 +47,7 @@
       </el-form>
     </el-card>
     <el-card>
-      <ProgressCirclePreview :progressCircle="progressCircle"></ProgressCirclePreview>
+      <ProgressCirclePreview :progressCircle="progressCircle" :render="render "></ProgressCirclePreview>
     </el-card>
   </div>
 </template>
@@ -69,6 +69,7 @@ export default {
   },
   data() {
     return {
+      render: 0,
       num: 1,
       disable: false,
       progressCircle: {}
@@ -89,13 +90,6 @@ export default {
       this.progressCircle.featureProgressList[index1].featureList.push('');
     }
   },
-  // mounted() {
-  //   this.$store.dispatch('getProgressCircle')
-  //   this.progressCircle.id = null
-  //   this.progressCircle.featureProgressList.forEach(e => {
-  //     e.id = null
-  //   })
-  // },
   created() {
     getProgressCircle().then(resp => {
       this.progressCircle = resp.data.data

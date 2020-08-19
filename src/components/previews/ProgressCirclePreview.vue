@@ -1,5 +1,5 @@
 <template>
-  <div class="row" v-if="progressCircle">
+  <div class="row" v-if="progressCircle" :key="render">
     <div v-for="(progress, index) in progressCircle.featureProgressList" class="col-md-6" :key="index">
       <div class="feature-list-progress section-space--pt_60">
         <div class="feature-list-progress__counter">
@@ -54,7 +54,16 @@ export default {
     progressCircle: {
       type: Object,
       default: null
+    },
+    render: Number
+  },
+  watch: {
+    render() {
+      console.log('watch: ', this.progressCircle);
     }
+  },
+  created() {
+    console.log('created', this.progressCircle);
   },
   data() {
     return {
