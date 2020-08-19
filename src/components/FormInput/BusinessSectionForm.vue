@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="businessSection !== null" v-loading="loading">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Business Section</span>
@@ -21,7 +21,7 @@
               ref="mainUpload"
               class="upload-demo upload"
               action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-              :file-list="fileList"
+              :file-list="sectionList"
               :auto-upload="false"
               list-type="picture"
               :limit="1"
@@ -53,8 +53,6 @@
                 <el-form-item label="Icon">
                   <el-upload
                       accept="image/*"
-                      name="files"
-                      ref="upload"
                       class="upload-demo upload"
                       action="http://192.168.1.122:8081/api/image/uploadMultiFile"
                       :file-list="fileList[index]"
@@ -80,9 +78,12 @@
 
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit">Create</el-button>
-          <el-button @click="reset">Cancel</el-button>
+          <el-button @click.prevent="onPreview">Preview</el-button>
         </el-form-item>
       </el-form>
+    </el-card>
+    <el-card>
+      <BusinessSectionPreview :businessSection="preview"></BusinessSectionPreview>
     </el-card>
   </div>
 </template>
@@ -92,13 +93,23 @@ import {mapGetters} from "vuex";
 import {createBusinessSection} from "@/api/businessSection";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
+import BusinessSectionPreview from "../previews/BusinessSectionPreview";
+import { getBase64, getImageUrl } from "@/function/data";
 
 export default {
+  components: {
+    BusinessSectionPreview
+  },
   computed: {
     ...mapGetters(["businessSection"]),
+    preview() {
+      return {...this.businessSection};
+    }
   },
   data() {
     return {
+      loading: true,
+      sectionList: [],
       fileList: [],
       sectionImage: null,
       resSectionImage: null,
@@ -131,13 +142,14 @@ export default {
             this.resImageList[i] = res.data.data
           }).catch(() => {
             this.resetAll()
-            return
           })
       }
     },
-    resetAll() {
+    async resetAll() {
       this.resImageList = new Array(3)
       this.imageList = new Array(3)
+      await this.$store.dispatch("businessSection/businessSection")
+      delete this.businessSection.id
     },
     submitFormRequest() {
       if (this.resSectionImage !== null) {
@@ -152,14 +164,41 @@ export default {
           .then(() => successNotify(this))
           .catch(() => errorNotify(this));
     },
-    async reset() {
-      await this.$store.dispatch("businessSection/businessSection");
-      this.businessSection.id = null;
-    },
+    async onPreview() {
+      await getBase64(this.sectionImage).then((data) => {
+        this.aboutSection.image.data = data
+      })
+      const list = this.aboutSection.businessFeatureList;
+      for(let i = 0; i < list.length; i++) {
+        if(this.imageList[i] !== undefined) {
+          await getBase64(list[i]).then((data) => {
+            this.list[i].image.data = data
+          })
+        }
+      }
+    }
   },
   async mounted() {
-    await this.$store.dispatch("businessSection/businessSection");
-    this.businessSection.id = null;
+    await this.$store.dispatch("businessSection/businessSection")
+    delete this.businessSection.id
+    const list = this.businessSection.businessFeatureList
+    list.forEach(feature => {
+      delete feature.id
+    })
+    this.loading = false;
+    // get latest image for section
+    this.sectionList.push({
+      name: this.businessSection.image.name,
+      url: getImageUrl(this.businessSection.image)
+    })
+    // get latest image for 3 feature
+    for(let i = 0; i < list.length; i++) {
+      this.fileList[i] = []
+      this.fileList[i].push({
+        name: list[i].image.name,
+        url: getImageUrl(list[i].image)
+      })
+    }
 
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="heroBranding">
     <el-card class="box-card" v-loading.fullscreen.lock="loading">
       <div slot="header" class="clearfix">
         <span>Hero Branding</span>
@@ -24,7 +24,7 @@
               ref="upload"
               class="upload-demo upload"
               action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-              :file-list="fileList "
+              :file-list="fileList"
               :auto-upload="false"
               list-type="picture"
               :limit="1"
@@ -36,7 +36,7 @@
 
         <el-form-item style="text-align: center">
           <el-button type="primary" @click.prevent="onSubmit">Create</el-button>
-          <el-button @click.prevent="onPreview">Cancel</el-button>
+          <el-button @click.prevent="onPreview">Preview</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -73,7 +73,7 @@ import {errorNotify, successNotify} from "@/function/notify";
 import {getBase64, getImageUrl} from "@/function/data";
 export default {
   computed: {
-    ...mapGetters(["heroBranding"]),
+    ...mapGetters(['heroBranding']),
     preview(){
       return {...this.heroBranding}
     }

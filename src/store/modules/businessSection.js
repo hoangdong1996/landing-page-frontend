@@ -1,12 +1,7 @@
 import { getBusinessSection } from '@/api/businessSection'
 
 const state = {
-  businessSection: {
-    video_url: '',
-    image_url: {
-      data: ''
-    }
-  }
+  businessSection: null
 }
 
 const mutations = {
