@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="box-card">
+    <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Footer</span>
       </div>
@@ -58,10 +58,12 @@
         </el-form-item>
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit">Create</el-button>
+          <el-button @click="onPreview">Preview</el-button>
           <el-button>Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
+    <FooterSectionPreview :footer="footer" :render="k" />
   </div>
 </template>
 
@@ -70,18 +72,24 @@ import {mapGetters} from 'vuex'
 import {createFooter} from "@/api/footer";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
-import {getImageUrl} from "@/function/data";
+import {getBase64, getImageUrl} from "@/function/data";
+import FooterSectionPreview from "@/components/previews/FooterSectionPreview";
 
 export default {
+  components: {
+    FooterSectionPreview
+  },
   computed: {
     ...mapGetters(['footer'])
-
   },
   data() {
     return {
+      k: 0,
+      imageFooter: null,
       fileList: [],
       imageSection: null,
       resImageSection: null,
+      loading: false,
       dynamicValidateForm:
           {
             domain: []
@@ -93,17 +101,18 @@ export default {
       this.imageSection = file.raw
     },
     async onSubmit() {
+      this.loading = true
       await this.uploadFile()
       this.submitFormRequest()
     },
     async uploadFile() {
-        if (this.imageSection !== null) {
-          await uploadFile(this.imageSection).then(res => {
-            this.resImageSection = res.data.data
-          }).catch(() => this.resetAll())
-        }
+      if (this.imageSection !== null) {
+        await uploadFile(this.imageSection).then(res => {
+          this.resImageSection = res.data.data
+        }).catch(() => this.resetAll())
+      }
     },
-    resetAll(){
+    resetAll() {
       this.imageSection = null
       this.resImageSection = null
     },
@@ -118,15 +127,25 @@ export default {
       })
       this.footer.footerLinkList = listFooter
     },
-    submitFormRequest() {
+    async submitFormRequest() {
       if (this.resImageSection !== null) {
         this.footer.image = this.resImageSection
       }
       this.pushListFooter()
-      console.log(this.footer)
       createFooter(this.footer)
-      .then(() => successNotify(this))
-      .catch(() => errorNotify(this))
+          .then(() => successNotify(this))
+          .catch(() => errorNotify(this))
+      this.$store.dispatch('footer/getFooter').then(() => {
+        this.k = this.k + 1
+      })
+      this.loading = false
+    },
+    async onPreview() {
+      if (this.imageSection !== null) {
+        await getBase64(this.imageSection).then((data) => {
+          this.footer.image.data = data
+        })
+      }
     },
     removeDomain(item) {
       let index = this.dynamicValidateForm.domain.indexOf(item);
@@ -141,10 +160,12 @@ export default {
         href: ''
       });
     }
-  },
+  }
+  ,
   async mounted() {
     await this.$store.dispatch('footer/getFooter')
     this.footer.id = null
+
     let i = 1
     this.footer.footerLinkList.forEach(e => {
       let obj = {
@@ -155,11 +176,12 @@ export default {
       this.dynamicValidateForm.domain.push(obj)
       i = i + 1
     })
+
     this.fileList.push({
       name: this.footer.image.name,
       url: getImageUrl(this.footer.image)
     })
-  },
+  }
 }
 
 </script>
