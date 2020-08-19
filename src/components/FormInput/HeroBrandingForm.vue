@@ -129,7 +129,7 @@ export default {
     await this.$store.dispatch("heroBranding/getHeroBranding");
     this.heroBranding.id = null
     this.fileList.push({
-      name: this.heroBranding.background_img.name,
+      name: this.heroBranding.image.name,
       url: getImageUrl(this.heroBranding.image)
     })
   },

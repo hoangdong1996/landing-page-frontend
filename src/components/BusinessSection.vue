@@ -15,7 +15,7 @@
         </div>
       </div>
       <!-- feature list component -->
-      <FeatureList :features="businessSection.businessFeatureList" :image="businessSection.image.data" />
+      <FeatureList :features="businessSection.businessFeatureList" :image="businessSection.image" />
     </div>
   </div>
 </template>

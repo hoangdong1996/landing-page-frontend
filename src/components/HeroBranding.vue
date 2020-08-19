@@ -2,7 +2,7 @@
   <!-- <section class="hero-branding bg-cover" :style="bgImg" id="home"> -->
   <section
     id="home"
-    v-if="heroBranding"
+    v-if="heroBranding.image"
     class="hero-branding bg-cover"
     :style="{ 'background-image': 'url(data:image/png;base64,' + heroBranding.image.data +')' }"
   >
