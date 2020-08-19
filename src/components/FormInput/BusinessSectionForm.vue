@@ -115,7 +115,6 @@ export default {
       resSectionImage: null,
       imageList: new Array(3),
       resImageList: new Array(3),
-      businessSectionForm: null,
       businessSectionIndex: 0
     };
   },
@@ -165,14 +164,16 @@ export default {
           .catch(() => errorNotify(this));
     },
     async onPreview() {
-      await getBase64(this.sectionImage).then((data) => {
-        this.aboutSection.image.data = data
-      })
-      const list = this.aboutSection.businessFeatureList;
+      if(this.sectionImage !== null) {
+        await getBase64(this.sectionImage).then((data) => {
+          this.businessSection.image.data = data
+        })
+      }
+      const list = this.businessSection.businessFeatureList;
       for(let i = 0; i < list.length; i++) {
         if(this.imageList[i] !== undefined) {
-          await getBase64(list[i]).then((data) => {
-            this.list[i].image.data = data
+          await getBase64(this.imageList[i]).then((data) => {
+            list[i].image.data = data
           })
         }
       }
@@ -193,12 +194,12 @@ export default {
     })
     // get latest image for 3 feature
     for(let i = 0; i < list.length; i++) {
-      this.fileList[i] = []
-      this.fileList[i].push({
+      this.fileList.push([{
         name: list[i].image.name,
         url: getImageUrl(list[i].image)
-      })
+      }])
     }
+    console.log(this.businessSection)
 
   }
 };
