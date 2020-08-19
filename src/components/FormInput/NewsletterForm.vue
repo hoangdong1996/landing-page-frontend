@@ -4,7 +4,7 @@
       <div slot="header" class="clearfix">
         <span>Newsletter Section</span>
       </div>
-      <el-form ref="form" :model="newsletter" label-width="120px">
+      <el-form ref="form" label-width="120px" v-if="newsletter">
         <el-form-item label="Title">
           <el-input class="input-label" v-model="newsletter.title"></el-input>
         </el-form-item>
@@ -45,24 +45,16 @@ export default {
   },
   methods: {
     onSubmit() {
-      const newsletter = {
-        title: this.newsletter.title,
-        button_title: this.newsletter.button_title,
-        button_href: this.newsletter.button_href,
-        description: this.newsletter.description,
-        description_button_title: this.newsletter.description_button_title,
-        description_button_href: this.newsletter.description_button_href
-      }
-      createNewsletter(newsletter).then(() => {
+      createNewsletter(this.newsletter).then(() => {
         successNotify(this)
       }).catch(() => {
         errorNotify(this)
       })
     },
-
   },
-  mounted() {
-    this.$store.dispatch('newsletter/newsletter')
+  async mounted() {
+   await this.$store.dispatch('newsletter/getNewsletter')
+    this.newsletter.id = null
   }
 }
 </script>

@@ -70,6 +70,7 @@ import {mapGetters} from 'vuex'
 import {createFooter} from "@/api/footer";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
+import {getImageUrl} from "@/function/data";
 
 export default {
   computed: {
@@ -122,6 +123,7 @@ export default {
         this.footer.image = this.resImageSection
       }
       this.pushListFooter()
+      console.log(this.footer)
       createFooter(this.footer)
       .then(() => successNotify(this))
       .catch(() => errorNotify(this))
@@ -142,6 +144,7 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('footer/getFooter')
+    this.footer.id = null
     let i = 1
     this.footer.footerLinkList.forEach(e => {
       let obj = {
@@ -151,6 +154,10 @@ export default {
       }
       this.dynamicValidateForm.domain.push(obj)
       i = i + 1
+    })
+    this.fileList.push({
+      name: this.footer.image.name,
+      url: getImageUrl(this.footer.image)
     })
   },
 }

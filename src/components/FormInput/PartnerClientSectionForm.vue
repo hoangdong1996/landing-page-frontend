@@ -14,9 +14,9 @@
 
         <el-form ref="dynamicValidateForm" label-width="120px" class="demo-dynamic">
           <el-form-item
-              v-for="(domain, index) in dynamicValidateForm.domains"
+              v-for="(domain, index) in dynamicValidateForm"
               :label="'Logo ' + (index + 1)"
-              :key="domain.key"
+              :key="index"
               :rules="{required: true, message: 'can not be null', trigger: 'blur'}">
             <el-upload
                 accept="image/*"
@@ -24,7 +24,7 @@
                 ref="upload"
                 class="upload-demo upload"
                 action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-                :file-list="fileList"
+                :file-list="fileList[index]"
                 :auto-upload="false"
                 list-type="picture"
                 :on-change="handleChange">
@@ -35,7 +35,7 @@
                 size less than 500kb
               </div>
             </el-upload>
-            <el-button @click.prevent="removeDomain(domain)">Delete</el-button>
+            <el-button @click.prevent="removeDomain(index)">Delete</el-button>
           </el-form-item>
           <el-form-item>
             <el-button @click="addDomain">New Logo</el-button>
@@ -56,6 +56,7 @@ import {mapGetters} from 'vuex'
 import {createPartnerClientSection} from "@/api/partnerClientSection";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
+import {getImageUrl} from "@/function/data";
 
 export default {
   computed: {
@@ -66,9 +67,7 @@ export default {
       fileList: [],
       imageList: new Array(12),
       resImageList: new Array(12),
-      dynamicValidateForm: {
-        domains: []
-      },
+      dynamicValidateForm: new Array(0),
       indexImage: -1
     }
   },
@@ -91,6 +90,7 @@ export default {
           }).catch(() => this.resetAll())
         }
       }
+      console.log(this.resImageList)
     },
     resetAll() {
       this.imageList = new Array(12)
@@ -98,36 +98,51 @@ export default {
     },
     submitFormRequest() {
       for (let i = 0; i < this.imageList.length; i++) {
-        if (this.resImageList[i] !== undefined )
-        this.partnerClientSection.brandLogoList[i].image = this.resImageList[i]
-      }
-      createPartnerClientSection(this.partnerClientSection)
-      .then(() => successNotify(this))
-      .catch(() => errorNotify(this))
+        if (this.resImageList[i] !== undefined)
+          this.partnerClientSection.brandLogoList[i].image = this.resImageList[i]
+      }//   createPartnerClientSection(this.partnerClientSection)
+    //       .then(() => successNotify(this))
+    //       .catch(() => errorNotify(this))
     },
-    removeDomain(item) {
-      let index = this.dynamicValidateForm.domains.indexOf(item);
+    removeDomain(indexImage) {
+      let index = this.dynamicValidateForm[indexImage] ;
       if (index !== -1) {
-        this.dynamicValidateForm.domains.splice(index, 1);
+        this.dynamicValidateForm.splice(index, 1);
+        // this.fileList.splice(index, 1);
       }
+      console.log(index, 'delete', this.dynamicValidateForm)
     },
     addDomain() {
-      this.dynamicValidateForm.domains.push({
+      this.dynamicValidateForm.push({
         key: Date.now(),
-        value: ''
+        logo: ''
       });
+      console.log(this.dynamicValidateForm)
     }
   },
-  async mounted() {
+  async created() {
     await this.$store.dispatch('getPartnerClientSection')
+    this.partnerClientSection.id = null
+    this.partnerClientSection.brandLogoList.forEach(e => {
+      e.id = null
+    })
+
     let index = 0;
     this.partnerClientSection.brandLogoList.forEach(e => {
-      let obj = {
+      let domains = {
         key: index,
-        logo: e.logo
+        logo: e.image
       }
-      this.dynamicValidateForm.domains.push(obj)
+      this.dynamicValidateForm.push(domains)
       index++
+    })
+
+    this.partnerClientSection.brandLogoList.forEach(e => {
+      let objLogo = {
+        name: e.image.name,
+        url: getImageUrl(e.image)
+      }
+      this.fileList.push([objLogo])
     })
   }
 }
