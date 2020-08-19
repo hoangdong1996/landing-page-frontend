@@ -6,7 +6,7 @@ const state = {
     description:'',
     button_title: '',
     button_href:'',
-    background_img: {
+    image: {
         data: ""
     }
 }
@@ -17,7 +17,7 @@ const mutations = {
         state.description = obj.description
         state.button_title = obj.button_title
         state.button_href = obj.button_href
-        state.background_img = obj.background_img
+        state.image = obj.image
     }
 }
 
