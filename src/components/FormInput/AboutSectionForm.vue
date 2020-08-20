@@ -1,5 +1,5 @@
 <template>
-  <div v-if="aboutSection" v-loading.fullscreen.lock="loading">
+  <div v-if="aboutSection" v-loading="loading">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>About Section</span>

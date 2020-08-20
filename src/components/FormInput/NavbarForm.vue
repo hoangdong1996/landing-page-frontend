@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading.lock="loading">
     <el-card class="box-card ">
       <div slot="header" class="clearfix form-navbar">
         <span>Navbar Form</span>
@@ -24,7 +24,6 @@
           <el-button
               type="primary"
               @click.prevent="onSubmit"
-              v-loading.fullscreen.lock="loading"
           >Save
           </el-button>
           <el-button @click.prevent="onReset">Cancel</el-button>
