@@ -61,7 +61,7 @@
 
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit()">Create</el-button>
-          <el-button>Cancel</el-button>
+          <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -134,8 +134,34 @@ export default {
       await createRequirementSection(this.requirementSection)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
-      this.$store.dispatch('requirementSection/requirementSection')
+      this.getRequirementSection()
       this.loading = false
+    },
+    async getRequirementSection() {
+      await getRequirementSection().then(response => {
+        this.requirementSection = response.data.data
+      })
+    },
+    async resetDispatch() {
+      await this.getRequirementSection()
+      delete this.requirementSection.id
+      this.loading = false
+      this.fileList.push({
+        name: this.requirementSection.image.name,
+        url: getImageUrl(this.requirementSection.image)
+      })
+    },
+    onReset() {
+      this.resetData()
+      this.resetDispatch()
+    },
+    resetData() {
+      this.requirementSection = null
+      this.fileList = []
+      this.imageSection = null
+      this.resImageSection = null
+      this.loading = true
+      this.disable = false
     },
     removeRequirement(index) {
       if (index !== -1) {
@@ -147,16 +173,9 @@ export default {
     }
   },
   created() {
-    getRequirementSection().then(response => {
-      this.requirementSection = response.data.data
-      delete this.requirementSection.id
-      this.loading = false
-      this.fileList.push({
-        name: this.requirementSection.image.name,
-        url: getImageUrl(this.requirementSection.image)
-      })
-    })
-  },
+    this.resetDispatch()
+  }
+  ,
 }
 
 </script>

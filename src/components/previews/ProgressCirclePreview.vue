@@ -57,14 +57,6 @@ export default {
     },
     render: Number
   },
-  watch: {
-    render() {
-      console.log('watch: ', this.progressCircle);
-    }
-  },
-  created() {
-    console.log('created', this.progressCircle);
-  },
   data() {
     return {
       fill: FILL,
