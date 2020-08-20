@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-card class="box-card" v-if="pricingSection">
+  <div v-if="pricingSection">
+    <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Pricing Section</span>
       </div>
