@@ -15,11 +15,10 @@
       </div>
       <div class="pricing-table-content-area section-space--pb_90">
         <div class="container">
-          <!-- Pricing component -->
-<!--          <Pricing-->
-<!--              :pricing-table-list="pricingSection.pricingTableList"-->
-<!--              :popular-title="pricingSection.popularTitle"-->
-<!--          />-->
+          <Pricing
+              :pricing-table-list="pricingSection.pricingTableList"
+              :popular-title="pricingSection.popularTitle"
+          />
         </div>
       </div>
     </div>
@@ -27,17 +26,16 @@
 </template>
 
 <script>
-// import Pricing from './Pricing'
-
+import Pricing from "@/components/Pricing";
 export default {
+  components:{
+    Pricing
+  },
   props: {
     pricingSection: {
       type: Object,
       default: null
     }
-  },
-  components: {
-    // Pricing
   }
 }
 </script>

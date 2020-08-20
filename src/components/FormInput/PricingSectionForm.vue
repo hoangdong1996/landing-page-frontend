@@ -36,7 +36,7 @@
                       ref="upload"
                       class="upload-demo upload"
                       action="http://192.168.1.122:8081/api/image/uploadMultiFile"
-                      :file-list="fileList"
+                      :file-list="fileList[index]"
                       :auto-upload="false"
                       list-type="picture"
                       :limit="1"
@@ -64,24 +64,26 @@
 
                 <el-form-item label="List text">
                   <div class="list-require" style="">
-                    <el-form :model="dynamicValidateForm[index]" ref="dynamicValidateForm" label-width="120px"
+                    <el-form ref="dynamicValidateForm" label-width="120px"
                              class="demo-dynamic" style="">
                       <el-form-item style="padding-top: 5px"
-                                    v-for="(domain) in dynamicValidateForm[index].domains"
+                                    v-for="(price,indexPrice) in pricing.price"
                                     :label="'Text'"
-                                    :key="domain.key"
+                                    :key="indexPrice"
                                     :rules="{required: true, message: 'domain can not be null', trigger: 'blur'}">
                         <el-row>
                           <el-col>
-                            <el-input v-model="domain.value"></el-input>
+                            <el-input v-model="pricing.price[indexPrice]"></el-input>
                           </el-col>
                           <el-col>
-                            <el-button @click.prevent="removeDomain(index,domain)">Delete</el-button>
+                            <el-button @click.prevent="removePrice(index,indexPrice)">Delete</el-button>
                           </el-col>
                         </el-row>
                       </el-form-item>
                       <el-form-item>
-                        <el-button @click="addDomain(index)">New text</el-button>
+                        <el-button
+                            :disabled="pricing.price[pricing.price.length-1]===''"
+                            @click="addPrice(index)">New text</el-button>
                       </el-form-item>
                     </el-form>
                   </div>
@@ -104,48 +106,44 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {createPricingSection} from "@/api/pricingSection";
+import {createPricingSection, getPricingSection} from "@/api/pricingSection";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import PricingSectionPreview from "@/components/previews/PricingSectionPreview";
+import {getBase64, getImageUrl} from "@/function/data";
+
 export default {
-  components:{
+  components: {
     PricingSectionPreview
-  },
-  computed: {
-    ...mapGetters(['pricingSection'])
   },
   data() {
     return {
+      pricingSection: {},
       pricingSectionIndex: 0,
       fileList: [],
       pricingSectionForm: null,
       imageList: new Array(4),
       resImageList: new Array(4),
-      dynamicValidateForm: [
-        {
-          domains: []
-        },
-        {
-          domains: []
-        },
-        {
-          domains: []
-        },
-        {
-          domains: []
-        }
-      ]
+      disable: false
     }
   },
   methods: {
+    handleChange(file) {
+      this.imageList[this.pricingSectionIndex] = file.raw;
+      this.onPreview()
+    },
+    async onPreview() {
+      for (let i = 0; i < this.pricingSection.pricingTableList.length; i++) {
+        if (this.imageList[i] !== undefined) {
+          await getBase64(this.imageList[i]).then((data) => {
+            this.pricingSection.pricingTableList[i].image.data = data
+          })
+        }
+      }
+    },
     async onSubmit() {
       await this.uploadFile()
       this.submitFormRequest();
-    },
-    handleChange(file) {
-      this.imageList[this.pricingSectionIndex] = file.raw;
     },
     async uploadFile() {
       for (let i = 0; i < this.imageList.length; i++) {
@@ -163,17 +161,7 @@ export default {
       this.imageList = new Array(4)
     },
     submitFormRequest() {
-      let listPricing = [[], [], [], []]
-      for (let i = 0; i < this.dynamicValidateForm.length; i++) {
-        this.dynamicValidateForm[i].domains.forEach(e => {
-          listPricing[i].push(e.value)
-        })
-      }
-      if (this.imageList.length < this.pricingSection.pricingTableList.length) {
-        return
-      }
       for (let i = 0; i < this.pricingSection.pricingTableList.length; i++) {
-        this.pricingSection.pricingTableList[i].price = listPricing[i]
         if (this.resImageList[i] !== undefined) {
           this.pricingSection.pricingTableList[i].image = this.resImageList[i]
         }
@@ -183,37 +171,25 @@ export default {
           ).catch(() => errorNotify(this)
       )
     },
-    removeDomain(index1, item) {
-      let index = this.dynamicValidateForm[index1].domains.indexOf(item);
-      if (index !== -1) {
-        this.dynamicValidateForm[index1].domains.splice(index, 1);
-      }
+    removePrice(index, item) {
+      this.pricingSection.pricingTableList[index].price.splice(item, 1);
     },
-    addDomain(index1) {
-      this.dynamicValidateForm[index1].domains.push({
-        key: Date.now(),
-        value: ''
-      });
+    addPrice(index) {
+      this.pricingSection.pricingTableList[index].price.push('');
     }
   },
-  async mounted() {
-    await this.$store.dispatch('updatePricingSection')
-    this.pricingSection.id = null
-    this.pricingSection.pricingTableList.forEach(pricing => {
-      pricing.id = null
-    })
-    let indexPricing = 0
-    this.pricingSection.pricingTableList.forEach(pricing => {
-      let index = 1
-      pricing.price.forEach(price => {
+  created() {
+    getPricingSection().then(response => {
+      this.pricingSection = response.data.data
+      this.pricingSection.id = null
+      this.pricingSection.pricingTableList.forEach(pricing => {
         let obj = {
-          key: index,
-          value: price
+          name: pricing.image.name,
+          url: getImageUrl(pricing.image)
         }
-        this.dynamicValidateForm[indexPricing].domains.push(obj)
-        index++
+        this.fileList.push([obj])
+        pricing.id = null
       })
-      indexPricing++
     })
   }
 }

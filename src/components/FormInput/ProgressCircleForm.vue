@@ -83,11 +83,11 @@ export default {
         errorNotify(this)
       })
     },
-    removeFeatureList(index1, item) {
-      this.progressCircle.featureProgressList[index1].featureList.splice(item, 1);
+    removeFeatureList(index, item) {
+      this.progressCircle.featureProgressList[index].featureList.splice(item, 1);
     },
-    addFeatureList(index1) {
-      this.progressCircle.featureProgressList[index1].featureList.push('');
+    addFeatureList(index) {
+      this.progressCircle.featureProgressList[index].featureList.push('');
     }
   },
   created() {
