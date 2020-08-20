@@ -42,7 +42,7 @@
 
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit()">Create</el-button>
-          <el-button>Cancel</el-button>
+          <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -59,6 +59,7 @@ import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import {getImageUrl} from "@/function/data";
 import PartnerClientSectionPreview from "../previews/PartnerClientSectionPreview";
+
 export default {
   components: {
     PartnerClientSectionPreview
@@ -110,8 +111,33 @@ export default {
         }
       }
       createPartnerClientSection(this.partnerClientSection)
-              .then(() => successNotify(this))
-              .catch(() => errorNotify(this))
+          .then(() => successNotify(this))
+          .catch(() => errorNotify(this))
+      this.loading = false
+    },
+    onReset() {
+      this.resetData()
+      this.resetDispatch()
+    },
+    resetData() {
+      this.fileList = []
+      this.imageList = []
+      this.resImageList = []
+      this.indexImage = -1
+      this.domains = []
+    },
+    async resetDispatch(){
+      await this.$store.dispatch('getPartnerClientSection')
+      delete this.partnerClientSection.id
+      this.partnerClientSection.brandLogoList.forEach(e => {
+        delete e.id
+        let objLogo = {
+          name: e.image.name,
+          url: getImageUrl(e.image)
+        }
+        this.fileList.push([objLogo])
+        this.domains.push(null)
+      })
       this.loading = false
     },
     removeDomain(index) {
@@ -126,23 +152,9 @@ export default {
       let obj = null
       this.domains.push(obj)
     },
-    removeNullImage() {
-
-    }
   },
   async created() {
-    await this.$store.dispatch('getPartnerClientSection')
-    delete this.partnerClientSection.id
-    this.partnerClientSection.brandLogoList.forEach(e => {
-      delete e.id
-      let objLogo = {
-        name: e.image.name,
-        url: getImageUrl(e.image)
-      }
-      this.fileList.push([objLogo])
-      this.domains.push(null)
-    })
-    this.loading = false
+    await this.resetDispatch()
   }
 }
 </script>

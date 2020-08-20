@@ -61,7 +61,7 @@
       </el-form>
     </el-card>
     <el-card>
-      <FooterSectionPreview :footer="footer" />
+      <FooterSectionPreview :footer="footer"/>
     </el-card>
   </div>
 </template>
@@ -117,8 +117,8 @@ export default {
         this.footer.image = this.resImageSection
       }
       await createFooter(this.footer)
-              .then(() => successNotify(this))
-              .catch(() => errorNotify(this))
+          .then(() => successNotify(this))
+          .catch(() => errorNotify(this))
       this.$store.dispatch('footer/getFooter')
       this.loading = false
     },
@@ -129,7 +129,25 @@ export default {
         })
       }
     },
-    
+    onReset() {
+      this.resetData()
+      this.resetDispatch()
+    },
+    resetData() {
+      this.imageFooter = null
+      this.fileList = []
+      this.imageSection = null
+      this.resImageSection = null
+    },
+    async resetDispatch(){
+      await this.$store.dispatch('footer/getFooter')
+      delete this.footer.id
+      this.fileList.push({
+        name: this.footer.image.name,
+        url: getImageUrl(this.footer.image)
+      })
+      this.loading = false
+    },
     removeFooterLink(index) {
       if (index !== -1) {
         this.footer.footerLinkList.splice(index, 1);
@@ -143,13 +161,7 @@ export default {
     }
   },
   async mounted() {
-    await this.$store.dispatch('footer/getFooter')
-    delete this.footer.id
-    this.fileList.push({
-      name: this.footer.image.name,
-      url: getImageUrl(this.footer.image)
-    })
-    this.loading = false
+    await this.resetDispatch()
   }
 }
 

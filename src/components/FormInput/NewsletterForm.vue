@@ -25,8 +25,7 @@
         </el-form-item>
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit">Create</el-button>
-          <el-button @click="onPreview">Preview</el-button>
-          <el-button>Cancel</el-button>
+          <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -57,8 +56,8 @@ export default {
         errorNotify(this)
       })
     },
-    onPreview() {
-
+    onReset(){
+      this.$store.dispatch('newsletter/getNewsletter')
     }
   },
   async mounted() {
