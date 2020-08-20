@@ -27,7 +27,7 @@
               v-loading.fullscreen.lock="loading"
           >Save
           </el-button>
-          <el-button @click.prevent="onPreview" :disabled="loading">Preview</el-button>
+          <el-button @click.prevent="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -135,6 +135,7 @@ export default {
     },
     handleChange(file) {
       this.image = file.raw;
+      this.onPreview()
     },
     async upload() {
       await uploadFile(this.image).then((response) => {
@@ -148,14 +149,30 @@ export default {
         });
       }
     },
+    onReset() {
+      this.resetData()
+      this.resetDispatch()
+    },
+    resetData() {
+      this.form = {}
+      this.fileList = []
+      this.response = null
+      this.image = null
+      this.imageRes = null
+      this.loading = false
+    },
+    async resetDispatch() {
+      await this.$store.dispatch("navbar/getLogoNavbar");
+      this.navbar.id = null;
+      this.fileList.push({
+        name: this.navbar.image.name,
+        url: getImageUrl(this.navbar.image)
+      })
+    }
+
   },
   async mounted() {
-    await this.$store.dispatch("navbar/getLogoNavbar");
-    this.navbar.id = null;
-    this.fileList.push({
-      name: this.navbar.image.name,
-      url: getImageUrl(this.navbar.image)
-    })
+    await this.resetDispatch()
   }
 };
 </script>

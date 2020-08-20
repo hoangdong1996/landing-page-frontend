@@ -36,16 +36,16 @@
 
         <el-form-item style="text-align: center">
           <el-button type="primary" @click.prevent="onSubmit">Create</el-button>
-          <el-button @click.prevent="onPreview">Preview</el-button>
+          <el-button @click.prevent="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
     <el-card>
       <section
-        id="home"
-        class="hero-branding bg-cover"
-        style="position: relative"
-        :style="{ 'background-image': 'url(data:image/png;base64,' + preview.image.data +')' }"
+          id="home"
+          class="hero-branding bg-cover"
+          style="position: relative"
+          :style="{ 'background-image': 'url(data:image/png;base64,' + preview.image.data +')' }"
       >
         <div class="container-fluid container-fluid--cp-150">
           <div class="hero-branding">
@@ -54,7 +54,7 @@
               <h6 class="hero-content-subtitle mt-20">{{ preview.description }}</h6>
               <div class="slider-button mt-30">
                 <a
-                  class="ht-btn ht-btn-md"
+                    class="ht-btn ht-btn-md"
                 >{{ preview.button_title }}</a>
               </div>
             </div>
@@ -71,10 +71,11 @@ import {createHeroBranding} from "@/api/heroBranding";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import {getBase64, getImageUrl} from "@/function/data";
+
 export default {
   computed: {
     ...mapGetters(['heroBranding']),
-    preview(){
+    preview() {
       return {...this.heroBranding}
     }
   },
@@ -91,6 +92,13 @@ export default {
       this.imageSection = file.raw
       this.onPreview()
     },
+    async onPreview() {
+      if (this.imageSection != null) {
+        await getBase64(this.imageSection).then((data) => {
+          this.preview.image.data = data;
+        });
+      }
+    },
     async onSubmit() {
       this.loading = true
       await this.uploadFile()
@@ -103,11 +111,6 @@ export default {
         }).catch(() => this.resetAll())
       }
     },
-    resetAll() {
-      this.imageSection = null
-      this.resImageSection = null
-      this.$store.dispatch("heroBranding/getHeroBranding");
-    },
     async submitFormRequest() {
       if (this.resImageSection !== null) {
         this.heroBranding.image = this.resImageSection
@@ -118,28 +121,40 @@ export default {
       this.resetAll()
       this.loading = false
     },
-    async onPreview() {
-      if (this.imageSection != null) {
-        await getBase64(this.imageSection).then((data) => {
-          this.preview.image.data = data;
-        });
-      }
+    resetAll() {
+      this.imageSection = null
+      this.resImageSection = null
+      this.$store.dispatch("heroBranding/getHeroBranding");
+    },
+    onReset() {
+      this.resetData()
+      this.resetDispatch()
+    },
+    resetData() {
+      this.loading = false
+      this.fileList = []
+      this.imageSection = null
+      this.resImageSection = null
+    },
+    async resetDispatch() {
+      await this.$store.dispatch("heroBranding/getHeroBranding");
+      this.heroBranding.id = null
+      this.fileList.push({
+        name: this.heroBranding.image.name,
+        url: getImageUrl
+      })
     },
   },
   async mounted() {
-    await this.$store.dispatch("heroBranding/getHeroBranding");
-    this.heroBranding.id = null
-    this.fileList.push({
-      name: this.heroBranding.image.name,
-      url: getImageUrl(this.heroBranding.image)
-    })
-  },
-};
+    await this.resetDispatch()
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/_variabls.scss";
 @import "@/assets/scss/elements/_hero-branding.scss";
+
 .upload {
   border: 1px gainsboro solid;
   border-radius: 5px;

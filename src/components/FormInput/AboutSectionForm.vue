@@ -59,7 +59,7 @@
 
         <el-form-item style="text-align: center">
           <el-button type="primary" @click.prevent="onSubmit">Create</el-button>
-          <el-button @click.prevent="onPreview">Preview</el-button>
+          <el-button @click.prevent="onPreview">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
