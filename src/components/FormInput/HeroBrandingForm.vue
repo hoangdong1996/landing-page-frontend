@@ -141,7 +141,7 @@ export default {
       this.heroBranding.id = null
       this.fileList.push({
         name: this.heroBranding.image.name,
-        url: getImageUrl
+        url: getImageUrl(this.heroBranding.image)
       })
     },
   },

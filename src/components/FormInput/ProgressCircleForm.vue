@@ -7,7 +7,7 @@
       <el-form ref="form" label-width="120px">
         <el-card v-for="(progress, index) in progressCircle.featureProgressList" :key="index">
           <el-form-item label="Progress">
-            <el-input-number v-model="progress.progress"  @change="render += 1" :min="1" :max="100"></el-input-number>
+            <el-input-number v-model="progress.progress" @change="render += 1" :min="1" :max="100"></el-input-number>
           </el-form-item>
           <el-form-item label="Title">
             <el-input class="input-label" v-model="progress.featureListTitle"></el-input>
@@ -32,7 +32,9 @@
                   </el-row>
                 </el-form-item>
                 <el-form-item>
-                  <el-button :disabled="progress.featureList[progress.featureList.length-1]===''" @click="addFeatureList(index)">New text</el-button>
+                  <el-button :disabled="progress.featureList[progress.featureList.length-1]===''"
+                             @click="addFeatureList(index)">New text
+                  </el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -54,7 +56,7 @@
 
 <script>
 
-import {mapGetters} from 'vuex'
+// import {mapGetters} from 'vuex'
 import {createProgressCircle} from "@/api/progressCircle";
 import {successNotify, errorNotify} from '@/function/notify'
 import ProgressCirclePreview from "@/components/previews/ProgressCirclePreview";
@@ -64,9 +66,9 @@ export default {
   components: {
     ProgressCirclePreview
   },
-  computed: {
-    ...mapGetters(['progressCircle'])
-  },
+  // computed: {
+  //   ...mapGetters(['progressCircle'])
+  // },
   data() {
     return {
       render: 0,

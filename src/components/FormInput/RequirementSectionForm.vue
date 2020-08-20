@@ -83,9 +83,6 @@ export default {
   components: {
     RequirementSectionPreview
   },
-  // computed: {
-  //   ...mapGetters(['requirementSection'])
-  // },
   data() {
     return {
       requirementSection: {},
