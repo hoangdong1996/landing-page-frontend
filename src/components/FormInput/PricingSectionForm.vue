@@ -97,6 +97,9 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <el-card>
+      <PricingSectionPreview :pricingSection="pricingSection"></PricingSectionPreview>
+    </el-card>
   </div>
 </template>
 
@@ -105,8 +108,11 @@ import {mapGetters} from 'vuex'
 import {createPricingSection} from "@/api/pricingSection";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
-
+import PricingSectionPreview from "@/components/previews/PricingSectionPreview";
 export default {
+  components:{
+    PricingSectionPreview
+  },
   computed: {
     ...mapGetters(['pricingSection'])
   },

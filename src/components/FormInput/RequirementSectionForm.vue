@@ -37,9 +37,9 @@
             <el-form label-width="120px" class="demo-dynamic">
               <el-form-item style="padding-top: 5px"
                             v-for="(requirement, index) in requirementSection.requirementList"
-                            :label="'Text ' + (index+1)"
+                            :label="'Text '+(index + 1)"
                             :key="index"
-                            :rules="{ required: true, message: 'domain can not be null', trigger: 'blur'}">
+                            :rules="{ message: 'domain can not be null', trigger: 'blur'}">
                 <el-row>
                   <el-col :span="12">
                     <el-input v-model="requirementSection.requirementList[index]"></el-input>
@@ -72,8 +72,8 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {createRequirementSection} from "@/api/requirementSection";
+// import {mapGetters} from 'vuex'
+import {createRequirementSection, getRequirementSection} from "@/api/requirementSection";
 import {errorNotify, successNotify} from '@/function/notify'
 import {uploadFile} from "@/api/upload";
 import {getBase64, getImageUrl} from "@/function/data";
@@ -83,11 +83,12 @@ export default {
   components: {
     RequirementSectionPreview
   },
-  computed: {
-    ...mapGetters(['requirementSection'])
-  },
+  // computed: {
+  //   ...mapGetters(['requirementSection'])
+  // },
   data() {
     return {
+      requirementSection: {},
       fileList: [],
       imageSection: null,
       resImageSection: null,
@@ -128,7 +129,6 @@ export default {
       if (this.resImageSection !== null) {
         this.requirementSection.image = this.resImageSection
       }
-      console.log('list',this.requirementSection.requirementList)
       await createRequirementSection(this.requirementSection)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
@@ -144,16 +144,17 @@ export default {
       this.requirementSection.requirementList.push('')
     }
   },
-  async mounted() {
-    await this.$store.dispatch('requirementSection/requirementSection')
-    // console.log('list mounted', this.requirementSection.requirementList)
-    delete this.requirementSection.id
-    this.loading = false
-    this.fileList.push({
-      name: this.requirementSection.image.name,
-      url: getImageUrl(this.requirementSection.image)
+  created() {
+    getRequirementSection().then(response => {
+      this.requirementSection = response.data.data
+      delete this.requirementSection.id
+      this.loading = false
+      this.fileList.push({
+        name: this.requirementSection.image.name,
+        url: getImageUrl(this.requirementSection.image)
+      })
     })
-  }
+  },
 }
 
 </script>
