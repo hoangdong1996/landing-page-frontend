@@ -1,5 +1,5 @@
 <template>
-  <div class="footer-area-wrapper" :class="FooterStyle" v-if="footer">
+  <div class="footer-area-wrapper" :class="FooterStyle" v-if="footer" >
     <div class="footer-area section-space--ptb_90">
       <div class="container">
         <div class="row footer-widget-wrapper">
@@ -113,8 +113,5 @@ export default {
 }
 </script>
 <style>
-.footer-area-wrapper {
-  border: 1px darkgray solid;
-  margin-top: 20px;
-}
+
 </style>

@@ -36,7 +36,7 @@
             <span>Feature List</span>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row style="text-align: center">
           <el-button @click.prevent="businessSectionIndex = 0">1</el-button>
           <el-button @click.prevent="businessSectionIndex = 1">2</el-button>
           <el-button @click.prevent="businessSectionIndex= 2">3</el-button>

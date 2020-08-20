@@ -85,9 +85,6 @@
       </el-aside>
 
       <el-container>
-        <el-header>
-
-        </el-header>
         <el-main>
           <router-view></router-view>
         </el-main>

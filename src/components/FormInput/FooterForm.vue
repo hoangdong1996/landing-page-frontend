@@ -56,12 +56,13 @@
         </el-form-item>
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit">Create</el-button>
-          <el-button @click="onPreview">Preview</el-button>
-          <el-button>Cancel</el-button>
+          <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
-    <FooterSectionPreview :footer="footer" />
+    <el-card>
+      <FooterSectionPreview :footer="footer" />
+    </el-card>
   </div>
 </template>
 
@@ -92,6 +93,7 @@ export default {
   methods: {
     handleChange(file) {
       this.imageSection = file.raw
+      this.onPreview()
     },
     async onSubmit() {
       this.loading = true
@@ -127,6 +129,7 @@ export default {
         })
       }
     },
+    
     removeFooterLink(index) {
       if (index !== -1) {
         this.footer.footerLinkList.splice(index, 1);

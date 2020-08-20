@@ -5,9 +5,9 @@
         <span>Feature Carousel Section</span>
       </div>
       <el-row style="">
-        <el-button @click.prevent="featureCarouselSectionIndex = 0">1</el-button>
-        <el-button @click.prevent="featureCarouselSectionIndex = 1">2</el-button>
-        <el-button @click.prevent="featureCarouselSectionIndex = 2">3</el-button>
+        <el-button @click.prevent="featureCarouselSectionIndex = 0">Carousel 1</el-button>
+        <el-button @click.prevent="featureCarouselSectionIndex = 1">Carousel 2</el-button>
+        <el-button @click.prevent="featureCarouselSectionIndex = 2">Carousel 3</el-button>
       </el-row>
       <el-form ref="form" label-width="120px" v-loading="loading">
         <el-row>
@@ -45,7 +45,7 @@
         </el-row>
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit()">Create</el-button>
-          <el-button>Cancel</el-button>
+          <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -122,20 +122,34 @@ export default {
           })
         }
       }
+    },
+    onReset() {
+      this.resetData()
+      this.resetDispatch()
+    },
+    resetData() {
+      this.loading = true
+      this.fileList = []
+      this.imageList = new Array(3)
+      this.resImageList = new Array(3)
+      this.featureCarouselSectionIndex = 0
+    },
+    async resetDispatch() {
+      await this.$store.dispatch('featureCarouselSection/getFeatureCarouselSection')
+      this.loading = false;
+      this.featureCarouselSection.id = null;
+      this.featureCarouselSection.featureCarouselList.forEach(feature => {
+        let obj = {
+          name: feature.image.name,
+          url: getImageUrl(feature.image)
+        }
+        this.fileList.push([obj])
+        feature.id = null
+      })
     }
   },
   async mounted() {
-    await this.$store.dispatch('featureCarouselSection/getFeatureCarouselSection')
-    this.loading = false;
-    this.featureCarouselSection.id = null;
-    this.featureCarouselSection.featureCarouselList.forEach(feature => {
-      let obj = {
-        name: feature.image.name,
-        url: getImageUrl(feature.image)
-      }
-      this.fileList.push([obj])
-      feature.id = null
-    })
+    await this.resetDispatch()
   }
 }
 </script>

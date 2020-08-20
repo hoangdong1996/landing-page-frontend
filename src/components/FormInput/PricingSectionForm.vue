@@ -1,10 +1,10 @@
 <template>
   <div>
-    <el-card class="box-card">
+    <el-card class="box-card" v-if="pricingSection">
       <div slot="header" class="clearfix">
         <span>Pricing Section</span>
       </div>
-      <el-form ref="form" :model="pricingSection" label-width="120px">
+      <el-form ref="form" label-width="120px">
         <el-form-item label="Title">
           <el-input class="input-label" v-model="pricingSection.title"></el-input>
         </el-form-item>
@@ -17,7 +17,7 @@
         <el-row style="text-align: center">
           <el-col :span="24"><span>Pricing List</span></el-col>
         </el-row>
-        <el-row>
+        <el-row style="text-align: center">
           <el-button @click.prevent="pricingSectionIndex = 0">1</el-button>
           <el-button @click.prevent="pricingSectionIndex = 1">2</el-button>
           <el-button @click.prevent="pricingSectionIndex= 2">3</el-button>
@@ -52,11 +52,11 @@
                 <el-form-item label="Value">
                   <el-input class="input-label" v-model="pricing.value"></el-input>
                 </el-form-item>
-                <el-form-item label="Is Popular">
+                <el-form-item label="Popular">
                   <el-switch v-model="pricing.isPopular"></el-switch>
                 </el-form-item>
-                <el-form-item label="Is Active">
-                  <el-switch v-model="pricing.isActive"></el-switch>
+                <el-form-item label="Active">
+                  <el-switch v-model="pricing.active"></el-switch>
                 </el-form-item>
                 <el-form-item label="Duration">
                   <el-input class="input-label" v-model="pricing.duration"></el-input>
@@ -83,7 +83,8 @@
                       <el-form-item>
                         <el-button
                             :disabled="pricing.price[pricing.price.length-1]===''"
-                            @click="addPrice(index)">New text</el-button>
+                            @click="addPrice(index)">New text
+                        </el-button>
                       </el-form-item>
                     </el-form>
                   </div>
@@ -95,7 +96,7 @@
         </el-row>
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit()">Create</el-button>
-          <el-button>Cancel</el-button>
+          <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -118,7 +119,7 @@ export default {
   },
   data() {
     return {
-      pricingSection: {},
+      pricingSection: null,
       pricingSectionIndex: 0,
       fileList: [],
       pricingSectionForm: null,
@@ -160,27 +161,31 @@ export default {
       this.resImageList = new Array(4)
       this.imageList = new Array(4)
     },
-    submitFormRequest() {
+    async submitFormRequest() {
       for (let i = 0; i < this.pricingSection.pricingTableList.length; i++) {
         if (this.resImageList[i] !== undefined) {
           this.pricingSection.pricingTableList[i].image = this.resImageList[i]
         }
       }
-      createPricingSection(this.pricingSection)
+      await createPricingSection(this.pricingSection)
           .then(() => successNotify(this)
           ).catch(() => errorNotify(this)
       )
+    this.getPricingSection()
     },
-    removePrice(index, item) {
-      this.pricingSection.pricingTableList[index].price.splice(item, 1);
+    onReset() {
+      this.resetData()
+      this.resetDispatch()
     },
-    addPrice(index) {
-      this.pricingSection.pricingTableList[index].price.push('');
-    }
-  },
-  created() {
-    getPricingSection().then(response => {
-      this.pricingSection = response.data.data
+    resetData() {
+      this.pricingSection = null
+      this.fileList = []
+      this.pricingSectionForm = null
+      this.imageList = new Array(4)
+      this.resImageList = new Array(4)
+    },
+    async resetDispatch(){
+     await this.getPricingSection()
       this.pricingSection.id = null
       this.pricingSection.pricingTableList.forEach(pricing => {
         let obj = {
@@ -190,7 +195,21 @@ export default {
         this.fileList.push([obj])
         pricing.id = null
       })
-    })
+    },
+    async getPricingSection() {
+      await getPricingSection().then(response => {
+        this.pricingSection = response.data.data
+      })
+    },
+    removePrice(index, item) {
+      this.pricingSection.pricingTableList[index].price.splice(item, 1);
+    },
+    addPrice(index) {
+      this.pricingSection.pricingTableList[index].price.push('');
+    }
+  },
+  async created() {
+    await this.resetDispatch()
   }
 }
 </script>

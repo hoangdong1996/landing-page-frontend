@@ -4,8 +4,15 @@
       <div slot="header" class="clearfix">
         <span>Progress Circle</span>
       </div>
+      <el-row>
+        <el-button @click.prevent="progressCircleIndex = 0">Circle 1</el-button>
+        <el-button @click.prevent="progressCircleIndex = 1">Circle 2</el-button>
+      </el-row>
       <el-form ref="form" label-width="120px">
-        <el-card v-for="(progress, index) in progressCircle.featureProgressList" :key="index">
+        <el-card v-for="(progress, index) in progressCircle.featureProgressList"
+                 :key="index"
+                 v-show="progressCircleIndex === index"
+        >
           <el-form-item label="Progress">
             <el-input-number v-model="progress.progress" @change="render += 1" :min="1" :max="100"></el-input-number>
           </el-form-item>
@@ -43,8 +50,7 @@
 
         <el-form-item style="text-align: center; padding-top: 10px">
           <el-button type="primary" @click="onSubmit()">Create</el-button>
-          <el-button @click="onPreview()">Preview</el-button>
-          <el-button>Cancel</el-button>
+          <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -55,8 +61,6 @@
 </template>
 
 <script>
-
-// import {mapGetters} from 'vuex'
 import {createProgressCircle} from "@/api/progressCircle";
 import {successNotify, errorNotify} from '@/function/notify'
 import ProgressCirclePreview from "@/components/previews/ProgressCirclePreview";
@@ -66,15 +70,13 @@ export default {
   components: {
     ProgressCirclePreview
   },
-  // computed: {
-  //   ...mapGetters(['progressCircle'])
-  // },
   data() {
     return {
+      progressCircleIndex:0,
       render: 0,
       num: 1,
       disable: false,
-      progressCircle: {}
+      progressCircle: null
     }
   },
   methods: {
@@ -90,16 +92,26 @@ export default {
     },
     addFeatureList(index) {
       this.progressCircle.featureProgressList[index].featureList.push('');
+    },
+    onReset(){
+      this.resetData()
+      this.resetDispatch()
+    },
+    resetData(){
+      this.progressCircle = null
+    },
+    resetDispatch() {
+      getProgressCircle().then(resp => {
+        this.progressCircle = resp.data.data
+        this.progressCircle.id = null
+        this.progressCircle.featureProgressList.forEach(e => {
+          e.id = null
+        })
+      })
     }
   },
   created() {
-    getProgressCircle().then(resp => {
-      this.progressCircle = resp.data.data
-      this.progressCircle.id = null
-      this.progressCircle.featureProgressList.forEach(e => {
-        e.id = null
-      })
-    })
+    this.resetDispatch()
   }
 }
 </script>
