@@ -78,7 +78,7 @@
 
         <el-form-item style="text-align: center">
           <el-button type="primary" @click="onSubmit">Create</el-button>
-          <el-button @click.prevent="onPreview">Preview</el-button>
+          <el-button @click.prevent="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -94,7 +94,7 @@ import {createBusinessSection} from "@/api/businessSection";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import BusinessSectionPreview from "../previews/BusinessSectionPreview";
-import { getBase64, getImageUrl } from "@/function/data";
+import {getBase64, getImageUrl} from "@/function/data";
 
 export default {
   components: {
@@ -166,41 +166,58 @@ export default {
           .catch(() => errorNotify(this));
     },
     async onPreview() {
-      if(this.sectionImage !== null) {
+      if (this.sectionImage !== null) {
         await getBase64(this.sectionImage).then((data) => {
           this.businessSection.image.data = data
         })
       }
       const list = this.businessSection.businessFeatureList;
-      for(let i = 0; i < list.length; i++) {
-        if(this.imageList[i] !== undefined) {
+      for (let i = 0; i < list.length; i++) {
+        if (this.imageList[i] !== undefined) {
           await getBase64(this.imageList[i]).then((data) => {
             list[i].image.data = data
           })
         }
       }
+    },
+    onReset() {
+      this.resetData()
+      this.resetDispatch()
+    },
+    resetData() {
+      this.loading = true
+      this.sectionList = []
+      this.fileList = []
+      this.sectionImage = null
+      this.resSectionImage = null
+      this.imageList = new Array(3)
+      this.resImageList = new Array(3)
+      this.businessSectionIndex = 0
+    },
+    async resetDispatch() {
+      await this.$store.dispatch("businessSection/businessSection")
+      delete this.businessSection.id
+      const list = this.businessSection.businessFeatureList
+      list.forEach(feature => {
+        delete feature.id
+      })
+      this.loading = false;
+      // get latest image for section
+      this.sectionList.push({
+        name: this.businessSection.image.name,
+        url: getImageUrl(this.businessSection.image)
+      })
+      // get latest image for 3 feature
+      for (let i = 0; i < list.length; i++) {
+        this.fileList.push([{
+          name: list[i].image.name,
+          url: getImageUrl(list[i].image)
+        }])
+      }
     }
   },
   async mounted() {
-    await this.$store.dispatch("businessSection/businessSection")
-    delete this.businessSection.id
-    const list = this.businessSection.businessFeatureList
-    list.forEach(feature => {
-      delete feature.id
-    })
-    this.loading = false;
-    // get latest image for section
-    this.sectionList.push({
-      name: this.businessSection.image.name,
-      url: getImageUrl(this.businessSection.image)
-    })
-    // get latest image for 3 feature
-    for(let i = 0; i < list.length; i++) {
-      this.fileList.push([{
-        name: list[i].image.name,
-        url: getImageUrl(list[i].image)
-      }])
-    }
+    await this.resetDispatch()
   }
 };
 </script>
