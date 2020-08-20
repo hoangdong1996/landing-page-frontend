@@ -21,7 +21,7 @@
         </div>
         <el-menu
             :router="true"
-            class="el-menu-vertical-demo"
+            class="el-menu-vertical-demo "
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b">
@@ -83,7 +83,6 @@
 
         </el-menu>
       </el-aside>
-
       <el-container>
         <el-main>
           <router-view></router-view>

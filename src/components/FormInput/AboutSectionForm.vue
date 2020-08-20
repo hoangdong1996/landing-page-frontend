@@ -63,7 +63,11 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card class="box-card">
+    <el-card style="margin-top: 20px">
+      <div slot="header" class="clearfix form-navbar">
+        <span>About Section Preview</span>
+        <el-button style="float: right; padding: 3px 0" type="text"></el-button>
+      </div>
       <AboutSectionPreview :aboutSection="aboutSection"></AboutSectionPreview>
     </el-card>
   </div>

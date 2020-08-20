@@ -65,7 +65,11 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card class="box-card" style="margin-top: 20px">
+      <div slot="header" class="clearfix">
+        <span>Requirement Section Preview</span>
+        <el-button style="float: right; padding: 3px 0" type="text"></el-button>
+      </div>
       <RequirementSectionPreview :requirementSection="requirementSection"/>
     </el-card>
   </div>

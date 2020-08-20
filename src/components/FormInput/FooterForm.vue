@@ -60,7 +60,11 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card style="margin-top: 20px">
+      <div slot="header" class="clearfix form-navbar">
+        <span>Footer Section Preview</span>
+        <el-button style="float: right; padding: 3px 0" type="text"></el-button>
+      </div>
       <FooterSectionPreview :footer="footer"/>
     </el-card>
   </div>

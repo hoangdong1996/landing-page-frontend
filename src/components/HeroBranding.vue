@@ -4,7 +4,7 @@
     id="home"
     v-if="heroBranding.image"
     class="hero-branding bg-cover"
-    :style="{ 'background-image': 'url(data:image/png;base64,' + heroBranding.image.data +')' }"
+    :style="style"
   >
     <div class="container-fluid container-fluid--cp-150">
       <div class="hero-branding">
@@ -28,7 +28,8 @@ import {getImageUrl} from "@/function/data";
 export default {
   data() {
     return {
-      image: null
+      image: null,
+      style: { backgroundImage: 'url(data:image/png;base64,' + this.heroBranding.image.data +')' }
     }
   },
   props: {

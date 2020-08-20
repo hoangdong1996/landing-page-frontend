@@ -82,7 +82,11 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card style="margin-top: 20px">
+      <div slot="header" class="clearfix form-navbar">
+        <span>Business Section Preview</span>
+        <el-button style="float: right; padding: 3px 0" type="text"></el-button>
+      </div>
       <BusinessSectionPreview :businessSection="preview"></BusinessSectionPreview>
     </el-card>
   </div>

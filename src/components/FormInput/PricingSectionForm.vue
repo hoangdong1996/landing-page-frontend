@@ -1,6 +1,6 @@
 <template>
-  <div v-if="pricingSection">
-    <el-card class="box-card">
+  <div  v-loading="loading">
+    <el-card class="box-card" v-if="pricingSection">
       <div slot="header" class="clearfix">
         <span>Pricing Section</span>
       </div>
@@ -100,7 +100,11 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card class="box-card" style="margin-top: 20px">
+      <div slot="header" class="clearfix">
+        <span>Pricing Section Preview</span>
+        <el-button style="float: right; padding: 3px 0" type="text"></el-button>
+      </div>
       <PricingSectionPreview :pricingSection="pricingSection"></PricingSectionPreview>
     </el-card>
   </div>
@@ -125,7 +129,8 @@ export default {
       pricingSectionForm: null,
       imageList: new Array(4),
       resImageList: new Array(4),
-      disable: false
+      disable: false,
+      loading: true
     }
   },
   methods: {
@@ -195,6 +200,7 @@ export default {
         this.fileList.push([obj])
         pricing.id = null
       })
+      this.loading = false
     },
     async getPricingSection() {
       await getPricingSection().then(response => {

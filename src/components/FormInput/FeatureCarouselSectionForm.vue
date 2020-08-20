@@ -49,7 +49,11 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card style="margin-top: 20px">
+      <div slot="header" class="clearfix form-navbar">
+        <span>Feature Carousel Section Preview</span>
+        <el-button style="float: right; padding: 3px 0" type="text"></el-button>
+      </div>
       <FeatureCarouselSectionPreview :featureCarouselSection="featureCarouselSection"></FeatureCarouselSectionPreview>
     </el-card>
   </div>
@@ -113,6 +117,7 @@ export default {
           .then(() => successNotify(this)
           ).catch(() => errorNotify(this))
       this.loading = false
+      this.resetDispatch()
     },
     async onPreview() {
       for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
@@ -152,6 +157,7 @@ export default {
     await this.resetDispatch()
   }
 }
+
 </script>
 
 <style lang="scss" scoped>

@@ -29,7 +29,13 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <el-card class="box-card" style="margin-top: 20px">
+      <div slot="header" class="clearfix">
+        <span>Newsletter Preview</span>
+        <el-button style="float: right; padding: 3px 0" type="text"></el-button>
+      </div>
     <NewsletterPreview :newsletter="newsletter"></NewsletterPreview>
+    </el-card>
   </div>
 </template>
 

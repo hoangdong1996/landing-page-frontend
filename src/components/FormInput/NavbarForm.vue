@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span>Navbar</span>
+    <el-card class="box-card ">
+      <div slot="header" class="clearfix form-navbar">
+        <span>Navbar Form</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
       <el-form label-width="120px">
@@ -31,7 +31,11 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card class="box-card">
+    <el-card class="box-card" style="margin-top: 20px">
+      <div slot="header" class="clearfix">
+        <span>Navbar Preview</span>
+        <el-button style="float: right; padding: 3px 0" type="text"></el-button>
+      </div>
       <div class="preview">
         <b-navbar
             v-b-scrollspy:nav-scroller
@@ -177,7 +181,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .upload {
   border: 1px gainsboro solid;
   border-radius: 5px;

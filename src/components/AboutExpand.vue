@@ -1,5 +1,5 @@
 <template>
-  <div class="row box-image-wrapper">
+  <div class="row box-image-wrapper" >
     <div
       v-for="(about, index) in aboutExpand"
       :key="index"
@@ -27,7 +27,7 @@ export default {
     return {}
   },
   watch: {
-    
+
   }
 }
 </script>

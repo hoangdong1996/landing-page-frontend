@@ -54,7 +54,11 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card class="box-card" style="margin-top: 20px">
+      <div slot="header" class="clearfix">
+        <span>Progress Circle Preview</span>
+        <el-button style="float: right; padding: 3px 0" type="text"></el-button>
+      </div>
       <ProgressCirclePreview :progressCircle="progressCircle" :render="render "></ProgressCirclePreview>
     </el-card>
   </div>
