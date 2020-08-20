@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Partner Client Section</span>
@@ -12,16 +12,14 @@
           <el-input class="input-label" type="textarea" v-model="partnerClientSection.text"></el-input>
         </el-form-item>
 
-        <el-form ref="dynamicValidateForm" label-width="120px" class="demo-dynamic">
+        <el-form label-width="120px" class="demo-dynamic">
           <el-form-item
-              v-for="(domain, index) in dynamicValidateForm"
+              v-for="(brandLogo, index) in partnerClientSection.brandLogoList"
               :label="'Logo ' + (index + 1)"
               :key="index"
               :rules="{required: true, message: 'can not be null', trigger: 'blur'}">
             <el-upload
                 accept="image/*"
-                name="files"
-                ref="upload"
                 class="upload-demo upload"
                 action="http://192.168.1.122:8081/api/image/uploadMultiFile"
                 :file-list="fileList[index]"
@@ -29,7 +27,7 @@
                 list-type="picture"
                 :on-change="handleChange">
               <el-button size="small" type="primary"
-                         @click="showIndex(index)">Click to upload
+                         @click="getIndex(index)">Click to upload
               </el-button>
               <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a
                 size less than 500kb
@@ -65,18 +63,19 @@ export default {
   data() {
     return {
       fileList: [],
-      imageList: new Array(12),
-      resImageList: new Array(12),
-      dynamicValidateForm: new Array(0),
-      indexImage: -1
+      imageList: [],
+      resImageList: [],
+      indexImage: -1,
+      loading: true,
     }
   },
   methods: {
-    showIndex(index) {
+    getIndex(index) {
       this.indexImage = index
     },
     handleChange(file) {
       this.imageList[this.indexImage] = file.raw
+      console.log(this.imageList)
     },
     async onSubmit() {
       await this.uploadFile()
@@ -84,13 +83,12 @@ export default {
     },
     async uploadFile() {
       for (let i = 0; i < this.imageList.length; i++) {
-        if (this.imageList[i] !== undefined) {
+        if (this.imageList[i] !== undefined && this.imageList[i] !== null) {
           await uploadFile(this.imageList[i]).then(res => {
             this.resImageList[i] = res.data.data
           }).catch(() => this.resetAll())
         }
       }
-      console.log(this.resImageList)
     },
     resetAll() {
       this.imageList = new Array(12)
@@ -98,52 +96,40 @@ export default {
     },
     submitFormRequest() {
       for (let i = 0; i < this.imageList.length; i++) {
-        if (this.resImageList[i] !== undefined)
+        if (this.resImageList[i] !== undefined && this.resImageList[i] !== null)
           this.partnerClientSection.brandLogoList[i].image = this.resImageList[i]
-      }//   createPartnerClientSection(this.partnerClientSection)
-    //       .then(() => successNotify(this))
-    //       .catch(() => errorNotify(this))
-    },
-    removeDomain(indexImage) {
-      let index = this.dynamicValidateForm[indexImage] ;
-      if (index !== -1) {
-        this.dynamicValidateForm.splice(index, 1);
-        // this.fileList.splice(index, 1);
       }
-      console.log(index, 'delete', this.dynamicValidateForm)
+      console.log(this.partnerClientSection.brandLogoList)
+      createPartnerClientSection(this.partnerClientSection)
+              .then(() => successNotify(this))
+              .catch(() => errorNotify(this))
+    },
+    removeDomain(index) {
+      if (index !== -1) {
+        this.partnerClientSection.brandLogoList.splice(index, 1);
+        this.imageList.splice(index, 1);
+        this.fileList.splice(index, 1)
+      }
     },
     addDomain() {
-      this.dynamicValidateForm.push({
-        key: Date.now(),
-        logo: ''
-      });
-      console.log(this.dynamicValidateForm)
+      let obj = {
+        image: {}
+      }
+      this.partnerClientSection.brandLogoList.push(obj)
     }
   },
   async created() {
     await this.$store.dispatch('getPartnerClientSection')
-    this.partnerClientSection.id = null
+    delete this.partnerClientSection.id
     this.partnerClientSection.brandLogoList.forEach(e => {
-      e.id = null
-    })
-
-    let index = 0;
-    this.partnerClientSection.brandLogoList.forEach(e => {
-      let domains = {
-        key: index,
-        logo: e.image
-      }
-      this.dynamicValidateForm.push(domains)
-      index++
-    })
-
-    this.partnerClientSection.brandLogoList.forEach(e => {
+      delete e.id
       let objLogo = {
         name: e.image.name,
         url: getImageUrl(e.image)
       }
       this.fileList.push([objLogo])
     })
+    this.loading = false
   }
 }
 </script>
