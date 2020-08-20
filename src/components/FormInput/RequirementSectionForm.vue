@@ -51,7 +51,7 @@
               </el-form-item>
               <el-form-item>
                 <el-button
-                    :disabled="requirementSection.requirementList[requirementSection.requirementList.length - 1] ===''"
+                    :disabled="requirementSection.requirementList[requirementSection.requirementList.length - 1] === ''"
                     @click="addRequirement()">New text
                 </el-button>
               </el-form-item>
@@ -83,9 +83,14 @@ export default {
   components: {
     RequirementSectionPreview
   },
+  // computed: {
+  //   disable() {
+  //     return this.data;
+  //   }
+  // },
   data() {
     return {
-      requirementSection: {},
+      requirementSection: null,
       fileList: [],
       imageSection: null,
       resImageSection: null,

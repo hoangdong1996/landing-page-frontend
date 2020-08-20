@@ -14,7 +14,7 @@
 
         <el-form label-width="120px" class="demo-dynamic">
           <el-form-item
-              v-for="(brandLogo, index) in partnerClientSection.brandLogoList"
+              v-for="(brandLogo, index) in domains"
               :label="'Logo ' + (index + 1)"
               :key="index"
               :rules="{required: true, message: 'can not be null', trigger: 'blur'}">
@@ -46,6 +46,9 @@
         </el-form-item>
       </el-form>
     </el-card>
+    <el-card>
+      <PartnerClientSectionPreview :partnerClientSection="partnerClientSection"/>
+    </el-card>
   </div>
 </template>
 
@@ -55,8 +58,11 @@ import {createPartnerClientSection} from "@/api/partnerClientSection";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import {getImageUrl} from "@/function/data";
-
+import PartnerClientSectionPreview from "../previews/PartnerClientSectionPreview";
 export default {
+  components: {
+    PartnerClientSectionPreview
+  },
   computed: {
     ...mapGetters(['partnerClientSection'])
   },
@@ -67,6 +73,7 @@ export default {
       resImageList: [],
       indexImage: -1,
       loading: true,
+      domains: []
     }
   },
   methods: {
@@ -75,9 +82,9 @@ export default {
     },
     handleChange(file) {
       this.imageList[this.indexImage] = file.raw
-      console.log(this.imageList)
     },
     async onSubmit() {
+      this.loading = true
       await this.uploadFile()
       this.submitFormRequest()
     },
@@ -91,31 +98,36 @@ export default {
       }
     },
     resetAll() {
-      this.imageList = new Array(12)
-      this.resImageList = new Array(12)
+      this.imageList = []
+      this.resImageList = []
     },
     submitFormRequest() {
       for (let i = 0; i < this.imageList.length; i++) {
-        if (this.resImageList[i] !== undefined && this.resImageList[i] !== null)
-          this.partnerClientSection.brandLogoList[i].image = this.resImageList[i]
+        if (this.resImageList[i] !== undefined && this.resImageList[i] !== null) {
+          this.partnerClientSection.brandLogoList.push({
+            image: this.resImageList[i]
+          })
+        }
       }
-      console.log(this.partnerClientSection.brandLogoList)
       createPartnerClientSection(this.partnerClientSection)
               .then(() => successNotify(this))
               .catch(() => errorNotify(this))
+      this.loading = false
     },
     removeDomain(index) {
       if (index !== -1) {
-        this.partnerClientSection.brandLogoList.splice(index, 1);
-        this.imageList.splice(index, 1);
+        this.domains.splice(index, 1);
+        this.imageList.splice(index, 1)
         this.fileList.splice(index, 1)
+        this.partnerClientSection.brandLogoList.splice(index, 1)
       }
     },
     addDomain() {
-      let obj = {
-        image: {}
-      }
-      this.partnerClientSection.brandLogoList.push(obj)
+      let obj = null
+      this.domains.push(obj)
+    },
+    removeNullImage() {
+
     }
   },
   async created() {
@@ -128,6 +140,7 @@ export default {
         url: getImageUrl(e.image)
       }
       this.fileList.push([objLogo])
+      this.domains.push(null)
     })
     this.loading = false
   }

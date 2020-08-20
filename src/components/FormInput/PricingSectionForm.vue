@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="pricingSection">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Pricing Section</span>
@@ -82,7 +82,7 @@
                       </el-form-item>
                       <el-form-item>
                         <el-button
-                            :disabled="pricing.price[pricing.price.length-1]===''"
+                            :disabled="pricing.price[pricing.price.length - 1] === ''"
                             @click="addPrice(index)">New text</el-button>
                       </el-form-item>
                     </el-form>
@@ -118,7 +118,7 @@ export default {
   },
   data() {
     return {
-      pricingSection: {},
+      pricingSection: null,
       pricingSectionIndex: 0,
       fileList: [],
       pricingSectionForm: null,
@@ -167,8 +167,8 @@ export default {
         }
       }
       createPricingSection(this.pricingSection)
-          .then(() => successNotify(this)
-          ).catch(() => errorNotify(this)
+              .then(() => successNotify(this))
+              .catch(() => errorNotify(this)
       )
     },
     removePrice(index, item) {
@@ -181,7 +181,7 @@ export default {
   created() {
     getPricingSection().then(response => {
       this.pricingSection = response.data.data
-      this.pricingSection.id = null
+      delete this.pricingSection.id
       this.pricingSection.pricingTableList.forEach(pricing => {
         let obj = {
           name: pricing.image.name,
