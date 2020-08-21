@@ -147,9 +147,12 @@ export default {
   margin-top: 20px;
 }
 .side-bar{
+  position: sticky;
+  top: 0px;
   height: 100vh;
 }
-.container-dashboard{
-  height: 100vh;
-}
+/*.container-dashboard{*/
+/*  height: 100vh;*/
+/*  overflow: scroll;*/
+/*}*/
 </style>
