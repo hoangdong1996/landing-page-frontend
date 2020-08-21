@@ -82,6 +82,15 @@ import {uploadFile} from "@/api/upload";
 import {getBase64, getImageUrl} from "@/function/data";
 import RequirementSectionPreview from "../previews/RequirementSectionPreview";
 
+const defaultRequirementSection = {
+  title: '',
+  description: '',
+  image: {},
+  button_href: '',
+  button_title: '',
+  requirementList: []
+}
+
 export default {
   components: {
     RequirementSectionPreview
@@ -104,26 +113,23 @@ export default {
     async onPreview() {
       if (this.imageSection !== null) {
         await getBase64(this.imageSection).then((data) => {
-          this.requirementSection.image.data = data
+          this.$set(this.requirementSection.image, 'data', data)
         })
       }
     },
     async onSubmit() {
-      await this.uploadFile()
-      this.submitFormRequest()
       this.loading = true
+      await this.uploadFile()
+      await this.submitFormRequest()
+      this.loading = false
     },
     async uploadFile() {
       if (this.imageSection !== null) {
         await uploadFile(this.imageSection).then(res => {
           this.resImageSection = res.data.data
-        }).catch(() => this.resetAll()
+        }).catch(() => this.onReset()
         )
       }
-    },
-    resetAll() {
-      this.imageSection = null
-      this.resImageSection = null
     },
     async submitFormRequest() {
       if (this.resImageSection !== null) {
@@ -132,33 +138,37 @@ export default {
       await createRequirementSection(this.requirementSection)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
-      this.getRequirementSection()
+      await this.getRequirementSection()
       this.loading = false
     },
-    async getRequirementSection() {
-      await getRequirementSection().then(response => {
-        this.requirementSection = response.data.data
+    getRequirementSection() {
+      return getRequirementSection().then(response => {
+        if(response.data.data !== null){
+          this.requirementSection = response.data.data
+        } else {
+          this.requirementSection = defaultRequirementSection
+        }
       })
     },
     async resetDispatch() {
       await this.getRequirementSection()
       delete this.requirementSection.id
-      this.loading = false
       this.fileList.push({
         name: this.requirementSection.image.name,
         url: getImageUrl(this.requirementSection.image)
       })
     },
     onReset() {
+      this.loading = true
       this.resetData()
       this.resetDispatch()
+      this.loading = false
     },
     resetData() {
       this.requirementSection = null
       this.fileList = []
       this.imageSection = null
       this.resImageSection = null
-      this.loading = true
       this.disable = false
     },
     removeRequirement(index) {
@@ -172,8 +182,8 @@ export default {
   },
   created() {
     this.resetDispatch()
+    this.loading = false
   }
-  ,
 }
 
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <div v-loading.lock="loading">
-    <el-card class="box-card ">
+  <div v-if="navbar">
+    <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix form-navbar">
         <span>Navbar Form</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
@@ -47,7 +47,7 @@
           <div class="container-fluid container-fluid--cp-150">
             <b-navbar-toggle target="nav_collapse"/>
             <b-navbar-brand class="navbar-brand" to="/">
-              <img v-if="preview.image" :src="preview.image.data | pngSrc" alt="logo"/>
+              <img v-if="navbar.image" :src="navbar.image.data | pngSrc" alt="logo"/>
             </b-navbar-brand>
             <b-btn-group class="header-config-wrapper">
               <b-btn class="header-config">
@@ -86,17 +86,18 @@
 </template>
 
 <script>
-import {createNavbar} from "@/api/navbar";
-import {mapGetters} from "vuex";
+import {createNavbar, getNavbar} from "@/api/navbar";
 import {successNotify, errorNotify} from "@/function/notify";
 import {uploadFile} from "@/api/upload";
 import {getBase64, getImageUrl} from "@/function/data";
-
+const defaultNavbar = {
+  image: {}
+}
 export default {
   name: "navbar-form",
   data() {
     return {
-      form: {},
+      navbar: null,
       fileList: [],
       response: null,
       image: null,
@@ -104,37 +105,27 @@ export default {
       loading: false,
     };
   },
-  computed: {
-    ...mapGetters(["navbar"]),
-    preview() {
-      return {...this.navbar};
-    },
-  },
   methods: {
     async onSubmit() {
       this.loading = true;
       await this.upload();
-      this.submitForm();
+      await this.submitForm();
+      this.loading = false;
     },
     async submitForm() {
       if (this.imageRes === null || this.imageRes === undefined) {
         return;
       }
-      this.navbar.image = this.imageRes;
+      this.$set(this.navbar, 'image', this.imageRes);
       await createNavbar(this.navbar)
           .then(() => {
             successNotify(this);
           })
           .catch(() => {
-            this.resetAll();
+            this.onReset();
             errorNotify(this);
           });
-      this.$store.dispatch("navbar/getLogoNavbar");
-      this.loading = false;
-    },
-    resetAll() {
-      this.image = null;
-      this.imageRes = null;
+      await this.getNavbarData()
     },
     handleChange(file) {
       this.image = file.raw;
@@ -146,30 +137,39 @@ export default {
       });
     },
     async onPreview() {
-      if (this.image != null) {
+      if (this.image !== null) {
         await getBase64(this.image).then((data) => {
-          this.preview.image.data = data;
+          this.navbar.image.data = data;
+          this.$set(this.navbar.image, 'data', data)
         });
       }
     },
     onReset() {
+      this.loading = true
       this.resetData()
       this.resetDispatch()
+      this.loading = false
     },
     resetData() {
-      this.form = {}
       this.fileList = []
       this.response = null
       this.image = null
       this.imageRes = null
-      this.loading = false
     },
     async resetDispatch() {
-      await this.$store.dispatch("navbar/getLogoNavbar");
-      this.navbar.id = null;
+      await this.getNavbarData()
       this.fileList.push({
         name: this.navbar.image.name,
         url: getImageUrl(this.navbar.image)
+      })
+    },
+    getNavbarData() {
+      return getNavbar().then(res => {
+        if(res.data.data !== null){
+          this.navbar = res.data.data
+        } else {
+          this.navbar = defaultNavbar
+        }
       })
     }
 

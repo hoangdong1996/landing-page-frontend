@@ -1,6 +1,6 @@
 <template>
-  <div v-if="aboutSection" v-loading="loading">
-    <el-card class="box-card">
+  <div v-loading="loading">
+    <el-card class="box-card" v-if="aboutSection">
       <div slot="header" class="clearfix">
         <span>About Section</span>
       </div>
@@ -74,28 +74,41 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {createAboutSection} from "@/api/aboutSection";
+import {createAboutSection, getAboutSection} from "@/api/aboutSection";
 import {uploadFile} from "@/api/upload";
 import {getBase64, getImageUrl} from "@/function/data";
 import {successNotify, errorNotify} from "@/function/notify";
 import AboutSectionPreview from "@/components/previews/AboutSectionPreview";
+
+const defaultAboutSection = {
+  title: '',
+  text: '',
+  aboutExpandList: [
+    {
+      image: {},
+      title: '',
+      href: ''
+    }, {
+      image: {},
+      title: '',
+      href: ''
+    }, {
+      image: {},
+      title: '',
+      href: ''
+    },
+  ],
+}
 export default {
   components:{
     AboutSectionPreview
   },
-  computed: {
-    ...mapGetters(["aboutSection"]),
-    preview() {
-      return {...this.aboutSection};
-    },
-  },
   data() {
     return {
+      aboutSection: null,
       fileList: [],
       loading: true,
       aboutExpandIndex: 0,
-      requestForm: null,
       imageList: new Array(3),
       resImageList: new Array(3),
     };
@@ -113,21 +126,16 @@ export default {
                 this.resImageList[i] = res.data.data;
               })
               .catch(() => {
-                this.resetAll();
-                return;
+                this.onReset();
               });
         }
       }
     },
-    async resetAll() {
-      await this.$store.dispatch("aboutSection/aboutSection");
-      this.resImageList = new Array(3);
-      this.imageList = new Array(3);
-    },
     async onSubmit() {
       this.loading = true;
       await this.uploadFile();
-      this.submitFormRequest();
+      await this.submitFormRequest();
+      this.loading = false;
     },
     async submitFormRequest() {
       let list = this.aboutSection.aboutExpandList;
@@ -139,49 +147,55 @@ export default {
       await createAboutSection(this.aboutSection)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this));
-      this.resetAll();
-      this.loading = false
+      this.onReset();
     },
     async onPreview() {
       let list = this.aboutSection.aboutExpandList;
       for (let i = 0; i < list.length; i++) {
         if (this.imageList[i] !== undefined) {
           await getBase64(this.imageList[i]).then((data) => {
-            list[i].image.data = data
+            this.$set(list[i].image, 'data', data)
           })
         }
       }
     },
     onReset() {
+      this.loading = true;
       this.resetData()
       this.resetDispatch()
+      this.loading = false;
     },
     resetData() {
       this.fileList = []
-      this.loading = true
       this.aboutExpandIndex = 0
-      this.requestForm = null
       this.imageList = new Array(3)
       this.resImageList = new Array(3)
     },
     async resetDispatch() {
-      await this.$store.dispatch("aboutSection/aboutSection");
-      this.loading = false;
+      await this.getFormData();
       this.aboutSection.id = null;
       this.aboutSection.aboutExpandList.forEach((item) => {
         item.id = null;
-      });
-      this.aboutSection.aboutExpandList.forEach(e => {
         let obj = {
-          name: e.image.name,
-          url: getImageUrl(e.image)
+          name: item.image.name,
+          url: getImageUrl(item.image)
         }
         this.fileList.push([obj])
+      });
+    },
+    getFormData() {
+      return getAboutSection().then(res => {
+        if(res.data.data !== null) {
+          this.aboutSection = res.data.data;
+        } else  {
+          this.aboutSection = defaultAboutSection;
+        }
       })
     }
   },
   async mounted() {
     await this.resetDispatch()
+    this.loading = false
   },
 };
 </script>

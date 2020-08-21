@@ -50,17 +50,17 @@
           id="home"
           class="hero-branding bg-cover"
           style="position: relative"
-          :style="{ 'background-image': 'url(data:image/png;base64,' + preview.image.data +')' }"
+          :style="{ 'background-image': 'url(data:image/png;base64,' + heroBranding.image.data +')' }"
       >
         <div class="container-fluid container-fluid--cp-150">
           <div class="hero-branding">
             <div class="hero-content">
-              <h2 class="h1 hero-content-title">{{ preview.title }}</h2>
-              <h6 class="hero-content-subtitle mt-20">{{ preview.description }}</h6>
+              <h2 class="h1 hero-content-title">{{ heroBranding.title }}</h2>
+              <h6 class="hero-content-subtitle mt-20">{{ heroBranding.description }}</h6>
               <div class="slider-button mt-30">
                 <a
                     class="ht-btn ht-btn-md"
-                >{{ preview.button_title }}</a>
+                >{{ heroBranding.button_title }}</a>
               </div>
             </div>
           </div>
@@ -71,21 +71,21 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {createHeroBranding} from "@/api/heroBranding";
+import {createHeroBranding, getHeroBranding} from "@/api/heroBranding";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import {getBase64, getImageUrl} from "@/function/data";
-
+const defaultHeroBranding = {
+  title: '',
+  description: '',
+  button_title: '',
+  button_href: '',
+  image: {}
+}
 export default {
-  computed: {
-    ...mapGetters(['heroBranding']),
-    preview() {
-      return {...this.heroBranding}
-    }
-  },
   data() {
     return {
+      heroBranding: null,
       loading: false,
       fileList: [],
       imageSection: null,
@@ -100,20 +100,20 @@ export default {
     async onPreview() {
       if (this.imageSection != null) {
         await getBase64(this.imageSection).then((data) => {
-          this.preview.image.data = data;
+          this.$set(this.heroBranding.image, 'data', data)
         });
       }
     },
     async onSubmit() {
       this.loading = true
       await this.uploadFile()
-      this.submitFormRequest()
+      await this.submitFormRequest()
     },
     async uploadFile() {
       if (this.imageSection !== null) {
         await uploadFile(this.imageSection).then(res => {
           this.resImageSection = res.data.data
-        }).catch(() => this.resetAll())
+        }).catch(() => this.onReset())
       }
     },
     async submitFormRequest() {
@@ -123,32 +123,36 @@ export default {
       await createHeroBranding(this.heroBranding)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
-      this.resetAll()
+      this.onReset()
       this.loading = false
-    },
-    resetAll() {
-      this.imageSection = null
-      this.resImageSection = null
-      this.$store.dispatch("heroBranding/getHeroBranding");
     },
     onReset() {
+      this.loading = true
       this.resetData()
       this.resetDispatch()
+      this.loading = false
     },
     resetData() {
-      this.loading = false
       this.fileList = []
       this.imageSection = null
       this.resImageSection = null
     },
     async resetDispatch() {
-      await this.$store.dispatch("heroBranding/getHeroBranding");
-      this.heroBranding.id = null
+      await this.getHeroBrandingForm()
       this.fileList.push({
         name: this.heroBranding.image.name,
         url: getImageUrl(this.heroBranding.image)
       })
     },
+    getHeroBrandingForm() {
+      return getHeroBranding().then(res => {
+        if(res.data.data !==  null){
+          this.heroBranding = res.data.data
+        } else {
+          this.heroBranding = defaultHeroBranding
+        }
+      })
+    }
   },
   async mounted() {
     await this.resetDispatch()
