@@ -1,6 +1,6 @@
 <template>
   <div v-if="heroBranding">
-    <el-card class="box-card" v-loading.fullscreen.lock="loading">
+    <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Hero Branding</span>
       </div>

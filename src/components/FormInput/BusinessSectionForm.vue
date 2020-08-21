@@ -1,6 +1,6 @@
 <template>
-  <div v-if="businessSection !== null" v-loading="loading">
-    <el-card class="box-card">
+  <div >
+    <el-card class="box-card" v-loading="loading" v-if="businessSection">
       <div slot="header" class="clearfix">
         <span>Business Section</span>
       </div>
@@ -82,7 +82,7 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card style="margin-top: 20px">
+    <el-card style="margin-top: 20px" v-if="businessSection">
       <div slot="header" class="clearfix form-navbar">
         <span>Business Section Preview</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
@@ -132,6 +132,7 @@ export default {
       this.onPreview()
     },
     async onSubmit() {
+      this.loading = true
       await this.uploadFile()
       this.submitFormRequest();
     },
@@ -156,7 +157,7 @@ export default {
       await this.$store.dispatch("businessSection/businessSection")
       delete this.businessSection.id
     },
-    submitFormRequest() {
+    async submitFormRequest() {
       if (this.resSectionImage !== null) {
         this.businessSection.image = this.resSectionImage;
       }
@@ -165,9 +166,11 @@ export default {
           this.businessSection.businessFeatureList[i].image = this.resImageList[i];
         }
       }
-      createBusinessSection(this.businessSection)
+      await createBusinessSection(this.businessSection)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this));
+      this.onReset()
+      this.loading = false
     },
     async onPreview() {
       if (this.sectionImage !== null) {
@@ -205,7 +208,6 @@ export default {
       list.forEach(feature => {
         delete feature.id
       })
-      this.loading = false;
       // get latest image for section
       this.sectionList.push({
         name: this.businessSection.image.name,
@@ -222,6 +224,7 @@ export default {
   },
   async mounted() {
     await this.resetDispatch()
+    this.loading = false;
   }
 };
 </script>

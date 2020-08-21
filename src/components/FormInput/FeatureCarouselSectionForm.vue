@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  v-loading="loading">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Feature Carousel Section</span>
@@ -9,7 +9,7 @@
         <el-button @click.prevent="featureCarouselSectionIndex = 1">Carousel 2</el-button>
         <el-button @click.prevent="featureCarouselSectionIndex = 2">Carousel 3</el-button>
       </el-row>
-      <el-form ref="form" label-width="120px" v-loading="loading">
+      <el-form ref="form" label-width="120px">
         <el-row>
           <el-col v-for="(feature, index) in featureCarouselSection.featureCarouselList" :key="index"
                   style="padding-right: 10px"
@@ -89,6 +89,7 @@ export default {
       this.onPreview()
     },
     async onSubmit() {
+      this.loading=true
       await this.uploadFile()
       this.submitFormRequest()
     },
@@ -117,7 +118,7 @@ export default {
           .then(() => successNotify(this)
           ).catch(() => errorNotify(this))
       this.loading = false
-      this.resetDispatch()
+      this.onReset()
     },
     async onPreview() {
       for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
@@ -133,7 +134,7 @@ export default {
       this.resetDispatch()
     },
     resetData() {
-      this.loading = true
+      // this.loading = true
       this.fileList = []
       this.imageList = new Array(3)
       this.resImageList = new Array(3)
