@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <el-card class="box-card" v-loading="loading" v-if="businessSection">
       <div slot="header" class="clearfix">
         <span>Business Section</span>
@@ -87,31 +87,47 @@
         <span>Business Section Preview</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
-      <BusinessSectionPreview :businessSection="preview"></BusinessSectionPreview>
+      <BusinessSectionPreview :businessSection="businessSection"></BusinessSectionPreview>
     </el-card>
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {createBusinessSection} from "@/api/businessSection";
+import {createBusinessSection, getBusinessSection} from "@/api/businessSection";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import BusinessSectionPreview from "../previews/BusinessSectionPreview";
 import {getBase64, getImageUrl} from "@/function/data";
 
+const defaultBusinessSection = {
+  section_title: '',
+  video_url: '',
+  video_title: '',
+  image: {},
+  businessFeatureList: [
+    {
+      image: {},
+      title: '',
+      description: ''
+    },{
+      image: {},
+      title: '',
+      description: ''
+    },{
+      image: {},
+      title: '',
+      description: ''
+    },
+  ]
+}
+
 export default {
   components: {
     BusinessSectionPreview
   },
-  computed: {
-    ...mapGetters(["businessSection"]),
-    preview() {
-      return {...this.businessSection};
-    }
-  },
   data() {
     return {
+      businessSection: null,
       loading: true,
       sectionList: [],
       fileList: [],
@@ -134,7 +150,8 @@ export default {
     async onSubmit() {
       this.loading = true
       await this.uploadFile()
-      this.submitFormRequest();
+      await this.submitFormRequest();
+      this.loading = false
     },
     async uploadFile() {
       if (this.sectionImage !== null) {
@@ -147,15 +164,9 @@ export default {
           await uploadFile(this.imageList[i]).then(res => {
             this.resImageList[i] = res.data.data
           }).catch(() => {
-            this.resetAll()
+            this.onReset()
           })
       }
-    },
-    async resetAll() {
-      this.resImageList = new Array(3)
-      this.imageList = new Array(3)
-      await this.$store.dispatch("businessSection/businessSection")
-      delete this.businessSection.id
     },
     async submitFormRequest() {
       if (this.resSectionImage !== null) {
@@ -175,24 +186,26 @@ export default {
     async onPreview() {
       if (this.sectionImage !== null) {
         await getBase64(this.sectionImage).then((data) => {
-          this.businessSection.image.data = data
+          this.$set(this.businessSection.image, 'data', data)
         })
       }
       const list = this.businessSection.businessFeatureList;
       for (let i = 0; i < list.length; i++) {
         if (this.imageList[i] !== undefined) {
           await getBase64(this.imageList[i]).then((data) => {
+            this.$set(list[i].image, 'data', data)
             list[i].image.data = data
           })
         }
       }
     },
     onReset() {
+      this.loading = true
       this.resetData()
       this.resetDispatch()
+      this.loading = false
     },
     resetData() {
-      this.loading = true
       this.sectionList = []
       this.fileList = []
       this.sectionImage = null
@@ -202,24 +215,29 @@ export default {
       this.businessSectionIndex = 0
     },
     async resetDispatch() {
-      await this.$store.dispatch("businessSection/businessSection")
-      delete this.businessSection.id
-      const list = this.businessSection.businessFeatureList
-      list.forEach(feature => {
-        delete feature.id
-      })
+      await this.getBusinessSectionForm()
       // get latest image for section
       this.sectionList.push({
         name: this.businessSection.image.name,
         url: getImageUrl(this.businessSection.image)
       })
       // get latest image for 3 feature
+      const list = this.businessSection.businessFeatureList
       for (let i = 0; i < list.length; i++) {
         this.fileList.push([{
           name: list[i].image.name,
           url: getImageUrl(list[i].image)
         }])
       }
+    },
+    getBusinessSectionForm() {
+      return getBusinessSection().then(res => {
+        if (res.data.data !== null) {
+          this.businessSection = res.data.data
+        } else {
+          this.businessSection = defaultBusinessSection
+        }
+      })
     }
   },
   async mounted() {
