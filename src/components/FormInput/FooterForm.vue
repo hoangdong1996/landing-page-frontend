@@ -71,19 +71,21 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {createFooter} from "@/api/footer";
+import {createFooter, getFooter} from "@/api/footer";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import {getBase64, getImageUrl} from "@/function/data";
 import FooterSectionPreview from "@/components/previews/FooterSectionPreview";
 
+const footerDefault = {
+  image: {},
+  title: '',
+  footerLinkList: [{title: '', href: ''}]
+}
+
 export default {
   components: {
     FooterSectionPreview
-  },
-  computed: {
-    ...mapGetters(['footer'])
   },
   data() {
     return {
@@ -92,12 +94,20 @@ export default {
       imageSection: null,
       resImageSection: null,
       loading: true,
+      footer: null
     }
   },
   methods: {
     handleChange(file) {
       this.imageSection = file.raw
       this.onPreview()
+    },
+    async onPreview() {
+      if (this.imageSection !== null) {
+        await getBase64(this.imageSection).then((data) => {
+          this.$set( this.footer.image,'data',data)
+        })
+      }
     },
     async onSubmit() {
       this.loading = true
@@ -114,7 +124,6 @@ export default {
     resetAll() {
       this.imageSection = null
       this.resImageSection = null
-      this.$store.dispatch('footer/getFooter')
     },
     async submitFormRequest() {
       if (this.resImageSection !== null) {
@@ -123,15 +132,8 @@ export default {
       await createFooter(this.footer)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
-      this.$store.dispatch('footer/getFooter')
+      this.onReset()
       this.loading = false
-    },
-    async onPreview() {
-      if (this.imageSection !== null) {
-        await getBase64(this.imageSection).then((data) => {
-          this.footer.image.data = data
-        })
-      }
     },
     onReset() {
       this.resetData()
@@ -143,14 +145,23 @@ export default {
       this.imageSection = null
       this.resImageSection = null
     },
-    async resetDispatch(){
-      await this.$store.dispatch('footer/getFooter')
+    async resetDispatch() {
+      await this.getFooter()
       delete this.footer.id
       this.fileList.push({
         name: this.footer.image.name,
         url: getImageUrl(this.footer.image)
       })
       this.loading = false
+    },
+    async getFooter() {
+      await getFooter().then(response => {
+        if (response.data.data === null) {
+          this.footer = footerDefault
+        } else {
+          this.footer = response.data.data
+        }
+      })
     },
     removeFooterLink(index) {
       if (index !== -1) {
