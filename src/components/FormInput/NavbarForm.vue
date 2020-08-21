@@ -1,6 +1,6 @@
 <template>
-  <div v-loading.lock="loading">
-    <el-card class="box-card ">
+  <div v-if="navbar">
+    <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix form-navbar">
         <span>Navbar Form</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
