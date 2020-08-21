@@ -70,13 +70,21 @@ import {successNotify, errorNotify} from '@/function/notify'
 import ProgressCirclePreview from "@/components/previews/ProgressCirclePreview";
 import {getProgressCircle} from '@/api/progressCircle'
 
+const feature = {
+  progress: 0,
+  featureListTitle: '',
+  featureList: []
+}
+const progressCircleDefault = {
+  featureProgressList: [{...feature}, {...feature}]
+}
 export default {
   components: {
     ProgressCirclePreview
   },
   data() {
     return {
-      progressCircleIndex:0,
+      progressCircleIndex: 0,
       render: 0,
       num: 1,
       disable: false,
@@ -97,23 +105,25 @@ export default {
     addFeatureList(index) {
       this.progressCircle.featureProgressList[index].featureList.push('');
     },
-    onReset(){
+    onReset() {
       this.resetData()
       this.resetDispatch()
     },
-    resetData(){
+    resetData() {
       this.progressCircle = null
     },
     resetDispatch() {
       this.getProgressCircle()
-        this.progressCircle.id = null
-        this.progressCircle.featureProgressList.forEach(e => {
-          e.id = null
-        })
+      this.progressCircle.id = null
+      this.progressCircle.featureProgressList.forEach(e => {
+        e.id = null
+      })
     },
-    getProgressCircle(){
+    getProgressCircle() {
       getProgressCircle().then(response => {
-        if (response.data.data !== null){
+        if (response.data.data === null) {
+          this.progressCircle = progressCircleDefault
+        } else {
           this.progressCircle = response.data.data
         }
       })

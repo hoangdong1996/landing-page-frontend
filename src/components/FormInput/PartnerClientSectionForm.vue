@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading" >
+  <div v-loading="loading"  v-if="partnerClientSection">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Partner Client Section</span>
@@ -95,6 +95,8 @@ export default {
       for (let i= 0; i< this.partnerClientSection.brandLogoList.length; i++) {
         if (this.imageList[i] !== undefined) {
           await getBase64(this.imageList[i]).then(data => {
+            // this.partnerClientSection.brandLogoList[i].image.data = data
+            this.partnerClientSection.brandLogoList.push({})
             this.$set(this.partnerClientSection.brandLogoList[i].image,'data',data)
           })
         }
@@ -158,10 +160,10 @@ export default {
     },
     async getPartnerClientSection() {
       await getPartnerClientSection().then(response => {
-        if (response.data.data !== null) {
-          this.partnerClientSection = response.data.data
-        } else {
+        if (response.data.data === null) {
           this.partnerClientSection = partnerClientDefault
+        } else {
+          this.partnerClientSection = response.data.data
         }
       })
     },
