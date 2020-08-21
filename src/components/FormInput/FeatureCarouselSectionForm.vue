@@ -1,5 +1,5 @@
 <template>
-  <div  v-loading="loading">
+  <div v-loading="loading" v-if="featureCarouselSection">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Feature Carousel Section</span>
@@ -16,6 +16,12 @@
                   v-show="featureCarouselSectionIndex === index">
             <div>
               <el-card>
+                <el-form-item label="Title">
+                  <el-input class="input-label" v-model="feature.title" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="Description">
+                  <el-input class="input-label" v-model="feature.description" size="small"></el-input>
+                </el-form-item>
                 <el-form-item label="Image">
                   <el-upload
                       accept="image/*"
@@ -33,12 +39,6 @@
                     <div slot="tip" class="el-upload__tip">jpg/png files with a size less than 500kb</div>
                   </el-upload>
                 </el-form-item>
-                <el-form-item label="Title">
-                  <el-input class="input-label" v-model="feature.title" size="small"></el-input>
-                </el-form-item>
-                <el-form-item label="Description">
-                  <el-input class="input-label" v-model="feature.description" size="small"></el-input>
-                </el-form-item>
               </el-card>
             </div>
           </el-col>
@@ -54,25 +54,38 @@
         <span>Feature Carousel Section Preview</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
-      <FeatureCarouselSectionPreview :featureCarouselSection="featureCarouselSection"></FeatureCarouselSectionPreview>
+      <FeatureCarouselSectionPreview :featureCarouselSection="featureCarouselSection"
+                                     v-if="featureCarouselSection"></FeatureCarouselSectionPreview>
     </el-card>
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {createFeatureCarouselSection} from "@/api/featureCarouselSection";
+import {createFeatureCarouselSection, getFeatureCarouselSection} from "@/api/featureCarouselSection";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import FeatureCarouselSectionPreview from "@/components/previews/FeatureCarouselSectionPreview";
 import {getBase64, getImageUrl} from "@/function/data";
 
+const featureCarouselDefault = {
+  featureCarouselList: [
+    {
+      image: {},
+      title: '',
+      description: ''
+    }, {
+      image: {},
+      title: '',
+      description: ''
+    }, {
+      image: {},
+      title: '',
+      description: ''
+    }]
+}
 export default {
   components: {
     FeatureCarouselSectionPreview
-  },
-  computed: {
-    ...mapGetters(['featureCarouselSection'])
   },
   data() {
     return {
@@ -80,7 +93,8 @@ export default {
       fileList: [],
       imageList: new Array(3),
       resImageList: new Array(3),
-      featureCarouselSectionIndex: 0
+      featureCarouselSectionIndex: 0,
+      featureCarouselSection: null
     }
   },
   methods: {
@@ -88,10 +102,20 @@ export default {
       this.imageList[this.featureCarouselSectionIndex] = file.raw
       this.onPreview()
     },
+    async onPreview() {
+      for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
+        if (this.imageList[i] !== undefined) {
+          await getBase64(this.imageList[i]).then((data) => {
+            this.$set(this.featureCarouselSection.featureCarouselList[i].image, 'data', data)
+          })
+        }
+      }
+    },
     async onSubmit() {
-      this.loading=true
+      this.loading = true
       await this.uploadFile()
-      this.submitFormRequest()
+      await this.submitFormRequest()
+      this.loading = false
     },
     async uploadFile() {
       for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
@@ -99,63 +123,59 @@ export default {
           await uploadFile(this.imageList[i]).then(res => {
             this.resImageList[i] = res.data.data
           }).catch(() => {
-            this.resetAll()
-            return
+            this.onReset()
           })
         }
       }
-    },
-    resetAll() {
-      this.resImageList = new Array(3)
-      this.imageList = new Array(3)
     },
     async submitFormRequest() {
       for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
-        if (this.resImageList[i] !== undefined)
+        if (this.resImageList[i] !== undefined) {
           this.featureCarouselSection.featureCarouselList[i].image = this.resImageList[i]
-      }
-      await createFeatureCarouselSection(this.featureCarouselSection)
-          .then(() => successNotify(this)
-          ).catch(() => errorNotify(this))
-      this.loading = false
-      this.onReset()
-    },
-    async onPreview() {
-      for (let i = 0; i < this.featureCarouselSection.featureCarouselList.length; i++) {
-        if (this.imageList[i] !== undefined) {
-          await getBase64(this.imageList[i]).then((data) => {
-            this.featureCarouselSection.featureCarouselList[i].image.data = data
-          })
         }
       }
+      await createFeatureCarouselSection(this.featureCarouselSection)
+          .then(() => successNotify(this))
+          .catch(() => errorNotify(this))
+
+      this.onReset()
     },
     onReset() {
+      this.loading = true
       this.resetData()
       this.resetDispatch()
+      this.loading = false
     },
     resetData() {
-      // this.loading = true
       this.fileList = []
       this.imageList = new Array(3)
       this.resImageList = new Array(3)
       this.featureCarouselSectionIndex = 0
     },
     async resetDispatch() {
-      await this.$store.dispatch('featureCarouselSection/getFeatureCarouselSection')
-      this.loading = false;
-      this.featureCarouselSection.id = null;
+      await this.getFeatureCarouselSectionForm()
       this.featureCarouselSection.featureCarouselList.forEach(feature => {
         let obj = {
           name: feature.image.name,
           url: getImageUrl(feature.image)
         }
         this.fileList.push([obj])
-        feature.id = null
+      })
+    },
+    getFeatureCarouselSectionForm() {
+      return getFeatureCarouselSection().then(response => {
+        if (response.data.data === null) {
+          this.featureCarouselSection = featureCarouselDefault
+        } else {
+          this.featureCarouselSection = response.data.data
+          this.featureCarouselSection.id = null
+        }
       })
     }
   },
-  async mounted() {
-    await this.resetDispatch()
+  created() {
+    this.resetDispatch()
+    this.loading = false
   }
 }
 

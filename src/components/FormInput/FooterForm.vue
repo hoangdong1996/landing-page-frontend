@@ -49,7 +49,10 @@
                 </el-row>
               </el-form-item>
               <el-form-item>
-                <el-button @click="addFooterLink">New text</el-button>
+                <el-button
+                    :disabled="footer.footerLinkList[footer.footerLinkList.length-1].title ===''"
+                    @click="addFooterLink">New text
+                </el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -89,12 +92,13 @@ export default {
   },
   data() {
     return {
+      footer: null,
       imageFooter: null,
       fileList: [],
       imageSection: null,
       resImageSection: null,
       loading: true,
-      footer: null
+      disable: false
     }
   },
   methods: {
@@ -105,7 +109,7 @@ export default {
     async onPreview() {
       if (this.imageSection !== null) {
         await getBase64(this.imageSection).then((data) => {
-          this.$set( this.footer.image,'data',data)
+          this.$set(this.footer.image, 'data', data)
         })
       }
     },
