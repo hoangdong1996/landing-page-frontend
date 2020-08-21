@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-container>
-      <el-aside width="230px">
+    <el-container >
+      <el-aside width="230px" class="side-bar">
         <div class="logo-container">
           <svg width="120px" height="31px" viewBox="0 0 120 31" version="1.1" xmlns="http://www.w3.org/2000/svg"
                xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -21,7 +21,7 @@
         </div>
         <el-menu
             :router="true"
-            class="el-menu-vertical-demo "
+            class="el-menu-vertical-demo"
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b">
@@ -83,7 +83,7 @@
 
         </el-menu>
       </el-aside>
-      <el-container>
+      <el-container class="container-dashboard">
         <el-main>
           <router-view></router-view>
         </el-main>
@@ -145,5 +145,11 @@ export default {
 
 .button-container {
   margin-top: 20px;
+}
+.side-bar{
+  height: 100vh;
+}
+.container-dashboard{
+  height: 100vh;
 }
 </style>

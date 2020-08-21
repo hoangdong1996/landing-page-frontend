@@ -206,14 +206,13 @@ export default {
     },
     async resetDispatch() {
       await this.getPricingSection()
-      this.pricingSection.id = null
       this.pricingSection.pricingTableList.forEach(pricing => {
         let obj = {
           name: pricing.image.name,
           url: getImageUrl(pricing.image)
         }
         this.fileList.push([obj])
-        pricing.id = null
+        // pricing.id = null
       })
       this.loading = false
     },

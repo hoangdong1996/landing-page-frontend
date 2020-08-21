@@ -168,7 +168,6 @@ export default {
           this.featureCarouselSection = featureCarouselDefault
         } else {
           this.featureCarouselSection = response.data.data
-          this.featureCarouselSection.id = null
         }
       })
     }
