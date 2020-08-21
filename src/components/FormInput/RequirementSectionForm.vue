@@ -76,7 +76,6 @@
 </template>
 
 <script>
-// import {mapGetters} from 'vuex'
 import {createRequirementSection, getRequirementSection} from "@/api/requirementSection";
 import {errorNotify, successNotify} from '@/function/notify'
 import {uploadFile} from "@/api/upload";
@@ -87,11 +86,6 @@ export default {
   components: {
     RequirementSectionPreview
   },
-  // computed: {
-  //   disable() {
-  //     return this.data;
-  //   }
-  // },
   data() {
     return {
       requirementSection: null,

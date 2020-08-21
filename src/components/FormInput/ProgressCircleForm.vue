@@ -105,12 +105,17 @@ export default {
       this.progressCircle = null
     },
     resetDispatch() {
-      getProgressCircle().then(resp => {
-        this.progressCircle = resp.data.data
+      this.getProgressCircle()
         this.progressCircle.id = null
         this.progressCircle.featureProgressList.forEach(e => {
           e.id = null
         })
+    },
+    getProgressCircle(){
+      getProgressCircle().then(response => {
+        if (response.data.data !== null){
+          this.progressCircle = response.data.data
+        }
       })
     }
   },

@@ -20,7 +20,7 @@
             <el-button size="small" type="primary">Click to upload</el-button>
           </el-upload>
         </el-form-item>
-        <el-form-item style="margin-top: 20px">
+        <el-form-item style="margin-top: 20px ; text-align: center ;margin-left:0px;"  >
           <el-button
               type="primary"
               @click.prevent="onSubmit"

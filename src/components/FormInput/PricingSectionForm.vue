@@ -1,5 +1,5 @@
 <template>
-  <div  v-loading="loading">
+  <div v-loading="loading">
     <el-card class="box-card" v-if="pricingSection">
       <div slot="header" class="clearfix">
         <span>Pricing Section</span>
@@ -117,6 +117,22 @@ import {errorNotify, successNotify} from "@/function/notify";
 import PricingSectionPreview from "@/components/previews/PricingSectionPreview";
 import {getBase64, getImageUrl} from "@/function/data";
 
+const pricingSectionDefault = {
+  title: '',
+  description: '',
+  popularTitle: '',
+  pricingTableList: [
+    {
+      title: '',
+      image: {},
+      value: '',
+      isPopular: false,
+      active: false,
+      duration: '',
+      price: []
+    }
+  ]
+}
 export default {
   components: {
     PricingSectionPreview
@@ -142,7 +158,7 @@ export default {
       for (let i = 0; i < this.pricingSection.pricingTableList.length; i++) {
         if (this.imageList[i] !== undefined) {
           await getBase64(this.imageList[i]).then((data) => {
-            this.pricingSection.pricingTableList[i].image.data = data
+            this.$set(this.pricingSection.pricingTableList[i].image, 'data', data)
           })
         }
       }
@@ -175,8 +191,8 @@ export default {
       await createPricingSection(this.pricingSection)
           .then(() => successNotify(this)
           ).catch(() => errorNotify(this)
-      )
-    this.getPricingSection()
+          )
+      this.getPricingSection()
     },
     onReset() {
       this.resetData()
@@ -189,8 +205,9 @@ export default {
       this.imageList = new Array(4)
       this.resImageList = new Array(4)
     },
-    async resetDispatch(){
-     await this.getPricingSection()
+    async resetDispatch() {
+      await this.getPricingSection()
+
       this.pricingSection.id = null
       this.pricingSection.pricingTableList.forEach(pricing => {
         let obj = {
@@ -204,7 +221,11 @@ export default {
     },
     async getPricingSection() {
       await getPricingSection().then(response => {
-        this.pricingSection = response.data.data
+        if (response.data.data === null) {
+          this.pricingSection = pricingSectionDefault
+        } else {
+          this.pricingSection = response.data.data
+        }
       })
     },
     removePrice(index, item) {

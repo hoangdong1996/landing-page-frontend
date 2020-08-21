@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loading">
+  <div v-loading="loading" >
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Partner Client Section</span>
@@ -57,22 +57,24 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {createPartnerClientSection} from "@/api/partnerClientSection";
+import {createPartnerClientSection, getPartnerClientSection} from "@/api/partnerClientSection";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
-import {getImageUrl} from "@/function/data";
+import {getBase64, getImageUrl} from "@/function/data";
 import PartnerClientSectionPreview from "../previews/PartnerClientSectionPreview";
 
+const partnerClientDefault = {
+  title: '',
+  text: '',
+  brandLogoList: []
+}
 export default {
   components: {
     PartnerClientSectionPreview
   },
-  computed: {
-    ...mapGetters(['partnerClientSection'])
-  },
   data() {
     return {
+      partnerClientSection: null,
       fileList: [],
       imageList: [],
       resImageList: [],
@@ -87,6 +89,16 @@ export default {
     },
     handleChange(file) {
       this.imageList[this.indexImage] = file.raw
+      this.onPreview()
+    },
+    async onPreview(){
+      for (let i= 0; i< this.partnerClientSection.brandLogoList.length; i++) {
+        if (this.imageList[i] !== undefined) {
+          await getBase64(this.imageList[i]).then(data => {
+            this.$set(this.partnerClientSection.brandLogoList[i].image,'data',data)
+          })
+        }
+      }
     },
     async onSubmit() {
       this.loading = true
@@ -130,8 +142,8 @@ export default {
       this.indexImage = -1
       this.domains = []
     },
-    async resetDispatch(){
-      await this.$store.dispatch('getPartnerClientSection')
+    async resetDispatch() {
+      await this.getPartnerClientSection()
       delete this.partnerClientSection.id
       this.partnerClientSection.brandLogoList.forEach(e => {
         delete e.id
@@ -143,6 +155,15 @@ export default {
         this.domains.push(null)
       })
       this.loading = false
+    },
+    async getPartnerClientSection() {
+      await getPartnerClientSection().then(response => {
+        if (response.data.data !== null) {
+          this.partnerClientSection = response.data.data
+        } else {
+          this.partnerClientSection = partnerClientDefault
+        }
+      })
     },
     removeDomain(index) {
       if (index !== -1) {

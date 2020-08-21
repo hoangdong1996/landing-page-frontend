@@ -34,25 +34,24 @@
         <span>Newsletter Preview</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
-    <NewsletterPreview :newsletter="newsletter"></NewsletterPreview>
+      <NewsletterPreview :newsletter="newsletter"></NewsletterPreview>
     </el-card>
   </div>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {createNewsletter} from "@/api/newsletter";
+import {createNewsletter, getNewsletter} from "@/api/newsletter";
 import {successNotify, errorNotify} from '@/function/notify'
 import NewsletterPreview from "@/components/previews/NewsletterPreview";
+
 export default {
-  components:{
+  components: {
     NewsletterPreview
   },
-  computed: {
-    ...mapGetters(['newsletter'])
-  },
   data() {
-    return {}
+    return {
+      newsletter: {}
+    }
   },
   methods: {
     onSubmit() {
@@ -62,13 +61,19 @@ export default {
         errorNotify(this)
       })
     },
-    onReset(){
-      this.$store.dispatch('newsletter/getNewsletter')
+    async getNewsletter() {
+      await getNewsletter().then(response => {
+        if (response.data.data !== null) {
+          this.newsletter = response.data.data
+        }
+      })
+    },
+    onReset() {
+      this.getNewsletter()
     }
   },
   async mounted() {
-   await this.$store.dispatch('newsletter/getNewsletter')
-    this.newsletter.id = null
+    await this.getNewsletter()
   }
 }
 </script>
