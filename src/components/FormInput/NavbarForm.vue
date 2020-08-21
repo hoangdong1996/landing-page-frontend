@@ -151,6 +151,7 @@ export default {
       this.loading = false
     },
     resetData() {
+      this.navbar = null
       this.fileList = []
       this.response = null
       this.image = null

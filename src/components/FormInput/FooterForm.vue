@@ -144,6 +144,7 @@ export default {
       this.resetDispatch()
     },
     resetData() {
+      this.footer = null
       this.imageFooter = null
       this.fileList = []
       this.imageSection = null

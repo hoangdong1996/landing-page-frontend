@@ -206,6 +206,7 @@ export default {
       this.loading = false
     },
     resetData() {
+      this.businessSection = null
       this.sectionList = []
       this.fileList = []
       this.sectionImage = null

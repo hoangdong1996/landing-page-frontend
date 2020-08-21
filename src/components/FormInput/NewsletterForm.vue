@@ -69,6 +69,7 @@ export default {
       })
     },
     onReset() {
+      this.newsletter = null
       this.getNewsletter()
     }
   },

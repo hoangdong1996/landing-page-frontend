@@ -172,14 +172,9 @@ export default {
           await uploadFile(this.imageList[i]).then(res => {
             this.resImageList[i] = res.data.data
           }).catch(() => {
-            this.resetAll()
-            return
+            this.onReset()
           })
       }
-    },
-    resetAll() {
-      this.resImageList = new Array(4)
-      this.imageList = new Array(4)
     },
     async submitFormRequest() {
       for (let i = 0; i < this.pricingSection.pricingTableList.length; i++) {

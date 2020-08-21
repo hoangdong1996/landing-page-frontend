@@ -54,8 +54,8 @@
         <span>Feature Carousel Section Preview</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
-      <FeatureCarouselSectionPreview :featureCarouselSection="featureCarouselSection"
-                                     v-if="featureCarouselSection"></FeatureCarouselSectionPreview>
+      <FeatureCarouselSectionPreview :featureCarouselSection="featureCarouselSection" />
+
     </el-card>
   </div>
 </template>
@@ -151,6 +151,7 @@ export default {
       this.imageList = new Array(3)
       this.resImageList = new Array(3)
       this.featureCarouselSectionIndex = 0
+      this.featureCarouselSection = null
     },
     async resetDispatch() {
       await this.getFeatureCarouselSectionForm()
