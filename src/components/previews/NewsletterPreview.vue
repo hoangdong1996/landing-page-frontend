@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div id="contact" class="newsletter-section section-space--ptb_120 default-bg" v-if="newsletter" style="margin-top: 20px">
+    <!--    <div id="contact" class="newsletter-section section-space&#45;&#45;ptb_120 default-bg" v-if="newsletter" style="margin-top: 20px">-->
+    <div id="contact" class="newsletter-section section-space--ptb_120" v-if="newsletter" :style="styleNewsletter">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 ml-auto mr-auto">
@@ -34,10 +35,12 @@
 <script>
 export default {
   props: {
-    newsletter: Object
+    newsletter: Object,
+    styleNewsletter:Object
   },
   data() {
-    return {}
+    return {
+    }
   }
 }
 </script>

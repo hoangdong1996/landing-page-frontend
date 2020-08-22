@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <el-card class="box-card" v-if="aboutSection" v-loading="loading">
+  <div v-loading="loading">
+    <el-card class="box-card" v-if="aboutSection" >
       <div slot="header" class="clearfix">
         <span>About Section</span>
       </div>

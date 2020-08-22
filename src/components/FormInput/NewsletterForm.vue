@@ -3,6 +3,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Newsletter Section</span>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change background</el-button>
       </div>
       <el-form ref="form" label-width="120px" v-if="newsletter">
         <el-form-item label="Title">
@@ -34,8 +35,22 @@
         <span>Newsletter Preview</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
-      <NewsletterPreview :newsletter="newsletter"></NewsletterPreview>
+      <NewsletterPreview :newsletter="newsletter"
+                         :styleNewsletter="styleNewsletter"
+      ></NewsletterPreview>
     </el-card>
+
+    <el-dialog title="Change style" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="Background color" :label-width="formLabelWidth">
+          <el-input v-model="styleNewsletter" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">Cancel</el-button>
+    <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -50,10 +65,17 @@ export default {
   },
   data() {
     return {
+      styleNewsletter: {},
       newsletter: {},
+      dialogFormVisible: false,
+      form: {
+        name: '',
+      },
+      formLabelWidth: '200px',
     }
   },
   methods: {
+
     onSubmit() {
       createNewsletter(this.newsletter).then(() => {
         successNotify(this)
@@ -74,6 +96,8 @@ export default {
     }
   },
   async mounted() {
+    let styleJSO = '{"backgroundColor": "gray","border": "2px solid black","fontSize": "40px"}'
+    this.styleNewsletter = JSON.parse(styleJSO)
     await this.getNewsletter()
   }
 }
