@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="loading">
-    <el-card class="box-card" v-if="aboutSection">
+  <div>
+    <el-card class="box-card" v-if="aboutSection" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>About Section</span>
       </div>
@@ -100,7 +100,7 @@ const defaultAboutSection = {
   ],
 }
 export default {
-  components:{
+  components: {
     AboutSectionPreview
   },
   data() {
@@ -186,9 +186,9 @@ export default {
     },
     getFormData() {
       return getAboutSection().then(res => {
-        if(res.data.data !== null) {
+        if (res.data.data !== null) {
           this.aboutSection = res.data.data;
-        } else  {
+        } else {
           this.aboutSection = defaultAboutSection;
         }
       })

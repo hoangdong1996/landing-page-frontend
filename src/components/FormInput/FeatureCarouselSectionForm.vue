@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="loading" v-if="featureCarouselSection">
-    <el-card class="box-card">
+  <div v-if="featureCarouselSection">
+    <el-card class="box-card" v-loading="loading" >
       <div slot="header" class="clearfix">
         <span>Feature Carousel Section</span>
       </div>

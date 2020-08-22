@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="loading"  v-if="partnerClientSection">
-    <el-card class="box-card">
+  <div  v-if="partnerClientSection">
+    <el-card class="box-card" v-loading="loading" >
       <div slot="header" class="clearfix">
         <span>Partner Client Section</span>
       </div>
@@ -95,7 +95,6 @@ export default {
       for (let i= 0; i< this.partnerClientSection.brandLogoList.length; i++) {
         if (this.imageList[i] !== undefined) {
           await getBase64(this.imageList[i]).then(data => {
-            // this.partnerClientSection.brandLogoList[i].image.data = data
             this.partnerClientSection.brandLogoList.push({})
             this.$set(this.partnerClientSection.brandLogoList[i].image,'data',data)
           })

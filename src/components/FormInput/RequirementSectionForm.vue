@@ -1,6 +1,6 @@
 <template>
-  <div v-if="requirementSection" v-loading="loading">
-    <el-card class="box-card">
+  <div v-if="requirementSection" >
+    <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Requirement Section</span>
       </div>

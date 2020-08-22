@@ -1,6 +1,6 @@
 <template>
-  <div v-loading="loading">
-    <el-card class="box-card" v-if="pricingSection">
+  <div>
+    <el-card class="box-card" v-if="pricingSection" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Pricing Section</span>
       </div>
@@ -117,20 +117,44 @@ import {errorNotify, successNotify} from "@/function/notify";
 import PricingSectionPreview from "@/components/previews/PricingSectionPreview";
 import {getBase64, getImageUrl} from "@/function/data";
 
-const pricingTable = {
-  title: '',
-  image: {},
-  value: '',
-  isPopular: false,
-  active: false,
-  duration: '',
-  price: []
-}
+
 const pricingSectionDefault = {
   title: '',
   description: '',
   popularTitle: '',
-  pricingTableList: [{...pricingTable},{...pricingTable},{...pricingTable},{...pricingTable}]
+  pricingTableList: [{
+    title: '',
+    image: {},
+    value: '',
+    isPopular: false,
+    active: false,
+    duration: '',
+    price: []
+  }, {
+    title: '',
+    image: {},
+    value: '',
+    isPopular: false,
+    active: false,
+    duration: '',
+    price: []
+  }, {
+    title: '',
+    image: {},
+    value: '',
+    isPopular: false,
+    active: false,
+    duration: '',
+    price: []
+  }, {
+    title: '',
+    image: {},
+    value: '',
+    isPopular: false,
+    active: false,
+    duration: '',
+    price: []
+  }]
 }
 export default {
   components: {
