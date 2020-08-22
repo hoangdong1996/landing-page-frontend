@@ -1,6 +1,6 @@
 <template>
   <div v-if="progressCircle">
-    <el-card class="box-card">
+    <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Progress Circle</span>
       </div>
@@ -65,10 +65,9 @@
 </template>
 
 <script>
-import {createProgressCircle} from "@/api/progressCircle";
-import {successNotify, errorNotify} from '@/function/notify'
+import {createProgressCircle, getProgressCircle} from "@/api/progressCircle";
+import {errorNotify, successNotify} from '@/function/notify'
 import ProgressCirclePreview from "@/components/previews/ProgressCirclePreview";
-import {getProgressCircle} from '@/api/progressCircle'
 
 const progressCircleDefault = {
   featureProgressList: [{
@@ -87,6 +86,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       progressCircleIndex: 0,
       render: 0,
       num: 1,
@@ -96,11 +96,14 @@ export default {
   },
   methods: {
     onSubmit() {
-      createProgressCircle(this.progressCircle).then(() => {
-        successNotify(this)
-      }).catch(() => {
-        errorNotify(this)
-      })
+      this.loading = true
+      createProgressCircle(this.progressCircle)
+          .then(() => successNotify(this))
+          .catch(() => {
+            errorNotify(this)
+            this.onReset()
+          })
+      this.loading = false
     },
     removeFeatureList(index, item) {
       this.progressCircle.featureProgressList[index].featureList.splice(item, 1);
@@ -109,21 +112,23 @@ export default {
       this.progressCircle.featureProgressList[index].featureList.push('');
     },
     onReset() {
+      this.loading = true
       this.resetData()
       this.resetDispatch()
+      this.loading = false
     },
     resetData() {
       this.progressCircle = null
     },
-    resetDispatch() {
-      this.getProgressCircle()
+    async resetDispatch() {
+      await this.getProgressCircle()
       this.progressCircle.id = null
       this.progressCircle.featureProgressList.forEach(e => {
         e.id = null
       })
     },
     getProgressCircle() {
-      getProgressCircle().then(response => {
+      return getProgressCircle().then(response => {
         if (response.data.data === null) {
           this.progressCircle = progressCircleDefault
         } else {
@@ -134,6 +139,7 @@ export default {
   },
   created() {
     this.resetDispatch()
+    this.loading = false
   }
 }
 </script>
@@ -157,7 +163,6 @@ export default {
 
 .el-col {
   border-radius: 4px;
-
 }
 
 .row-bg {
