@@ -92,10 +92,12 @@ export default {
       this.onPreview()
     },
     async onPreview() {
-      for (let i = 0; i < this.partnerClientSection.brandLogoList.length; i++) {
+      for (let i = 0; i < this.imageList.length; i++) {
         if (this.imageList[i] !== undefined) {
           await getBase64(this.imageList[i]).then(data => {
-            this.partnerClientSection.brandLogoList.push({})
+            this.partnerClientSection.brandLogoList.push({
+              image: {}
+            })
             this.$set(this.partnerClientSection.brandLogoList[i].image, 'data', data)
           })
         }
@@ -105,6 +107,7 @@ export default {
       this.loading = true
       await this.uploadFile()
       this.submitFormRequest()
+      this.loading = false
     },
     async uploadFile() {
       for (let i = 0; i < this.imageList.length; i++) {
@@ -131,11 +134,12 @@ export default {
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
       this.loading = false
-      this.onReset()
     },
     onReset() {
+      this.loading = true
       this.resetData()
       this.resetDispatch()
+      this.loading = false
     },
     resetData() {
       this.partnerClientSection = null
@@ -157,7 +161,6 @@ export default {
         this.fileList.push([objLogo])
         this.domains.push(null)
       })
-      this.loading = false
     },
     async getPartnerClientSection() {
       await getPartnerClientSection().then(response => {
@@ -183,6 +186,7 @@ export default {
   },
   async created() {
     await this.resetDispatch()
+    this.loading = false
   }
 }
 </script>

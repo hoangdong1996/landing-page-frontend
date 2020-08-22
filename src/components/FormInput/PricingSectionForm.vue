@@ -187,8 +187,10 @@ export default {
       }
     },
     async onSubmit() {
+      this.loading = true
       await this.uploadFile()
-      this.submitFormRequest();
+      await this.submitFormRequest();
+      this.loading = false
     },
     async uploadFile() {
       for (let i = 0; i < this.imageList.length; i++) {
@@ -210,11 +212,13 @@ export default {
           .then(() => successNotify(this)
           ).catch(() => errorNotify(this)
           )
-      this.getPricingSection()
+      await this.getPricingSection()
     },
     onReset() {
+      this.loading = true
       this.resetData()
       this.resetDispatch()
+      this.loading = false
     },
     resetData() {
       this.pricingSection = null
@@ -231,9 +235,7 @@ export default {
           url: getImageUrl(pricing.image)
         }
         this.fileList.push([obj])
-        // pricing.id = null
       })
-      this.loading = false
     },
     async getPricingSection() {
       await getPricingSection().then(response => {
@@ -253,6 +255,7 @@ export default {
   },
   async created() {
     await this.resetDispatch()
+    this.loading = false
   }
 }
 </script>
