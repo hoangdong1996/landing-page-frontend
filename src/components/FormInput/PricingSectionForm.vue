@@ -6,7 +6,7 @@
       </div>
       <el-form ref="form" label-width="120px">
         <el-form-item label="Title">
-          <el-input class="input-label" v-model="pricingSection.title"></el-input>
+          <el-input class="input-label" v-model="pricingSection.title" ></el-input>
         </el-form-item>
         <el-form-item label="Description">
           <el-input class="input-label" v-model="pricingSection.description"></el-input>

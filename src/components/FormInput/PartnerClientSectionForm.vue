@@ -1,6 +1,6 @@
 <template>
-  <div  v-if="partnerClientSection">
-    <el-card class="box-card" v-loading="loading" >
+  <div v-if="partnerClientSection">
+    <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Partner Client Section</span>
       </div>
@@ -91,12 +91,12 @@ export default {
       this.imageList[this.indexImage] = file.raw
       this.onPreview()
     },
-    async onPreview(){
-      for (let i= 0; i< this.partnerClientSection.brandLogoList.length; i++) {
+    async onPreview() {
+      for (let i = 0; i < this.partnerClientSection.brandLogoList.length; i++) {
         if (this.imageList[i] !== undefined) {
           await getBase64(this.imageList[i]).then(data => {
             this.partnerClientSection.brandLogoList.push({})
-            this.$set(this.partnerClientSection.brandLogoList[i].image,'data',data)
+            this.$set(this.partnerClientSection.brandLogoList[i].image, 'data', data)
           })
         }
       }
@@ -131,6 +131,7 @@ export default {
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
       this.loading = false
+      this.onReset()
     },
     onReset() {
       this.resetData()

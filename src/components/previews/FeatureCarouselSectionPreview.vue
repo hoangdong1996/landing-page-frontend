@@ -60,7 +60,6 @@ export default {
   },
 
   created() {
-    console.log('dasdad', this.featureCarouselSection)
   }
 }
 </script>
