@@ -27,7 +27,7 @@
                 list-type="picture"
                 :on-change="handleChange">
               <el-button size="small" type="primary"
-                         @click="setIndex(index)">Click to upload
+                         @click="getIndex(index)">Click to upload
               </el-button>
               <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a
                 size less than 500kb
@@ -51,7 +51,7 @@
         <span>Partner Client Section Preview</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
-      <PartnerClientSectionPreview :partnerClientSection="partnerClientSection"/>
+      <PartnerClientSectionPreview :partnerClientSection="partnerClientSection" :render="key"/>
     </el-card>
   </div>
 </template>
@@ -74,6 +74,7 @@ export default {
   },
   data() {
     return {
+      key: 0,
       partnerClientSection: null,
       fileList: [],
       imageList: [],
@@ -84,25 +85,21 @@ export default {
     }
   },
   methods: {
-    setIndex(index) {
+    getIndex(index) {
       this.indexImage = index
     },
     handleChange(file) {
       this.imageList[this.indexImage] = file.raw
-      this.onPreview()
+      let index = this.indexImage
+      this.onPreview(index, file)
     },
-    async onPreview() {
-      for (let i = 0; i < this.imageList.length; i++) {
-        if (this.imageList[i] !== undefined) {
-          await getBase64(this.imageList[i]).then(data => {
-            this.partnerClientSection.brandLogoList[i] = {
-              image: {}
-            }f
-            this.$set(this.partnerClientSection.brandLogoList[i].image, 'data', data)
+    async onPreview(index, file) {
+      this.partnerClientSection.brandLogoList[index] = { image: {}}
+      await getBase64(file.raw).then(data => {
+            this.$set(this.partnerClientSection.brandLogoList[index].image, 'data', data)
+            this.key = this.key + 1
           })
-        }
-      }
-    },
+      },
     async onSubmit() {
       this.loading = true
       await this.uploadFile()

@@ -11,7 +11,7 @@
                     </div>
                 </div>
                 <!-- brandLogo component -->
-                <div class="row brand-logo-wrapper">
+                <div class="row brand-logo-wrapper"  :key="render">
                     <div
                             v-for="(brand, index) in partnerClientSection.brandLogoList"
                             :key="index"
@@ -33,7 +33,8 @@
             partnerClientSection: {
                 type: Object,
                 default: null
-            }
+            },
+          render: Number
         },
         data() {
             return {
