@@ -27,7 +27,7 @@
                 list-type="picture"
                 :on-change="handleChange">
               <el-button size="small" type="primary"
-                         @click="getIndex(index)">Click to upload
+                         @click="setIndex(index)">Click to upload
               </el-button>
               <div slot="tip" class="el-upload__tip" style="display: inline;padding-left: 5px ">jpg/png files with a
                 size less than 500kb
@@ -84,7 +84,7 @@ export default {
     }
   },
   methods: {
-    getIndex(index) {
+    setIndex(index) {
       this.indexImage = index
     },
     handleChange(file) {
@@ -95,9 +95,9 @@ export default {
       for (let i = 0; i < this.imageList.length; i++) {
         if (this.imageList[i] !== undefined) {
           await getBase64(this.imageList[i]).then(data => {
-            this.partnerClientSection.brandLogoList.push({
+            this.partnerClientSection.brandLogoList[i] = {
               image: {}
-            })
+            }f
             this.$set(this.partnerClientSection.brandLogoList[i].image, 'data', data)
           })
         }
@@ -107,6 +107,7 @@ export default {
       this.loading = true
       await this.uploadFile()
       this.submitFormRequest()
+      this.onReset()
       this.loading = false
     },
     async uploadFile() {
@@ -114,26 +115,19 @@ export default {
         if (this.imageList[i] !== undefined && this.imageList[i] !== null) {
           await uploadFile(this.imageList[i]).then(res => {
             this.resImageList[i] = res.data.data
-          }).catch(() => this.resetAll())
+          }).catch(() => this.onReset())
         }
       }
-    },
-    resetAll() {
-      this.imageList = []
-      this.resImageList = []
     },
     submitFormRequest() {
       for (let i = 0; i < this.imageList.length; i++) {
         if (this.resImageList[i] !== undefined && this.resImageList[i] !== null) {
-          this.partnerClientSection.brandLogoList.push({
-            image: this.resImageList[i]
-          })
+          this.partnerClientSection.brandLogoList[i].image = this.resImageList[i]
         }
       }
       createPartnerClientSection(this.partnerClientSection)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
-      this.loading = false
     },
     onReset() {
       this.loading = true
