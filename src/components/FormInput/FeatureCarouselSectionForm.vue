@@ -55,7 +55,7 @@
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
       <FeatureCarouselSectionPreview :featureCarouselSection="featureCarouselSection"
-                                     v-if="featureCarouselSection"></FeatureCarouselSectionPreview>
+                                    v-if="!loading"></FeatureCarouselSectionPreview>
     </el-card>
   </div>
 </template>
@@ -137,7 +137,6 @@ export default {
       await createFeatureCarouselSection(this.featureCarouselSection)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
-
       this.onReset()
     },
     onReset() {
@@ -151,6 +150,8 @@ export default {
       this.imageList = new Array(3)
       this.resImageList = new Array(3)
       this.featureCarouselSectionIndex = 0
+      this.featureCarouselSection= null
+
     },
     async resetDispatch() {
       await this.getFeatureCarouselSectionForm()

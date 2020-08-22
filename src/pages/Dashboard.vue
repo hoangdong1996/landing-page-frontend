@@ -151,8 +151,4 @@ export default {
   top: 0px;
   height: 100vh;
 }
-/*.container-dashboard{*/
-/*  height: 100vh;*/
-/*  overflow: scroll;*/
-/*}*/
 </style>

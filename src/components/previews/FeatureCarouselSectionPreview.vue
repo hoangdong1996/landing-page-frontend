@@ -4,7 +4,7 @@
       <div class="feature-slider__container">
         <div class="feature-slider__wrapper">
           <swiper :options="swiperOption">
-            <swiper-slide v-for="(item, index) of featureCarouselSection.featureCarouselList" :key="index">
+            <swiper-slide v-for="item in featureCarouselSection.featureCarouselList" :key="item.id">
               <div class="feature-slider__single-slide">
                 <div class="feature-slider__single-slide-wrapper">
                   <div class="row align-items-center">
@@ -57,6 +57,10 @@ export default {
         }
       }
     }
+  },
+
+  created() {
+    console.log('dasdad', this.featureCarouselSection)
   }
 }
 </script>
