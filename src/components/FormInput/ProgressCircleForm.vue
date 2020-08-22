@@ -70,13 +70,16 @@ import {successNotify, errorNotify} from '@/function/notify'
 import ProgressCirclePreview from "@/components/previews/ProgressCirclePreview";
 import {getProgressCircle} from '@/api/progressCircle'
 
-const feature = {
-  progress: 0,
-  featureListTitle: '',
-  featureList: []
-}
 const progressCircleDefault = {
-  featureProgressList: [{...feature}, {...feature}]
+  featureProgressList: [{
+    progress: 0,
+    featureListTitle: '',
+    featureList: []
+  }, {
+    progress: 0,
+    featureListTitle: '',
+    featureList: []
+  }]
 }
 export default {
   components: {

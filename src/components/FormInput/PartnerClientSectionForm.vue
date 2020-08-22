@@ -138,6 +138,7 @@ export default {
       this.resetDispatch()
     },
     resetData() {
+      this.partnerClientSection = null
       this.fileList = []
       this.imageList = []
       this.resImageList = []

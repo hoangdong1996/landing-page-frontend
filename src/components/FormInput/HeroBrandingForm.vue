@@ -133,6 +133,7 @@ export default {
       this.loading = false
     },
     resetData() {
+      this.heroBranding = null
       this.fileList = []
       this.imageSection = null
       this.resImageSection = null

@@ -169,7 +169,6 @@ export default {
       this.fileList = []
       this.imageSection = null
       this.resImageSection = null
-      this.disable = false
     },
     removeRequirement(index) {
       if (index !== -1) {

@@ -166,6 +166,7 @@ export default {
       this.loading = false;
     },
     resetData() {
+      this.aboutSection = null
       this.fileList = []
       this.aboutExpandIndex = 0
       this.imageList = new Array(3)
