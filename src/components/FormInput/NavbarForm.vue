@@ -36,51 +36,8 @@
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
       <div class="preview">
-        <b-navbar
-            v-b-scrollspy:nav-scroller
-            type="light"
-            toggleable="xl"
-            fixed="top"
-            class="header-area"
-            style="position: relative"
-        >
-          <div class="container-fluid container-fluid--cp-150">
-            <b-navbar-toggle target="nav_collapse"/>
-            <b-navbar-brand class="navbar-brand" to="/">
-              <img v-if="navbar.image" :src="navbar.image.data | pngSrc" alt="logo"/>
-            </b-navbar-brand>
-            <b-btn-group class="header-config-wrapper">
-              <b-btn class="header-config">
-                <i class="far fa-search"/>
-              </b-btn>
-              <b-link class="ht-btn ht-btn--outline hire-btn d-none d-xl-block">Hire Us Now</b-link>
-            </b-btn-group>
-            <b-collapse id="nav_collapse" class="default-nav justify-content-center" is-nav>
-              <b-navbar-nav class="navbar-nav main-menu">
-                <b-nav-item>
-                  <span>LANDING</span>
-                </b-nav-item>
-                <b-nav-item class="scroll">
-                  <span>HOME</span>
-                </b-nav-item>
-                <b-nav-item class="scroll">
-                  <span>ABOUT</span>
-                </b-nav-item>
-                <b-nav-item class="scroll">
-                  <span>REQUIREMENTS</span>
-                </b-nav-item>
-                <b-nav-item class="scroll">
-                  <span>PRICING</span>
-                </b-nav-item>
-                <b-nav-item class="scroll">
-                  <span>PARTNERS</span>
-                </b-nav-item>
-              </b-navbar-nav>
-            </b-collapse>
-          </div>
-        </b-navbar>
+        <NavbarPreview :navbar="navbar" />
       </div>
-
     </el-card>
   </div>
 </template>
@@ -90,11 +47,15 @@ import {createNavbar, getNavbar} from "@/api/navbar";
 import {successNotify, errorNotify} from "@/function/notify";
 import {uploadFile} from "@/api/upload";
 import {getBase64, getImageUrl} from "@/function/data";
+import NavbarPreview from "@/components/previews/NavbarPreview";
 const defaultNavbar = {
   image: {}
 }
 export default {
   name: "navbar-form",
+  components: {
+    NavbarPreview
+  },
   data() {
     return {
       navbar: null,
