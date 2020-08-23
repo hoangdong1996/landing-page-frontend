@@ -7,5 +7,5 @@ export function getBase64(file) {
   });
 }
 export function getImageUrl(image) {
-  return `http://192.168.1.122:8081/api/image/${image.id}`
+  return `${process.env.VUE_APP_BASE_API}image/${image.id}`
 }
