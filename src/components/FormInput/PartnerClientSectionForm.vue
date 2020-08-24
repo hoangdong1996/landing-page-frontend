@@ -164,10 +164,15 @@ export default {
     },
     removeDomain(index) {
       if (index !== -1) {
+        console.log('index', index);
         this.domains.splice(index, 1);
+        console.log('domain', this.domains)
         this.imageList.splice(index, 1)
+        console.log('imageList', this.imageList)
         this.fileList.splice(index, 1)
+        console.log('fileList', this.fileList)
         this.partnerClientSection.brandLogoList.splice(index, 1)
+        console.log('partner', this.this.partnerClientSection.brandLogoList)
       }
     },
     addDomain() {

@@ -3,6 +3,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Newsletter Section</span>
+<!--        <el-input type="textarea" placeholder="In put Css" v-model="styleNewsletter"></el-input>-->
         <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change background</el-button>
       </div>
       <el-form ref="form" label-width="120px" v-if="newsletter">

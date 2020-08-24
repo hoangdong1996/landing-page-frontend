@@ -239,6 +239,7 @@ export default {
     },
     async getPricingSection() {
       await getPricingSection().then(response => {
+        console.log(response.data.data);
         if (response.data.data === null) {
           this.pricingSection = pricingSectionDefault
         } else {
