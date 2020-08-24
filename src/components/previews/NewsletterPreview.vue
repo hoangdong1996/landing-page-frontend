@@ -1,7 +1,10 @@
 <template>
   <div>
-    <!--    <div id="contact" class="newsletter-section section-space&#45;&#45;ptb_120 default-bg" v-if="newsletter" style="margin-top: 20px">-->
-    <div id="contact" class="newsletter-section section-space--ptb_120" v-if="newsletter" :style="styleNewsletter">
+    <!--        <div id="contact" class="newsletter-section section-space&#45;&#45;ptb_120 " v-if="newsletter" style="margin-top: 20px">-->
+    <div id="contact" class="newsletter-section section-space--ptb_120 "
+         v-if="newsletter"
+         :style="getStyle"
+    >
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 ml-auto mr-auto">
@@ -36,10 +39,22 @@
 export default {
   props: {
     newsletter: Object,
-    styleNewsletter:Object
   },
   data() {
     return {
+      styleNewsletter: {},
+    }
+  },
+  computed: {
+    getStyle() {
+      return JSON.parse(this.newsletter.style)
+    }
+  },
+  watch: {
+    newsletter() {
+      if (this.newsletter.style) {
+        this.styleNewsletter = JSON.parse(this.newsletter.style)
+      }
     }
   }
 }

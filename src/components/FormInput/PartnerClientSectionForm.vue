@@ -33,7 +33,7 @@
                 size less than 500kb
               </div>
             </el-upload>
-            <el-button @click.prevent="removeDomain(index)">Delete</el-button>
+            <el-button @click.prevent="removeDomain(index)" v-if="index === domains.length-1">Delete</el-button>
           </el-form-item>
           <el-form-item>
             <el-button @click="addDomain">New Logo</el-button>
@@ -122,6 +122,7 @@ export default {
           this.partnerClientSection.brandLogoList[i].image = this.resImageList[i]
         }
       }
+      console.log('partner in submit',  this.partnerClientSection.brandLogoList)
       await createPartnerClientSection(this.partnerClientSection)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
@@ -142,6 +143,7 @@ export default {
     },
     async resetDispatch() {
       await this.getPartnerClientSection()
+      // delete this.partnerClientSection.id
       this.partnerClientSection.brandLogoList.forEach(e => {
         let objLogo = {
           name: e.image.name,
@@ -166,7 +168,6 @@ export default {
         this.imageList.splice(index, 1)
         this.fileList.splice(index, 1)
         this.partnerClientSection.brandLogoList.splice(index, 1)
-        console.log(this.partnerClientSection.brandLogoList)
       }
     },
     addDomain() {

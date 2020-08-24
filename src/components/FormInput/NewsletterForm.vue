@@ -3,8 +3,6 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Newsletter Section</span>
-<!--        <el-input type="textarea" placeholder="In put Css" v-model="styleNewsletter"></el-input>-->
-        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change background</el-button>
       </div>
       <el-form ref="form" label-width="120px" v-if="newsletter">
         <el-form-item label="Title">
@@ -26,6 +24,7 @@
           <el-input class="input-label" v-model="newsletter.description_button_href"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center">
+          <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
           <el-button type="primary" @click="onSubmit">Create</el-button>
           <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
@@ -37,14 +36,14 @@
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
       <NewsletterPreview :newsletter="newsletter"
-                         :styleNewsletter="styleNewsletter"
-      ></NewsletterPreview>
+                         :isStyle="isStyle"
+      />
     </el-card>
 
     <el-dialog title="Change style" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item label="Background color" :label-width="formLabelWidth">
-          <el-input v-model="styleNewsletter" autocomplete="off"></el-input>
+        <el-form-item label="Change css" :label-width="formLabelWidth">
+          <el-input type="textarea" :rows="2" v-model.lazy="newsletter.style" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -66,17 +65,16 @@ export default {
   },
   data() {
     return {
-      styleNewsletter: {},
       newsletter: {},
       dialogFormVisible: false,
       form: {
         name: '',
       },
       formLabelWidth: '200px',
+      isStyle: true
     }
   },
   methods: {
-
     onSubmit() {
       createNewsletter(this.newsletter).then(() => {
         successNotify(this)
@@ -94,11 +92,9 @@ export default {
     onReset() {
       this.newsletter = null
       this.getNewsletter()
-    }
+    },
   },
   async mounted() {
-    let styleJSO = '{"backgroundColor": "gray","border": "2px solid black","fontSize": "40px"}'
-    this.styleNewsletter = JSON.parse(styleJSO)
     await this.getNewsletter()
   }
 }
