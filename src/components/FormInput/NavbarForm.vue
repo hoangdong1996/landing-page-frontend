@@ -139,7 +139,6 @@ export default {
     async onPreview() {
       if (this.image !== null) {
         await getBase64(this.image).then((data) => {
-          this.navbar.image.data = data;
           this.$set(this.navbar.image, 'data', data)
         });
       }

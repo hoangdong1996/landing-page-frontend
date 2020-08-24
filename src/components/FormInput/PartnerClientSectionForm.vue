@@ -103,7 +103,7 @@ export default {
     async onSubmit() {
       this.loading = true
       await this.uploadFile()
-      this.submitFormRequest()
+      await this.submitFormRequest()
       this.onReset()
       this.loading = false
     },
@@ -116,13 +116,13 @@ export default {
         }
       }
     },
-    submitFormRequest() {
+    async submitFormRequest() {
       for (let i = 0; i < this.imageList.length; i++) {
         if (this.resImageList[i] !== undefined && this.resImageList[i] !== null) {
           this.partnerClientSection.brandLogoList[i].image = this.resImageList[i]
         }
       }
-      createPartnerClientSection(this.partnerClientSection)
+      await createPartnerClientSection(this.partnerClientSection)
           .then(() => successNotify(this))
           .catch(() => errorNotify(this))
     },
@@ -142,9 +142,7 @@ export default {
     },
     async resetDispatch() {
       await this.getPartnerClientSection()
-      delete this.partnerClientSection.id
       this.partnerClientSection.brandLogoList.forEach(e => {
-        delete e.id
         let objLogo = {
           name: e.image.name,
           url: getImageUrl(e.image)
@@ -164,15 +162,11 @@ export default {
     },
     removeDomain(index) {
       if (index !== -1) {
-        console.log('index', index);
         this.domains.splice(index, 1);
-        console.log('domain', this.domains)
         this.imageList.splice(index, 1)
-        console.log('imageList', this.imageList)
         this.fileList.splice(index, 1)
-        console.log('fileList', this.fileList)
         this.partnerClientSection.brandLogoList.splice(index, 1)
-        console.log('partner', this.this.partnerClientSection.brandLogoList)
+        console.log(this.partnerClientSection.brandLogoList)
       }
     },
     addDomain() {
