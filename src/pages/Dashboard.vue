@@ -81,6 +81,11 @@
             <span>Footer Section</span>
           </el-menu-item>
 
+          <el-menu-item index="12" :route="{ path:'style-form'}">
+            <i class="el-icon-edit"></i>
+            <span>Style</span>
+          </el-menu-item>
+
         </el-menu>
       </el-aside>
       <el-container class="container-dashboard">

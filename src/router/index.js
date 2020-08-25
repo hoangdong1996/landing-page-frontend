@@ -76,6 +76,10 @@ export const routes = [
             {
                 path: "/footer-form",
                 component: () => import("@/components/FormInput/FooterForm")
+            },
+            {
+                path: "/style-form",
+                component:() => import("@/components/FormInput/StyleForm")
             }
         ]
     },
