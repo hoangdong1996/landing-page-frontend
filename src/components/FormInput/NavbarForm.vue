@@ -3,7 +3,7 @@
     <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix form-navbar">
         <span>Navbar Form</span>
-        <el-checkbox  v-model="navbar.show" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox  v-model="navbar.showNavbar" style="margin-left: 20px" label="Show" border></el-checkbox>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
       <el-form label-width="120px">
