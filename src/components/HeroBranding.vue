@@ -5,6 +5,7 @@
     v-if="heroBranding.image"
     class="hero-branding bg-cover"
     :style="style"
+    v-show="heroBranding.showSection"
   >
     <div class="container-fluid container-fluid--cp-150">
       <div class="hero-branding">

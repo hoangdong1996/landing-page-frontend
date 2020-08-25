@@ -1,6 +1,6 @@
 <template>
-  <div v-if="aboutSection">
-    <div id="about" class="box-image-area section-space--ptb_120">
+  <div v-if="aboutSection" v-show="aboutSection.showSection === true">
+    <div id="about" class="box-image-area section-space--ptb_120" >
       <div class="container">
         <div class="section-title-wrapper text-center section-space--mb_60 wow move-up">
           <h2 class="section-title mb-15">{{ aboutSection.title }}</h2>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="partnerClientSection">
+  <div v-if="partnerClientSection" v-show="partnerClientSection.showSection === true">
     <div class="brand-logo-area section-space--ptb_120" id="partner">
       <div class="container">
         <div class="row">

@@ -3,7 +3,7 @@
     <el-card class="box-card" v-if="aboutSection" >
       <div slot="header" class="clearfix">
         <span>About Section</span>
-        <el-checkbox  label="Option1" border></el-checkbox>
+        <el-checkbox  v-model="aboutSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
       </div>
       <el-form ref="form" :model="aboutSection" label-width="120px">
         <el-form-item label="Title">

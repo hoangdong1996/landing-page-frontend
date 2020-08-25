@@ -3,6 +3,7 @@
     <el-card class="box-card" v-loading="loading" >
       <div slot="header" class="clearfix">
         <span>Feature Carousel Section</span>
+        <el-checkbox  v-model="featureCarouselSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
       </div>
       <el-row style="">
         <el-button @click.prevent="featureCarouselSectionIndex = 0">Carousel 1</el-button>

@@ -1,5 +1,8 @@
 <template>
-  <div id="requirement" class="requirements-list-area bg-gray" v-if="requirementSection != null">
+  <div id="requirement"
+       class="requirements-list-area bg-gray"
+       v-show="requirementSection.showSection === true"
+       v-if="requirementSection != null">
     <div class="row align-items-center">
       <div class="col-lg-6 order-2 order-xl-1">
         <div class="requirements-list">

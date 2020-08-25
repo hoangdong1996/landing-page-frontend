@@ -3,6 +3,7 @@
     <el-card class="box-card" v-loading="loading" v-if="businessSection">
       <div slot="header" class="clearfix">
         <span>Business Section</span>
+        <el-checkbox  v-model="businessSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
       </div>
       <el-form ref="form" :model="businessSection" label-width="120px">
         <el-form-item label="Title">

@@ -3,6 +3,7 @@
     <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Footer</span>
+        <el-checkbox  v-model="footer.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
       </div>
       <el-form ref="form" :model="footer" label-width="120px">
         <el-form-item label="Image">

@@ -3,6 +3,7 @@
     <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Progress Circle</span>
+        <el-checkbox  v-model="progressCircle.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
       </div>
       <el-row>
         <el-button @click.prevent="progressCircleIndex = 0">Circle 1</el-button>

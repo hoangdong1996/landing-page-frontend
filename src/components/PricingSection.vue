@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pricingSection">
+  <div v-if="pricingSection" v-show="pricingSection.showSection === true">
     <div id="pricing" class="pricing-table-area bg-gray-2 pt-30">
       <div class="pricing-table-title-area position-relative">
         <div class="container">

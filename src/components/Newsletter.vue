@@ -1,5 +1,8 @@
 <template>
-    <div id="contact" class="newsletter-section section-space--ptb_120 default-bg" v-if="newsletter" style="background-color: dimgrey">
+    <div id="contact" class="newsletter-section section-space--ptb_120 default-bg"
+         v-if="newsletter"
+         v-show="newsletter.showSection ===true"
+         style="background-color: dimgrey">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 ml-auto mr-auto">

@@ -3,6 +3,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Newsletter Section</span>
+        <el-checkbox  v-model="newsletter.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
       </div>
       <el-form ref="form" label-width="120px" v-if="newsletter">
         <el-form-item label="Title">

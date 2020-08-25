@@ -1,5 +1,5 @@
 <template>
-  <div class="footer-area-wrapper" :class="FooterStyle" v-if="footer">
+  <div class="footer-area-wrapper" :class="FooterStyle" v-if="footer" v-show="footer.showSection">
     <div class="footer-area section-space--ptb_90">
       <div class="container">
         <div class="row footer-widget-wrapper">

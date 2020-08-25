@@ -3,6 +3,7 @@
     <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Requirement Section</span>
+        <el-checkbox  v-model="requirementSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
       </div>
       <el-form label-width="120px">
         <el-form-item label="Title">

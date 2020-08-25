@@ -1,5 +1,5 @@
 <template>
-  <div v-if="businessSection">
+  <div v-if="businessSection" v-show="businessSection.showSection === true">
     <div class="feature-icon-list-area section-space--pb_120">
       <div class="container">
         <div class="section-title-wrapper text-center section-space--mb_100">
