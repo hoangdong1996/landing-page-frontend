@@ -93,9 +93,11 @@ export default {
       this.onPreview()
     },
     async upload() {
-      await uploadFile(this.image).then((response) => {
-        this.imageRes = response.data.data;
-      });
+      if(this.image !== null) {
+        await uploadFile(this.image).then((response) => {
+          this.imageRes = response.data.data;
+        });
+      }
     },
     async onPreview() {
       if (this.image !== null) {
