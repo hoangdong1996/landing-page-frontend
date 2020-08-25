@@ -26,6 +26,10 @@ export const routes = [
         component: NotFound
     },
     {
+      path: '/login',
+      component: () => import("@/pages/LoginForm")
+    },
+    {
         path: "/dashboard",
         component: Dashboard,
         children: [

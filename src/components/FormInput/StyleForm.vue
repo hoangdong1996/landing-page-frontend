@@ -6,7 +6,7 @@
       </div>
       <el-form>
         <el-form-item label="Style">
-          <el-input class="input-label" type="textarea" v-model="style.styleCss"></el-input>
+          <el-input class="input-label" :rows="10" type="textarea" v-model="style.styleCss"></el-input>
         </el-form-item>
       </el-form>
       <el-button
