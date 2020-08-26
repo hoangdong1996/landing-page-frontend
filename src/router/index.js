@@ -1,18 +1,6 @@
 import NotFound from '../pages/elements/404'
 import Dashboard from "@/pages/Dashboard";
-import NavbarForm from "@/components/FormInput/NavbarForm";
-// import HeroBrandingForm from "@/components/FormInput/HeroBrandingForm";
-// import BusinessSectionForm from "@/components/FormInput/BusinessSectionForm";
-// import FeatureCarouselSectionForm from "@/components/FormInput/FeatureCarouselSectionForm";
-// import RequirementSectionForm from "@/components/FormInput/RequirementSectionForm";
-// import ProgressCircleForm from "@/components/FormInput/ProgressCircleForm";
-// import PricingSectionForm from "@/components/FormInput/PricingSectionForm";
-//
-// import PartnerClientSectionForm from "@/components/FormInput/PartnerClientSectionForm";
-// import NewsletterForm from "@/components/FormInput/NewsletterForm";
-// import FooterForm from "@/components/FormInput/FooterForm";
-// import ProgressListForm from "@/components/FormInput/ProgressListForm";
-
+import {getToken} from "@/utils/auth";
 
 export const routes = [
     {
@@ -26,16 +14,24 @@ export const routes = [
         component: NotFound
     },
     {
-      path: '/login',
-      component: () => import("@/pages/LoginForm")
+        path: '/login',
+        name: 'Login',
+        component: () => import("@/pages/LoginForm")
     },
     {
         path: "/dashboard",
+        name: 'Dashboard',
         component: Dashboard,
+        beforeEnter: (to, from, next) => {
+            const hasToken = getToken()
+            if(hasToken) {
+                next()
+            } else next({ name: 'Login'})
+        },
         children: [
             {
                 path: "",
-                component: NavbarForm
+                component: () => import("@/components/FormInput/NavbarForm")
             },
             {
                 path: "/navbar-form",
@@ -83,7 +79,7 @@ export const routes = [
             },
             {
                 path: "/style-form",
-                component:() => import("@/components/FormInput/StyleForm")
+                component: () => import("@/components/FormInput/StyleForm")
             }
         ]
     },
