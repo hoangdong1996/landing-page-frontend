@@ -6,6 +6,7 @@
       fixed="top"
       class="header-area"
       :class="{'is-sticky': scrolled}"
+      v-if="navbar"
       v-show="navbar.showSection === true"
   >
     <div class="container-fluid container-fluid--cp-150" :style="styleNavbar">
@@ -21,23 +22,23 @@
       </b-btn-group>
       <b-collapse id="nav_collapse" class="default-nav justify-content-center" is-nav>
         <b-navbar-nav class="navbar-nav main-menu">
-          <b-nav-item to="/">
-            <span>LANDING</span>
+          <b-nav-item to="/" >
+            <span class="sopen-nav" >LANDING</span>
           </b-nav-item>
-          <b-nav-item href="#home" class="scroll">
-            <span>HOME</span>
+          <b-nav-item href="#home" class="scroll" v-if="heroBranding.showSection" >
+            <span class="sopen-nav" >HOME</span>
           </b-nav-item>
-          <b-nav-item href="#about" class="scroll" v-show="aboutSection.showSection === true">
-            <span>ABOUT</span>
+          <b-nav-item href="#about" class="scroll" >
+            <span class="sopen-nav">ABOUT</span>
           </b-nav-item>
-          <b-nav-item href="#requirement" class="scroll">
-            <span>REQUIREMENTS</span>
+          <b-nav-item href="#requirement" class="scroll" >
+            <span class="sopen-nav">REQUIREMENTS</span>
           </b-nav-item>
           <b-nav-item href="#pricing" class="scroll">
-            <span>PRICING</span>
+            <span class="sopen-nav">PRICING</span>
           </b-nav-item>
           <b-nav-item href="#partner" class="scroll">
-            <span>PARTNERS</span>
+            <span class="sopen-nav">PARTNERS</span>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -46,12 +47,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: "Navbar",
+  computed: {
+    ...mapGetters(['aboutSection','heroBranding','requirementSection','pricingSection','partnerClientSection'])
+  },
   props: {
-    aboutSection:{
-      type:Object
-    },
     navbar: {
       type: Object,
       default: null,
@@ -67,12 +69,16 @@ export default {
       styleNavbar: null
     };
   },
+
   mounted() {
-    if (this.navbar.styleSection ===''){
-      this.styleNavbar = null
-    } else {
+    if (this.navbar.styleSection.startsWith('{') && this.navbar.styleSection.endsWith('}')) {
       this.styleNavbar = JSON.parse(this.navbar.styleSection)
+    } else {
+      this.styleNavbar = {}
     }
+    let navItemStyle = document.getElementById("styleNavbar")
+    let string = ".sopen-nav {" + this.navbar.styleMenu + " !important" + "}";
+    navItemStyle.innerHTML = string;
 
     (function () {
       scrollTo();
@@ -138,7 +144,7 @@ export default {
       } else {
         el.classList.remove(className);
       }
-    },
+    }
   },
 };
 </script>

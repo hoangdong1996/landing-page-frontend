@@ -2,7 +2,8 @@
   <div class="main-container">
     <!-- Navbar section -->
     <Navbar v-if="navbar" :navbar="navbar"
-    :aboutSection="aboutSection"
+            :aboutSection="aboutSection"
+            :requirementSection="requirementSection"
     />
 
     <!-- hero section -->
