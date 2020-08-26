@@ -27,7 +27,7 @@
           <b-nav-item href="#home" class="scroll">
             <span>HOME</span>
           </b-nav-item>
-          <b-nav-item href="#about" class="scroll">
+          <b-nav-item href="#about" class="scroll" v-show="aboutSection.showSection === true">
             <span>ABOUT</span>
           </b-nav-item>
           <b-nav-item href="#requirement" class="scroll">
@@ -49,6 +49,9 @@
 export default {
   name: "Navbar",
   props: {
+    aboutSection:{
+      type:Object
+    },
     navbar: {
       type: Object,
       default: null,

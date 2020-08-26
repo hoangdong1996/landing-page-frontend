@@ -3,7 +3,7 @@
     <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix form-navbar">
         <span>Navbar Form</span>
-        <el-checkbox  v-model="navbar.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox v-model="navbar.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
         <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
@@ -22,7 +22,7 @@
             <el-button size="small" type="primary">Click to upload</el-button>
           </el-upload>
         </el-form-item>
-        <el-form-item style="margin-top: 20px ; text-align: center ;margin-left:0px;"  >
+        <el-form-item style="margin-top: 20px ; text-align: center ;margin-left:0px;">
           <el-button
               type="primary"
               @click.prevent="onSubmit"
@@ -37,21 +37,24 @@
         <span>Navbar Preview</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
-      <div class="preview" :style="styleNavbar" >
-        <NavbarPreview :navbar="navbar" />
+      <div class="preview" :style="styleNavbar">
+        <NavbarPreview :navbar="navbar"/>
       </div>
     </el-card>
 
     <el-dialog title="Change style" :visible.sync="dialogFormVisible">
-      <el-form >
-        <el-form-item label="Change css" :label-width="formLabelWidth">
-          <el-input v-model="navbar.styleSection" type="textarea" :rows="2"  autocomplete="off"></el-input>
+      <el-form>
+        <el-form-item label="Change css navbar" :label-width="formLabelWidth">
+          <el-input v-model="navbar.styleSection" type="textarea" :rows="2" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Change css menu" :label-width="formLabelWidth">
+          <el-input v-model="navbar.styleMenu" type="textarea" :rows="2" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">Cancel</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
-  </span>
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="changeStyle">Confirm</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -62,6 +65,7 @@ import {successNotify, errorNotify} from "@/function/notify";
 import {uploadFile} from "@/api/upload";
 import {getBase64, getImageUrl} from "@/function/data";
 import NavbarPreview from "@/components/previews/NavbarPreview";
+
 const defaultNavbar = {
   image: {}
 }
@@ -70,9 +74,7 @@ export default {
   components: {
     NavbarPreview
   },
-  computed:{
-
-  },
+  computed: {},
   data() {
     return {
       navbar: null,
@@ -83,7 +85,7 @@ export default {
       loading: false,
       dialogFormVisible: false,
       formLabelWidth: '200px',
-      styleNavbar: {}
+      styleNavbar: null
     };
   },
   methods: {
@@ -94,10 +96,9 @@ export default {
       this.loading = false;
     },
     async submitForm() {
-      if (this.imageRes === null || this.imageRes === undefined) {
-        return;
+      if (this.imageRes !== null) {
+        this.$set(this.navbar, 'image', this.imageRes);
       }
-      this.$set(this.navbar, 'image', this.imageRes);
       await createNavbar(this.navbar)
           .then(() => {
             successNotify(this);
@@ -113,7 +114,7 @@ export default {
       this.onPreview()
     },
     async upload() {
-      if(this.image !== null) {
+      if (this.image !== null) {
         await uploadFile(this.image).then((response) => {
           this.imageRes = response.data.data;
         });
@@ -148,29 +149,38 @@ export default {
     },
     getNavbarData() {
       return getNavbar().then(res => {
-        if(res.data.data !== null){
+        if (res.data.data !== null) {
           this.navbar = res.data.data
         } else {
           this.navbar = defaultNavbar
         }
       })
+    },
+    changeStyle() {
+      this.dialogFormVisible = false
+      if (this.navbar.styleSection.startsWith('{') && this.navbar.styleSection.endsWith('}')) {
+        this.styleNavbar = JSON.parse(this.navbar.styleSection)
+      } else {
+        this.styleNavbar = {}
+      }
+      this.querySelectorMenu()
+    },
+    querySelectorMenu(){
+      for (let i = 1; i <= 6; i++) {
+        const elements = document.querySelector(".preview #nav_collapse > ul > li:nth-child(" + i + ") > a")
+        elements.style = this.navbar.styleMenu
+      }
     }
-
   },
   async mounted() {
     await this.resetDispatch()
-    if (this.navbar.styleSection ===''){
+    if (this.navbar.styleSection === '') {
       this.styleNavbar = null
     } else {
       this.styleNavbar = JSON.parse(this.navbar.styleSection)
     }
+    this.querySelectorMenu()
   },
-  // watch: {
-  //   getStyleNavbar() {
-  //     this.styleNavbar = JSON.parse(this.navbar.styleSection)
-  //     console.log(this.styleNavbar);
-  //   }
-  // }
 };
 </script>
 

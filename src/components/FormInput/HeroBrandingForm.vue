@@ -4,6 +4,7 @@
       <div slot="header" class="clearfix">
         <span>Hero Branding</span>
         <el-checkbox  v-model="heroBranding.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
       </div>
       <el-form ref="form" :model="heroBranding" label-width="120px">
         <el-form-item label="Title">
@@ -68,6 +69,24 @@
         </div>
       </section>
     </el-card>
+
+    <el-dialog title="Change style" :visible.sync="dialogFormVisible">
+      <el-form >
+        <el-form-item label="Change title css" :label-width="formLabelWidth">
+          <el-input v-model="heroBranding.title_style" type="textarea" :rows="2"  autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Change description css" :label-width="formLabelWidth">
+          <el-input v-model="heroBranding.description_style" type="textarea" :rows="2"  autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Change button css" :label-width="formLabelWidth">
+          <el-input v-model="heroBranding.button_style" type="textarea" :rows="2"  autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -90,7 +109,9 @@ export default {
       loading: false,
       fileList: [],
       imageSection: null,
-      resImageSection: null
+      resImageSection: null,
+      dialogFormVisible: false,
+      formLabelWidth: '200px',
     };
   },
   methods: {

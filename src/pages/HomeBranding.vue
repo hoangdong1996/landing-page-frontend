@@ -1,7 +1,9 @@
 <template>
   <div class="main-container">
     <!-- Navbar section -->
-    <Navbar v-if="navbar" :navbar="navbar"/>
+    <Navbar v-if="navbar" :navbar="navbar"
+    :aboutSection="aboutSection"
+    />
 
     <!-- hero section -->
     <HeroBranding v-if="heroBranding" :heroBranding="heroBranding"/>
