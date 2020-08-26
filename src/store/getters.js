@@ -11,5 +11,6 @@ const getters = {
   progressCircle: state => state.progressCircle.progressCircleSection,
   pricingSection: state => state.pricingSection.pricingComponent,
   partnerClientSection: state => state.partnerClientSection.partnerClientSection,
+  token: state => state.user.token
 }
 export default getters

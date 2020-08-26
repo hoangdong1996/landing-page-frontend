@@ -72,3 +72,11 @@
 //     // finish progress bar
 //     NProgress.done()
 // })
+import router from './router'
+import { getToken } from '@/utils/auth'
+
+router.beforeEach((to, from, next) => {
+    const hasToken = getToken()
+    if (to.name === 'Dashboard' && hasToken) next({ name: 'Login' })
+    else next()
+})
