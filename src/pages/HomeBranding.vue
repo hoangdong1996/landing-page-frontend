@@ -14,7 +14,7 @@
     <BusinessSection v-if="businessSection" :businessSection="businessSection"/>
 
     <!-- requirement section-->
-    <RequireList :requirementSection="requirementSection"/>
+    <RequireList v-if="requirementSection" :requirementSection="requirementSection"/>
 
     <!-- feature carousel -->
     <FeatureTwo :featureCarouselSection="featureCarouselSection"/>

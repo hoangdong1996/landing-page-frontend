@@ -1,9 +1,11 @@
 <template>
-  <div v-if="requirementSection" >
+  <div v-if="requirementSection">
     <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Requirement Section</span>
-        <el-checkbox  v-model="requirementSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox v-model="requirementSection.showSection" style="margin-left: 20px" label="Show"
+                     border></el-checkbox>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
       </div>
       <el-form label-width="120px">
         <el-form-item label="Title">
@@ -65,6 +67,31 @@
           <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
+
+      <el-dialog title="Change style" :visible.sync="dialogFormVisible">
+        <el-form>
+          <el-form-item label="Change title css" :label-width="formLabelWidth">
+            <el-input v-model="requirementSection.title_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change description css" :label-width="formLabelWidth">
+            <el-input v-model="requirementSection.description_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change image css" :label-width="formLabelWidth">
+            <el-input v-model="requirementSection.image_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change button css" :label-width="formLabelWidth">
+            <el-input v-model="requirementSection.button_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change text css" :label-width="formLabelWidth">
+            <el-input v-model="requirementSection.text_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="onChangeStyle">Confirm</el-button>
+      </span>
+      </el-dialog>
     </el-card>
     <el-card class="box-card" style="margin-top: 20px">
       <div slot="header" class="clearfix">
@@ -82,6 +109,7 @@ import {errorNotify, successNotify} from '@/function/notify'
 import {uploadFile} from "@/api/upload";
 import {getBase64, getImageUrl} from "@/function/data";
 import RequirementSectionPreview from "../previews/RequirementSectionPreview";
+import {addStyleInClass, getStyleById} from "@/function/style";
 
 const defaultRequirementSection = {
   title: '',
@@ -104,6 +132,8 @@ export default {
       resImageSection: null,
       loading: true,
       disable: false,
+      dialogFormVisible: false,
+      formLabelWidth: '200px',
     };
   },
   methods: {
@@ -144,8 +174,9 @@ export default {
     },
     getRequirementSection() {
       return getRequirementSection().then(response => {
-        if(response.data.data !== null){
+        if (response.data.data !== null) {
           this.requirementSection = response.data.data
+          console.log('davcvdsfsfdsf', this.requirementSection)
         } else {
           this.requirementSection = defaultRequirementSection
         }
@@ -178,9 +209,25 @@ export default {
     },
     addRequirement() {
       this.requirementSection.requirementList.push('')
+    },
+    onChangeStyle() {
+      this.dialogFormVisible = false
+      this.getStyleRequirementSection()
+    },
+    getStyleRequirementSection() {
+      getStyleById('styleRequirementSection').innerHTML = (addStyleInClass('style-requirement-title', this.requirementSection.title_style) +
+          addStyleInClass('style-requirement-description', this.requirementSection.description_style) +
+          addStyleInClass('style-requirement-button', this.requirementSection.button_style) +
+          addStyleInClass('style-requirement-text', this.requirementSection.text_style) +
+          addStyleInClass('style-requirement-image', this.requirementSection.image_style))
     }
   },
-  created() {
+  watch: {
+    requirementSection() {
+      this.getStyleRequirementSection()
+    }
+  },
+  mounted() {
     this.resetDispatch()
     this.loading = false
   }
