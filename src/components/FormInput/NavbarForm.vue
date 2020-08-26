@@ -4,6 +4,7 @@
       <div slot="header" class="clearfix form-navbar">
         <span>Navbar Form</span>
         <el-checkbox  v-model="navbar.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
       <el-form label-width="120px">
@@ -36,10 +37,22 @@
         <span>Navbar Preview</span>
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
-      <div class="preview">
+      <div class="preview" :style="styleNavbar" >
         <NavbarPreview :navbar="navbar" />
       </div>
     </el-card>
+
+    <el-dialog title="Change style" :visible.sync="dialogFormVisible">
+      <el-form >
+        <el-form-item label="Change css" :label-width="formLabelWidth">
+          <el-input v-model="navbar.styleSection" type="textarea" :rows="2"  autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">Cancel</el-button>
+    <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -57,6 +70,9 @@ export default {
   components: {
     NavbarPreview
   },
+  computed:{
+
+  },
   data() {
     return {
       navbar: null,
@@ -65,6 +81,9 @@ export default {
       image: null,
       imageRes: null,
       loading: false,
+      dialogFormVisible: false,
+      formLabelWidth: '200px',
+      styleNavbar: {}
     };
   },
   methods: {
@@ -140,7 +159,18 @@ export default {
   },
   async mounted() {
     await this.resetDispatch()
-  }
+    if (this.navbar.styleSection ===''){
+      this.styleNavbar = null
+    } else {
+      this.styleNavbar = JSON.parse(this.navbar.styleSection)
+    }
+  },
+  // watch: {
+  //   getStyleNavbar() {
+  //     this.styleNavbar = JSON.parse(this.navbar.styleSection)
+  //     console.log(this.styleNavbar);
+  //   }
+  // }
 };
 </script>
 

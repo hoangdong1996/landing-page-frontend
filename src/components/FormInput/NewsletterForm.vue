@@ -18,10 +18,10 @@
         <el-form-item label="Description">
           <el-input class="input-label" type="textarea" v-model="newsletter.description"></el-input>
         </el-form-item>
-        <el-form-item label="Description Title">
+        <el-form-item label="Description_Title">
           <el-input class="input-label" v-model="newsletter.description_button_title"></el-input>
         </el-form-item>
-        <el-form-item label="Description Href">
+        <el-form-item label="Description_Href">
           <el-input class="input-label" v-model="newsletter.description_button_href"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center">
@@ -44,7 +44,7 @@
     <el-dialog title="Change style" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="Change css" :label-width="formLabelWidth">
-          <el-input type="textarea" :rows="2" v-model.lazy="newsletter.style" autocomplete="off"></el-input>
+          <el-input type="textarea" :rows="2"  autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">

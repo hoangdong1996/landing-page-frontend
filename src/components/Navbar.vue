@@ -8,7 +8,7 @@
       :class="{'is-sticky': scrolled}"
       v-show="navbar.showSection === true"
   >
-    <div class="container-fluid container-fluid--cp-150">
+    <div class="container-fluid container-fluid--cp-150" :style="styleNavbar">
       <b-navbar-toggle target="nav_collapse"/>
       <b-navbar-brand class="navbar-brand" to="/">
         <img v-if="navbar.image" :src="navbar.image.data | pngSrc" alt="logo"/>
@@ -61,9 +61,16 @@ export default {
       limitPosition: 200,
       scrolled: false,
       lastPosition: 500,
+      styleNavbar: null
     };
   },
   mounted() {
+    if (this.navbar.styleSection ===''){
+      this.styleNavbar = null
+    } else {
+      this.styleNavbar = JSON.parse(this.navbar.styleSection)
+    }
+
     (function () {
       scrollTo();
     })();
