@@ -3,17 +3,18 @@
     <el-card class="box-card" v-loading="loading" v-if="businessSection">
       <div slot="header" class="clearfix">
         <span>Business Section</span>
-        <el-checkbox  v-model="businessSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox v-model="businessSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
       </div>
       <el-form ref="form" :model="businessSection" label-width="120px">
         <el-form-item label="Title">
-          <el-input class="input-label" v-model="businessSection.section_title"></el-input>
+          <el-input class="input-label " v-model="businessSection.section_title"></el-input>
         </el-form-item>
         <el-form-item label="Video url">
           <el-input class="input-label" v-model="businessSection.video_url"></el-input>
         </el-form-item>
         <el-form-item label="Video title">
-          <el-input class="input-label" v-model="businessSection.video_title"></el-input>
+          <el-input class="input-label " v-model="businessSection.video_title"></el-input>
         </el-form-item>
         <el-form-item label="Image ">
           <el-upload
@@ -82,6 +83,38 @@
           <el-button @click.prevent="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
+
+      <el-dialog title="Change style" :visible.sync="dialogFormVisible">
+        <el-form>
+          <el-form-item label="Change section title css" :label-width="formLabelWidth">
+            <el-input v-model="businessSection.section_title_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change video title css" :label-width="formLabelWidth">
+            <el-input v-model="businessSection.video_title_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change image css" :label-width="formLabelWidth">
+            <el-input v-model="businessSection.image_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change feature title css" :label-width="formLabelWidth">
+            <el-input v-model="businessSection.feature_title_Style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change feature des css" :label-width="formLabelWidth">
+            <el-input v-model="businessSection.feature_description_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change feature image css" :label-width="formLabelWidth">
+            <el-input v-model="businessSection.feature_image_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="onChangeStyle">Confirm</el-button>
+      </span>
+      </el-dialog>
     </el-card>
     <el-card style="margin-top: 20px" v-if="businessSection">
       <div slot="header" class="clearfix form-navbar">
@@ -99,6 +132,7 @@ import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import BusinessSectionPreview from "../previews/BusinessSectionPreview";
 import {getBase64, getImageUrl} from "@/function/data";
+import {addStyleInClass, getStyleById} from "@/function/style";
 
 const defaultBusinessSection = {
   section_title: '',
@@ -110,11 +144,11 @@ const defaultBusinessSection = {
       image: {},
       title: '',
       description: ''
-    },{
+    }, {
       image: {},
       title: '',
       description: ''
-    },{
+    }, {
       image: {},
       title: '',
       description: ''
@@ -136,7 +170,9 @@ export default {
       resSectionImage: null,
       imageList: new Array(3),
       resImageList: new Array(3),
-      businessSectionIndex: 0
+      businessSectionIndex: 0,
+      dialogFormVisible: false,
+      formLabelWidth: '200px',
     };
   },
   methods: {
@@ -240,10 +276,24 @@ export default {
           this.businessSection = defaultBusinessSection
         }
       })
+    },
+    onChangeStyle() {
+      this.dialogFormVisible = false
+      this.getStyleBusinessSection()
+    },
+    getStyleBusinessSection() {
+      getStyleById('styleBusinessSection').innerHTML = (addStyleInClass('style-business-title', this.businessSection.section_title_style) +
+          addStyleInClass('style-business-video-title', this.businessSection.video_title_style) +
+          addStyleInClass('style-business-image', this.businessSection.image_style) +
+          addStyleInClass('style-feature-image', this.businessSection.feature_image_style) +
+          addStyleInClass('style-feature-title', this.businessSection.feature_title_Style) +
+          addStyleInClass('style-feature-description', this.businessSection.feature_description_style)
+      )
     }
   },
   async mounted() {
     await this.resetDispatch()
+    this.getStyleBusinessSection()
     this.loading = false;
   }
 };

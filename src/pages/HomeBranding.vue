@@ -11,7 +11,7 @@
     <AboutSection v-if="aboutSection" :aboutSection="aboutSection"/>
 
     <!-- business analytics start -->
-    <BusinessSection :businessSection="businessSection"/>
+    <BusinessSection v-if="businessSection" :businessSection="businessSection"/>
 
     <!-- requirement section-->
     <RequireList :requirementSection="requirementSection"/>

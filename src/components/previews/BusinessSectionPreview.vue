@@ -3,12 +3,12 @@
         <div class="feature-icon-list-area section-space--pb_120">
             <div class="container">
                 <div class="section-title-wrapper text-center section-space--mb_100">
-                    <h2 class="section-title mb-30">{{ businessSection.section_title }}</h2>
+                    <h2 class="section-title mb-30 style-business-title">{{ businessSection.section_title }}</h2>
                     <div class="video-button-container video-popup">
                         <silentbox-single :src="businessSection.video_url">
                             <div class="video-play">
                                 <i class="fa fa-play-circle"/>
-                                <span class="video-text">{{ businessSection.video_title }}</span>
+                                <span class="video-text style-business-video-title">{{ businessSection.video_title }}</span>
                             </div>
                         </silentbox-single>
                     </div>
@@ -18,7 +18,7 @@
             <div class="feature-icon-list">
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="feature-icon-list__media wow move-up">
+                        <div class="feature-icon-list__media wow move-up style-business-image">
                             <img :src="businessSection.image.data | pngSrc" class="img-fluid" alt>
                         </div>
                     </div>
@@ -30,12 +30,12 @@
                                         :key="feature.id"
                                         class="single-feature-icon wow move-up"
                                 >
-                                    <div class="single-feature-icon__media">
+                                    <div class="single-feature-icon__media style-feature-image">
                                         <img :src="feature.image.data | pngSrc" class="img-fluid" alt>
                                     </div>
                                     <div class="single-feature-icon__content">
-                                        <h6 class="title">{{ feature.title }}</h6>
-                                        <div class="text">{{ feature.description }}</div>
+                                        <h6 class="title style-feature-title">{{ feature.title }}</h6>
+                                        <div class="text style-feature-description">{{ feature.description }}</div>
                                     </div>
                                 </div>
                             </div>
