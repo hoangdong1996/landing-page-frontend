@@ -81,7 +81,7 @@ export default {
         return;
       }
       this.loading = true;
-      await this.$store.dispatch('login', {
+      await this.$store.dispatch('user/login', {
         username: this.model.username,
         password: this.model.password,
       }).then(() => {
