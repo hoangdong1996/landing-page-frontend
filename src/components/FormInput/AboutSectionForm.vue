@@ -1,9 +1,10 @@
 <template>
   <div v-loading="loading">
-    <el-card class="box-card" v-if="aboutSection" >
+    <el-card class="box-card" v-if="aboutSection">
       <div slot="header" class="clearfix">
         <span>About Section</span>
-        <el-checkbox  v-model="aboutSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox v-model="aboutSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
       </div>
       <el-form ref="form" :model="aboutSection" label-width="120px">
         <el-form-item label="Title">
@@ -63,6 +64,27 @@
           <el-button @click.prevent="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
+
+      <el-dialog title="Change style" :visible.sync="dialogFormVisible">
+        <el-form>
+          <el-form-item label="Change title css" :label-width="formLabelWidth">
+            <el-input v-model="aboutSection.title_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change text css" :label-width="formLabelWidth">
+            <el-input v-model="aboutSection.text_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change title expand css" :label-width="formLabelWidth">
+            <el-input v-model="aboutSection.title_expand_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change image css" :label-width="formLabelWidth">
+            <el-input v-model="aboutSection.image_expand_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="onChangeStyle">Confirm</el-button>
+      </span>
+      </el-dialog>
     </el-card>
     <el-card style="margin-top: 20px">
       <div slot="header" class="clearfix form-navbar">
@@ -71,6 +93,8 @@
       </div>
       <AboutSectionPreview :aboutSection="aboutSection"></AboutSectionPreview>
     </el-card>
+
+
   </div>
 </template>
 
@@ -80,6 +104,7 @@ import {uploadFile} from "@/api/upload";
 import {getBase64, getImageUrl} from "@/function/data";
 import {successNotify, errorNotify} from "@/function/notify";
 import AboutSectionPreview from "@/components/previews/AboutSectionPreview";
+import {addStyleInClass, getStyleById} from "@/function/style";
 
 const defaultAboutSection = {
   title: '',
@@ -112,6 +137,8 @@ export default {
       aboutExpandIndex: 0,
       imageList: new Array(3),
       resImageList: new Array(3),
+      dialogFormVisible: false,
+      formLabelWidth: '200px',
     };
   },
   methods: {
@@ -193,10 +220,22 @@ export default {
           this.aboutSection = defaultAboutSection;
         }
       })
+    },
+    onChangeStyle() {
+      this.dialogFormVisible = false
+      this.getStyleAboutSection()
+    },
+    getStyleAboutSection() {
+      getStyleById('styleAboutSection').innerHTML = (addStyleInClass('style-about-section-title', this.aboutSection.title_style) +
+          addStyleInClass('style-about-section-text', this.aboutSection.text_style) +
+          addStyleInClass('style-about-expand-title', this.aboutSection.title_expand_style) +
+          addStyleInClass('style-about-expand-image', this.aboutSection.image_expand_style)
+      )
     }
   },
   async mounted() {
     await this.resetDispatch()
+    this.getStyleAboutSection()
     this.loading = false
   },
 };

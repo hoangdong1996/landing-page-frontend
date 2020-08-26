@@ -2,15 +2,13 @@
   <div class="main-container">
     <!-- Navbar section -->
     <Navbar v-if="navbar" :navbar="navbar"
-            :aboutSection="aboutSection"
-            :requirementSection="requirementSection"
     />
 
     <!-- hero section -->
     <HeroBranding v-if="heroBranding" :heroBranding="heroBranding"/>
 
     <!-- about section -->
-    <AboutSection :aboutSection="aboutSection"/>
+    <AboutSection v-if="aboutSection" :aboutSection="aboutSection"/>
 
     <!-- business analytics start -->
     <BusinessSection :businessSection="businessSection"/>
