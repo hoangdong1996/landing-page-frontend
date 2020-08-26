@@ -3,7 +3,7 @@
     <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Hero Branding</span>
-        <el-checkbox  v-model="heroBranding.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox v-model="heroBranding.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
         <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
       </div>
       <el-form ref="form" :model="heroBranding" label-width="120px">
@@ -57,11 +57,11 @@
         <div class="container-fluid container-fluid--cp-150">
           <div class="hero-branding">
             <div class="hero-content">
-              <h2 class="h1 hero-content-title">{{ heroBranding.title }}</h2>
-              <h6 class="hero-content-subtitle mt-20">{{ heroBranding.description }}</h6>
+              <h2 class="h1 hero-content-title style-hero-branding-title">{{ heroBranding.title }}</h2>
+              <h6 class="hero-content-subtitle mt-20 style-hero-branding-des">{{ heroBranding.description }}</h6>
               <div class="slider-button mt-30">
                 <a
-                    class="ht-btn ht-btn-md"
+                    class="ht-btn ht-btn-md style-hero-branding-button"
                 >{{ heroBranding.button_title }}</a>
               </div>
             </div>
@@ -71,20 +71,20 @@
     </el-card>
 
     <el-dialog title="Change style" :visible.sync="dialogFormVisible">
-      <el-form >
+      <el-form>
         <el-form-item label="Change title css" :label-width="formLabelWidth">
-          <el-input v-model="heroBranding.title_style" type="textarea" :rows="2"  autocomplete="off"></el-input>
+          <el-input v-model="heroBranding.title_style" type="textarea" :rows="2" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Change description css" :label-width="formLabelWidth">
-          <el-input v-model="heroBranding.description_style" type="textarea" :rows="2"  autocomplete="off"></el-input>
+          <el-input v-model="heroBranding.description_style" type="textarea" :rows="2" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Change button css" :label-width="formLabelWidth">
-          <el-input v-model="heroBranding.button_style" type="textarea" :rows="2"  autocomplete="off"></el-input>
+          <el-input v-model="heroBranding.button_title_style" type="textarea" :rows="2" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+        <el-button type="primary" @click="onChangeStyle">Confirm</el-button>
       </span>
     </el-dialog>
   </div>
@@ -95,6 +95,8 @@ import {createHeroBranding, getHeroBranding} from "@/api/heroBranding";
 import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import {getBase64, getImageUrl} from "@/function/data";
+import {addStyleInClass, getStyleById} from "@/function/style";
+
 const defaultHeroBranding = {
   title: '',
   description: '',
@@ -115,6 +117,10 @@ export default {
     };
   },
   methods: {
+    onChangeStyle() {
+      this.dialogFormVisible = false
+      this.getStyleHeroBranding()
+    },
     handleChange(file) {
       this.imageSection = file.raw
       this.onPreview()
@@ -169,16 +175,22 @@ export default {
     },
     getHeroBrandingForm() {
       return getHeroBranding().then(res => {
-        if(res.data.data !==  null){
+        if (res.data.data !== null) {
           this.heroBranding = res.data.data
         } else {
           this.heroBranding = defaultHeroBranding
         }
       })
+    },
+    getStyleHeroBranding() {
+      getStyleById('styleHeroBanding').innerHTML = (addStyleInClass('style-hero-branding-title', this.heroBranding.title_style)
+          + addStyleInClass('style-hero-branding-des', this.heroBranding.description_style)
+          + addStyleInClass('style-hero-branding-button', this.heroBranding.button_title_style))
     }
   },
   async mounted() {
     await this.resetDispatch()
+    this.getStyleHeroBranding()
   }
 }
 </script>

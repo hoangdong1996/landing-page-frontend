@@ -23,22 +23,22 @@
       <b-collapse id="nav_collapse" class="default-nav justify-content-center" is-nav>
         <b-navbar-nav class="navbar-nav main-menu">
           <b-nav-item to="/" >
-            <span class="sopen-nav" >LANDING</span>
+            <span class="style-menu-navbar" >LANDING</span>
           </b-nav-item>
           <b-nav-item href="#home" class="scroll" v-if="heroBranding.showSection" >
-            <span class="sopen-nav" >HOME</span>
+            <span class="style-menu-navbar" >HOME</span>
           </b-nav-item>
           <b-nav-item href="#about" class="scroll" >
-            <span class="sopen-nav">ABOUT</span>
+            <span class="style-menu-navbar">ABOUT</span>
           </b-nav-item>
           <b-nav-item href="#requirement" class="scroll" >
-            <span class="sopen-nav">REQUIREMENTS</span>
+            <span class="style-menu-navbar">REQUIREMENTS</span>
           </b-nav-item>
           <b-nav-item href="#pricing" class="scroll">
-            <span class="sopen-nav">PRICING</span>
+            <span class="style-menu-navbar">PRICING</span>
           </b-nav-item>
           <b-nav-item href="#partner" class="scroll">
-            <span class="sopen-nav">PARTNERS</span>
+            <span class="style-menu-navbar">PARTNERS</span>
           </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -77,7 +77,7 @@ export default {
       this.styleNavbar = {}
     }
     let navItemStyle = document.getElementById("styleNavbar")
-    let string = ".sopen-nav {" + this.navbar.styleMenu + " !important" + "}";
+    let string = ".style-menu-navbar {" + this.navbar.styleMenu + " !important" + "}";
     navItemStyle.innerHTML = string;
 
     (function () {
