@@ -41,7 +41,7 @@
         />
       </template>
     </CurveShape>
-    <PricingSection :pricingSection="pricingSection"/>
+    <PricingSection v-if="pricingSection" :pricingSection="pricingSection"/>
     <!-- pricing section end-->
 
     <!-- partner client section -->

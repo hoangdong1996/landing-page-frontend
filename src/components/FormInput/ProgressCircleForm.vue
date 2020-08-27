@@ -165,7 +165,7 @@ export default {
       this.getStyleProgressCircle()
     },
     getStyleProgressCircle() {
-      getStyleById('styleProgressCircle').innerHTML = (addStyleInClass('style-circle-progress', this.progressCircle.progress_style) +
+      getStyleById('stylePricingSection').innerHTML = (addStyleInClass('style-circle-progress', this.progressCircle.progress_style) +
           addStyleInClass('style-circle-title', this.progressCircle.title_style) +
           addStyleInClass('style-circle-list-text', this.progressCircle.list_text_style))
     }

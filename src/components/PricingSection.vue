@@ -6,8 +6,8 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="section-title-wrapper text-center section-space--mb_60">
-                <h2 class="section-title font-width-light mb-15 wow move-up">{{ pricingSection.title }}</h2>
-                <span class="section-text wow move-up">{{ pricingSection.description }}</span>
+                <h2 class="section-title font-width-light mb-15 wow move-up style-pricing-title">{{ pricingSection.title }}</h2>
+                <span class="section-text wow move-up style-pricing-description">{{ pricingSection.description }}</span>
               </div>
             </div>
           </div>
@@ -28,6 +28,7 @@
 
 <script>
 import Pricing from './Pricing'
+import {addStyleInClass, getStyleById} from "@/function/style";
 
 export default {
   props: {
@@ -38,6 +39,16 @@ export default {
   },
   components: {
     Pricing
+  },
+  mounted() {
+    getStyleById('stylePricingSection').innerHTML = (addStyleInClass('style-pricing-title', this.pricingSection.title_style) +
+        addStyleInClass('style-pricing-description', this.pricingSection.description_style) +
+        addStyleInClass('style-pricing_table', this.pricingSection.pricing_stable_style) +
+        addStyleInClass('style-pricing-table_title', this.pricingSection.table_title_style) +
+        addStyleInClass('style-pricing-image', this.pricingSection.image_style) +
+        addStyleInClass('style-pricing-value', this.pricingSection.price_style) +
+        addStyleInClass('style-pricing-button', this.pricingSection.button_style) +
+        addStyleInClass('style-pricing-price', this.pricingSection.value_style))
   }
 }
 </script>

@@ -3,11 +3,12 @@
     <el-card class="box-card" v-if="pricingSection" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Pricing Section</span>
-        <el-checkbox  v-model="pricingSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox v-model="pricingSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
       </div>
       <el-form ref="form" label-width="120px">
         <el-form-item label="Title">
-          <el-input class="input-label" v-model="pricingSection.title" ></el-input>
+          <el-input class="input-label" v-model="pricingSection.title"></el-input>
         </el-form-item>
         <el-form-item label="Description">
           <el-input class="input-label" v-model="pricingSection.description"></el-input>
@@ -100,6 +101,42 @@
           <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
+
+      <el-dialog title="Change style" :visible.sync="dialogFormVisible">
+        <el-form>
+          <el-form-item label="Change title css" :label-width="formLabelWidth">
+            <el-input v-model="pricingSection.title_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change description css" :label-width="formLabelWidth">
+            <el-input v-model="pricingSection.description_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change table css" :label-width="formLabelWidth">
+            <el-input v-model="pricingSection.pricing_stable_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change table title css" :label-width="formLabelWidth">
+            <el-input v-model="pricingSection.table_title_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change image css" :label-width="formLabelWidth">
+            <el-input v-model="pricingSection.image_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change price css" :label-width="formLabelWidth">
+            <el-input v-model="pricingSection.price_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change value css" :label-width="formLabelWidth">
+            <el-input v-model="pricingSection.value_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change button css" :label-width="formLabelWidth">
+            <el-input v-model="pricingSection.button_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="onChangeStyle">Confirm</el-button>
+      </span>
+      </el-dialog>
     </el-card>
     <el-card class="box-card" style="margin-top: 20px">
       <div slot="header" class="clearfix">
@@ -117,6 +154,7 @@ import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import PricingSectionPreview from "@/components/previews/PricingSectionPreview";
 import {getBase64, getImageUrl} from "@/function/data";
+import {addStyleInClass, getStyleById} from "@/function/style";
 
 
 const pricingSectionDefault = {
@@ -170,7 +208,9 @@ export default {
       imageList: new Array(4),
       resImageList: new Array(4),
       disable: false,
-      loading: true
+      loading: true,
+      dialogFormVisible: false,
+      formLabelWidth: '200px',
     }
   },
   methods: {
@@ -240,7 +280,6 @@ export default {
     },
     async getPricingSection() {
       await getPricingSection().then(response => {
-        console.log(response.data.data);
         if (response.data.data === null) {
           this.pricingSection = pricingSectionDefault
         } else {
@@ -253,10 +292,25 @@ export default {
     },
     addPrice(index) {
       this.pricingSection.pricingTableList[index].price.push('');
+    },
+    onChangeStyle() {
+      this.dialogFormVisible = false
+      this.getStylePricingSection()
+    },
+    getStylePricingSection() {
+      getStyleById('stylePricingSection').innerHTML = (addStyleInClass('style-pricing-title', this.pricingSection.title_style) +
+          addStyleInClass('style-pricing-description', this.pricingSection.description_style) +
+          addStyleInClass('style-pricing_table', this.pricingSection.pricing_stable_style) +
+          addStyleInClass('style-pricing-table_title', this.pricingSection.table_title_style) +
+          addStyleInClass('style-pricing-image', this.pricingSection.image_style) +
+          addStyleInClass('style-pricing-value', this.pricingSection.price_style) +
+          addStyleInClass('style-pricing-button', this.pricingSection.button_style) +
+          addStyleInClass('style-pricing-price', this.pricingSection.value_style))
     }
   },
   async created() {
     await this.resetDispatch()
+    this.getStylePricingSection()
     this.loading = false
   }
 }
