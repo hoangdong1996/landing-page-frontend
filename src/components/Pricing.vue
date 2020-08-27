@@ -7,7 +7,7 @@
         </div>
         <div class="pricing-table__header">
           <div class="pricing-table__image">
-            <img :src="pricing.image.id | imgUrl " class="img-fluid" :alt="pricing.alt">
+            <img v-lazy="pricing.image.id | imgUrl " class="img-fluid" :alt="pricing.alt">
           </div>
           <h5 class="pricing-table__title">{{ pricing.title }}</h5>
           <div class="pricing-table__price-wrap">

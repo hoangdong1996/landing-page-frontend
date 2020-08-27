@@ -6,8 +6,18 @@ import BootstrapVue from 'bootstrap-vue'
 import VueSilentbox from 'vue-silentbox'
 import WOW from 'wow.js/dist/wow.js';
 import store from './store/index'
+import VueLazyload from "vue-lazyload";
+import {routes} from './router/index'
 
+const lazyloadOption = {
+    filter: {
+        imgUrl (listener) {
+            listener.src = `${process.env.VUE_APP_BASE_API}image/${listener.src}`
+        },
+    }
+}
 
+Vue.use(VueLazyload, lazyloadOption)
 Vue.use(VueSilentbox)
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
@@ -33,9 +43,6 @@ Object.keys(filters).forEach(key => {
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 Vue.config.productionSourceMap = false
-
-import {routes} from './router/index'
-
 
 const router = new VueRouter({
     routes,

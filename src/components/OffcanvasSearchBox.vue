@@ -7,7 +7,7 @@
             <div class="col-md-6 col-8">
               <div class="logo">
                 <a :href="logoHref">
-                  <img :src="searchBox.image.id | imgUrl" class="img-fluid" alt="site logo">
+                  <img v-lazy="searchBox.image.id | imgUrl" class="img-fluid" alt="site logo">
                   <!-- <img v-bind:src="logoScr" class="img-fluid" alt="site logo"> -->
                 </a>
               </div>
