@@ -27,16 +27,16 @@
           <b-nav-item href="#home" class="scroll" v-if="heroBranding && heroBranding.showSection" >
             <span class="style-menu-navbar" >HOME</span>
           </b-nav-item>
-          <b-nav-item href="#about" class="scroll" >
+          <b-nav-item href="#about" class="scroll" v-if="aboutSection && aboutSection.showSection">
             <span class="style-menu-navbar">ABOUT</span>
           </b-nav-item>
-          <b-nav-item href="#requirement" class="scroll" >
+          <b-nav-item href="#requirement" class="scroll" v-if="requirementSection && requirementSection.showSection" >
             <span class="style-menu-navbar">REQUIREMENTS</span>
           </b-nav-item>
-          <b-nav-item href="#pricing" class="scroll">
+          <b-nav-item href="#pricing" class="scroll" v-if="pricingSection && pricingSection.showSection">
             <span class="style-menu-navbar">PRICING</span>
           </b-nav-item>
-          <b-nav-item href="#partner" class="scroll">
+          <b-nav-item href="#partner" class="scroll" v-if="partnerClientSection && partnerClientSection.showSection">
             <span class="style-menu-navbar">PARTNERS</span>
           </b-nav-item>
         </b-navbar-nav>
