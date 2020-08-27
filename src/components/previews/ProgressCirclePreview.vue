@@ -2,7 +2,7 @@
   <div class="row" v-if="progressCircle" :key="render">
     <div v-for="(progress, index) in progressCircle.featureProgressList" class="col-md-6" :key="index">
       <div class="feature-list-progress section-space--pt_60">
-        <div class="feature-list-progress__counter">
+        <div class="feature-list-progress__counter style-circle-progress">
           <div class="circle-progress-wrapper">
             <div class="chart-progress">
               <div class="chart-progress__inner-wrapper">
@@ -24,9 +24,9 @@
           </div>
         </div>
         <div class="feature-list-progress__info">
-          <h6 class="feature-list-progress__title mb-20">{{ progress.featureListTitle }}</h6>
+          <h6 class="feature-list-progress__title mb-20 style-circle-title">{{ progress.featureListTitle }}</h6>
           <ul
-              class="feature-list-progress__list"
+              class="feature-list-progress__list style-circle-list-text"
               v-for="(list) in progress.featureList"
               :key="list">
             <li>{{ list }}</li>

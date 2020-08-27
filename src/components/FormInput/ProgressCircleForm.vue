@@ -3,7 +3,8 @@
     <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Progress Circle</span>
-        <el-checkbox  v-model="progressCircle.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox v-model="progressCircle.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
       </div>
       <el-row>
         <el-button @click.prevent="progressCircleIndex = 0">Circle 1</el-button>
@@ -54,6 +55,25 @@
           <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
+
+      <el-dialog title="Change style" :visible.sync="dialogFormVisible">
+        <el-form>
+          <el-form-item label="Change progress css" :label-width="formLabelWidth">
+            <el-input v-model="progressCircle.progress_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change title css" :label-width="formLabelWidth">
+            <el-input v-model="progressCircle.title_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change text css" :label-width="formLabelWidth">
+            <el-input v-model="progressCircle.list_text_style" type="textarea" :rows="2" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="onChangeStyle">Confirm</el-button>
+      </span>
+      </el-dialog>
     </el-card>
     <el-card class="box-card" style="margin-top: 20px">
       <div slot="header" class="clearfix">
@@ -69,6 +89,7 @@
 import {createProgressCircle, getProgressCircle} from "@/api/progressCircle";
 import {errorNotify, successNotify} from '@/function/notify'
 import ProgressCirclePreview from "@/components/previews/ProgressCirclePreview";
+import {addStyleInClass, getStyleById} from "@/function/style";
 
 const progressCircleDefault = {
   featureProgressList: [{
@@ -92,7 +113,9 @@ export default {
       render: 0,
       num: 1,
       disable: false,
-      progressCircle: null
+      progressCircle: null,
+      dialogFormVisible: false,
+      formLabelWidth: '200px',
     }
   },
   methods: {
@@ -136,10 +159,20 @@ export default {
           this.progressCircle = response.data.data
         }
       })
+    },
+    onChangeStyle() {
+      this.dialogFormVisible = false
+      this.getStyleProgressCircle()
+    },
+    getStyleProgressCircle() {
+      getStyleById('styleProgressCircle').innerHTML = (addStyleInClass('style-circle-progress', this.progressCircle.progress_style) +
+          addStyleInClass('style-circle-title', this.progressCircle.title_style) +
+          addStyleInClass('style-circle-list-text', this.progressCircle.list_text_style))
     }
   },
-  created() {
-    this.resetDispatch()
+  async mounted() {
+    await this.resetDispatch()
+    this.getStyleProgressCircle()
     this.loading = false
   }
 }

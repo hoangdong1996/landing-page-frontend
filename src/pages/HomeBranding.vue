@@ -24,7 +24,7 @@
       <div class="container">
         <!-- progress feature component -->
         <!-- thiếu title, fill, class, class 2 trong model -->
-        <ProgressCircle :progressCircle="progressCircle"/>
+        <ProgressCircle v-if="progressCircle" :progressCircle="progressCircle"/>
       </div>
     </div>
     <!-- feature list progress bar -->
