@@ -28,7 +28,7 @@
       <div class="col-lg-6 order-1 order-xl-2">
         <div class="requirements-list-image wow move-up" style="margin-left: auto !important; margin-top: auto">
           <img
-            :src="requirementSection.image.data | pngSrc"
+            :src="requirementSection.image.id | imgUrl"
             class="img-fluid"
             alt
           >

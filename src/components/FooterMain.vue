@@ -6,7 +6,7 @@
           <div class="col-lg-4 col-md-6 footer-widget">
             <div class="footer-widget__logo mb-30">
               <router-link to="/">
-                <img :src="footer.image.data | pngSrc" class="img-fluid logo-dark" alt>
+                <img :src="footer.image.id | imgUrl" class="img-fluid logo-dark" alt>
               </router-link>
             </div>
 

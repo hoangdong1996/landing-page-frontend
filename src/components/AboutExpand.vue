@@ -6,7 +6,7 @@
         class="col-md-4 box-image position-relative text-center wow move-up"
     >
       <div class="box-image__media style-about-expand-image">
-        <img v-if="about.image" :src="about.image.data | pngSrc" class="img-fluid" alt="about icon">
+        <img v-if="about.image" :src="about.image.id | imgUrl" class="img-fluid" alt="about icon">
       </div>
       <div class="box-image__content">
         <h6 class="box-image__title style-about-expand-title">

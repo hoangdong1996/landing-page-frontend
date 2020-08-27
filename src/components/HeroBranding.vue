@@ -26,12 +26,12 @@
 <script>
 import {getImageUrl} from "@/function/data";
 import {addStyleInClass, getStyleById} from "@/function/style";
-
+import {imgUrl} from "@/filters";
 export default {
   data() {
     return {
       image: null,
-      style: {backgroundImage: 'url(data:image/png;base64,' + this.heroBranding.image.data + ')'}
+      style: {backgroundImage: 'url(' + imgUrl(this.heroBranding.image.id) + ')'}
     }
   },
   props: {
