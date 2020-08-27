@@ -1,11 +1,7 @@
 import {getPartnerClientSection} from "@/api/partnerClientSection";
 
 const state = {
-    partnerClientSection: {
-        title: '',
-        text: '',
-        brandLogoList: []
-    }
+    partnerClientSection: null
 }
 
 const mutations = {

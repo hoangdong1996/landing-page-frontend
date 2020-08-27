@@ -45,7 +45,7 @@
     <!-- pricing section end-->
 
     <!-- partner client section -->
-    <PartnerClientSection :partnerClientSection="partnerClientSection"/>
+    <PartnerClientSection v-if="partnerClientSection" :partnerClientSection="partnerClientSection"/>
 
     <!-- newsletter section -->
     <Newsletter :newsletter="newsletter"/>

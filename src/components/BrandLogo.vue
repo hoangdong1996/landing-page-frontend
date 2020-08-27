@@ -6,7 +6,7 @@
       class="col-lg-2 col-md-3 col-sm-4 col-6 brand-logo wow move-up"
     >
       <div class="brand-logo__image">
-        <img v-lazy="brand.image.id | imgUrl " class="img-fluid">
+        <img v-lazy="brand.image.id | imgUrl " class="img-fluid style-partner-image">
       </div>
       <!-- <div class="brand-logo__image-hover">
         <img :src="brand.logoHover.data | pngSrc " class="img-fluid" :alt="brand.alt">
