@@ -1,9 +1,11 @@
 <template>
   <div v-if="featureCarouselSection">
-    <el-card class="box-card" v-loading="loading" >
+    <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Feature Carousel Section</span>
-        <el-checkbox  v-model="featureCarouselSection.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox v-model="featureCarouselSection.showSection" style="margin-left: 20px" label="Show"
+                     border></el-checkbox>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
       </div>
       <el-row style="">
         <el-button @click.prevent="featureCarouselSectionIndex = 0">Carousel 1</el-button>
@@ -49,6 +51,27 @@
           <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
+
+      <el-dialog title="Change style" :visible.sync="dialogFormVisible">
+        <el-form>
+          <el-form-item label="Change title css" :label-width="formLabelWidth">
+            <el-input v-model="featureCarouselSection.title_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change description css" :label-width="formLabelWidth">
+            <el-input v-model="featureCarouselSection.description_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change image css" :label-width="formLabelWidth">
+            <el-input v-model="featureCarouselSection.image_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="onChangeStyle">Confirm</el-button>
+      </span>
+      </el-dialog>
     </el-card>
     <el-card style="margin-top: 20px">
       <div slot="header" class="clearfix form-navbar">
@@ -56,7 +79,7 @@
         <el-button style="float: right; padding: 3px 0" type="text"></el-button>
       </div>
       <FeatureCarouselSectionPreview :featureCarouselSection="featureCarouselSection"
-                                    v-if="!loading"></FeatureCarouselSectionPreview>
+                                     v-if="!loading"></FeatureCarouselSectionPreview>
     </el-card>
   </div>
 </template>
@@ -67,6 +90,7 @@ import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import FeatureCarouselSectionPreview from "@/components/previews/FeatureCarouselSectionPreview";
 import {getBase64, getImageUrl} from "@/function/data";
+import {addStyleInClass, getStyleById} from "@/function/style";
 
 const featureCarouselDefault = {
   featureCarouselList: [
@@ -95,7 +119,9 @@ export default {
       imageList: new Array(3),
       resImageList: new Array(3),
       featureCarouselSectionIndex: 0,
-      featureCarouselSection: null
+      featureCarouselSection: null,
+      dialogFormVisible: false,
+      formLabelWidth: '200px',
     }
   },
   methods: {
@@ -151,7 +177,7 @@ export default {
       this.imageList = new Array(3)
       this.resImageList = new Array(3)
       this.featureCarouselSectionIndex = 0
-      this.featureCarouselSection= null
+      this.featureCarouselSection = null
 
     },
     async resetDispatch() {
@@ -172,10 +198,20 @@ export default {
           this.featureCarouselSection = response.data.data
         }
       })
+    },
+    onChangeStyle() {
+      this.dialogFormVisible = false
+      this.getStyleFeatureCarouselSection()
+    },
+    getStyleFeatureCarouselSection(){
+      getStyleById('styleFeatureCarouselSection').innerHTML = (addStyleInClass('style-feature-carousel-title', this.featureCarouselSection.title_style) +
+          addStyleInClass('style-feature-carousel-description', this.featureCarouselSection.description_style) +
+          addStyleInClass('style-feature-carousel-image', this.featureCarouselSection.image_style))
     }
   },
-  created() {
-    this.resetDispatch()
+  async mounted() {
+    await this.resetDispatch()
+    this.getStyleFeatureCarouselSection()
     this.loading = false
   }
 }

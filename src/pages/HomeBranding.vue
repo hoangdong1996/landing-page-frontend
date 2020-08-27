@@ -17,7 +17,7 @@
     <RequireList v-if="requirementSection" :requirementSection="requirementSection"/>
 
     <!-- feature carousel -->
-    <FeatureTwo :featureCarouselSection="featureCarouselSection"/>
+    <FeatureTwo v-if="featureCarouselSection" :featureCarouselSection="featureCarouselSection"/>
 
     <!-- feature list progress bar -->
     <div class="feature-list-progress-area pb-30">
