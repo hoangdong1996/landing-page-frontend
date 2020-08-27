@@ -48,7 +48,7 @@
     <PartnerClientSection v-if="partnerClientSection" :partnerClientSection="partnerClientSection"/>
 
     <!-- newsletter section -->
-    <Newsletter :newsletter="newsletter"/>
+    <Newsletter v-if="newsletter" :newsletter="newsletter"/>
 
     <!-- footer section -->
     <FooterMain :footer="footer"/>

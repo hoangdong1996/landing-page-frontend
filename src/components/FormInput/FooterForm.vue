@@ -3,7 +3,8 @@
     <el-card class="box-card" v-loading="loading">
       <div slot="header" class="clearfix">
         <span>Footer</span>
-        <el-checkbox  v-model="footer.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox v-model="footer.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
       </div>
       <el-form ref="form" :model="footer" label-width="120px">
         <el-form-item label="Image">
@@ -63,6 +64,27 @@
           <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
       </el-form>
+
+      <el-dialog title="Change style" :visible.sync="dialogFormVisible">
+        <el-form>
+          <el-form-item label="Change title css" :label-width="formLabelWidth">
+            <el-input v-model="footer.title_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change image css" :label-width="formLabelWidth">
+            <el-input v-model="footer.image_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="Change link text css" :label-width="formLabelWidth">
+            <el-input v-model="footer.footer_link_style" type="textarea" :rows="2"
+                      autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="onChangeStyle">Confirm</el-button>
+      </span>
+      </el-dialog>
     </el-card>
     <el-card style="margin-top: 20px">
       <div slot="header" class="clearfix form-navbar">
@@ -80,6 +102,7 @@ import {uploadFile} from "@/api/upload";
 import {errorNotify, successNotify} from "@/function/notify";
 import {getBase64, getImageUrl} from "@/function/data";
 import FooterSectionPreview from "@/components/previews/FooterSectionPreview";
+import {addStyleInClass, getStyleById} from "@/function/style";
 
 const footerDefault = {
   image: {},
@@ -99,7 +122,9 @@ export default {
       imageSection: null,
       resImageSection: null,
       loading: true,
-      disable: false
+      disable: false,
+      formLabelWidth: '200px',
+      dialogFormVisible: false,
     }
   },
   methods: {
@@ -179,10 +204,20 @@ export default {
         title: '',
         href: ''
       })
+    },
+    onChangeStyle() {
+      this.dialogFormVisible = false
+      this.getStyleFooter()
+    },
+    getStyleFooter() {
+      getStyleById('styleFooter').innerHTML = (addStyleInClass('style-footer-title', this.footer.title_style) +
+          addStyleInClass('style-footer-image', this.footer.image_style) +
+          addStyleInClass('style-footer-link-text', this.footer.footer_link_style))
     }
   },
   async mounted() {
     await this.resetDispatch()
+    this.getStyleFooter()
   }
 }
 
