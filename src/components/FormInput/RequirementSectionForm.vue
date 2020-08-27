@@ -176,7 +176,6 @@ export default {
       return getRequirementSection().then(response => {
         if (response.data.data !== null) {
           this.requirementSection = response.data.data
-          console.log('davcvdsfsfdsf', this.requirementSection)
         } else {
           this.requirementSection = defaultRequirementSection
         }

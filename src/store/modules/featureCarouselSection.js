@@ -1,9 +1,7 @@
 import { getFeatureCarouselSection } from '@/api/featureCarouselSection'
 
 const state = {
-  featureCarouselSection: {
-    featureCarouselList: []
-  }
+  featureCarouselSection: null
 }
 
 const mutations = {

@@ -10,13 +10,13 @@
                   <div class="row align-items-center">
                     <div class="col-md-6 wow move-up">
                       <div class="image">
-                        <img :src="item.image.data | pngSrc " class="img-fluid" alt="">
+                        <img :src="item.image.data | pngSrc " class="img-fluid style-feature-carousel-image" alt="">
                       </div>
                     </div>
                     <div class="col-md-6 wow move-up">
                       <div class="content">
-                        <h4 class="title">{{ item.title }}</h4>
-                        <div class="text">{{ item.description }}</div>
+                        <h4 class="title style-feature-carousel-title" >{{ item.title }}</h4>
+                        <div class="text style-feature-carousel-description">{{ item.description }}</div>
                       </div>
                     </div>
                   </div>

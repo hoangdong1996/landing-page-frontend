@@ -6,8 +6,7 @@
       fixed="top"
       class="header-area"
       :class="{'is-sticky': scrolled}"
-      v-if="navbar"
-      v-show="navbar.showSection === true"
+      v-show="navbar && navbar.showSection === true"
   >
     <div class="container-fluid container-fluid--cp-150" :style="styleNavbar">
       <b-navbar-toggle target="nav_collapse"/>
@@ -25,7 +24,7 @@
           <b-nav-item to="/" >
             <span class="style-menu-navbar" >LANDING</span>
           </b-nav-item>
-          <b-nav-item href="#home" class="scroll" v-if="heroBranding.showSection" >
+          <b-nav-item href="#home" class="scroll" v-if="heroBranding && heroBranding.showSection" >
             <span class="style-menu-navbar" >HOME</span>
           </b-nav-item>
           <b-nav-item href="#about" class="scroll" >

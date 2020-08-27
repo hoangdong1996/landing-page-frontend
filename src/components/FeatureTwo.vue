@@ -10,20 +10,20 @@
                   <div class="row align-items-center">
                     <div class="col-md-6 wow move-up">
                       <div class="image">
-                        <img v-lazy="item.image.id | imgUrl " class="img-fluid" alt="">
+                        <img v-lazy="item.image.id | imgUrl " class="img-fluid style-feature-carousel-image" alt="">
                       </div>
                     </div>
                     <div class="col-md-6 wow move-up">
                       <div class="content">
-                        <h4 class="title">{{ item.title }}</h4>
-                        <div class="text">{{ item.description }}</div>
+                        <h4 class="title style-feature-carousel-title">{{ item.title }}</h4>
+                        <div class="text style-feature-carousel-description">{{ item.description }}</div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </swiper-slide>
-            <div slot="pagination" class="swiper-pagination swiper-pagination--vertical swiper-pagination-1" />
+            <div slot="pagination" class="swiper-pagination swiper-pagination--vertical swiper-pagination-1"/>
           </swiper>
         </div>
       </div>
@@ -32,12 +32,15 @@
 </template>
 
 <script>
+import {addStyleInClass, getStyleById} from "@/function/style";
+
 export default {
   name: 'FeatureTwo',
   props: {
     featureCarouselSection: {
       type: Object,
-      default: null
+      default: () => {
+      }
     }
   },
   data() {
@@ -57,6 +60,11 @@ export default {
         }
       }
     }
-  }
+  },
+  mounted() {
+    getStyleById('styleFeatureCarouselSection').innerHTML = (addStyleInClass('style-feature-carousel-title', this.featureCarouselSection.title_style) +
+        addStyleInClass('style-feature-carousel-description', this.featureCarouselSection.description_style) +
+        addStyleInClass('style-feature-carousel-image', this.featureCarouselSection.image_style))
+  },
 }
 </script>

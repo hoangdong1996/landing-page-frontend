@@ -17,14 +17,14 @@
     <RequireList v-if="requirementSection" :requirementSection="requirementSection"/>
 
     <!-- feature carousel -->
-    <FeatureTwo :featureCarouselSection="featureCarouselSection"/>
+    <FeatureTwo v-if="featureCarouselSection" :featureCarouselSection="featureCarouselSection"/>
 
     <!-- feature list progress bar -->
     <div class="feature-list-progress-area pb-30">
       <div class="container">
         <!-- progress feature component -->
         <!-- thiếu title, fill, class, class 2 trong model -->
-        <ProgressCircle :progressCircle="progressCircle"/>
+        <ProgressCircle v-if="progressCircle" :progressCircle="progressCircle"/>
       </div>
     </div>
     <!-- feature list progress bar -->
