@@ -6,7 +6,7 @@
           <div class="col-lg-4 col-md-6 footer-widget">
             <div class="footer-widget__logo mb-30">
               <router-link to="/">
-                <img  :src="footer.image.data | pngSrc" class="img-fluid logo-dark" alt>
+                <img  :src="footer.image.data | pngSrc" class="img-fluid logo-dark style-footer-image" alt>
               </router-link>
             </div>
 
@@ -19,9 +19,9 @@
           </div>
 
           <div class="col-lg-2 col-md-6 footer-widget">
-            <h6 class="footer-widget__title mb-20">{{ footer.title }}</h6>
+            <h6 class="footer-widget__title mb-20 style-footer-title">{{ footer.title }}</h6>
             <ul class="footer-widget__list">
-              <li v-for="(footerLink,index) in footer.footerLinkList" :key="index">
+              <li class="style-footer-link-text" v-for="(footerLink,index) in footer.footerLinkList" :key="index">
                 <a :href="footerLink.href" class="hover-style-link">{{ footerLink.title }}</a>
               </li>
             </ul>

@@ -1,13 +1,7 @@
 import {getPricingSection} from '@/api/pricingSection'
 
 const state = {
-    pricingComponent: {
-        title: '',
-        description: '',
-        popularTitle: '',
-        pricingTableList: [
-        ]
-    }
+    pricingComponent:null
 }
 
 const mutations = {

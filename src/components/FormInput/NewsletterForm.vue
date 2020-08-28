@@ -1,9 +1,10 @@
 <template>
-  <div>
+  <div v-if="newsletter">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Newsletter Section</span>
-        <el-checkbox  v-model="newsletter.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-checkbox v-model="newsletter.showSection" style="margin-left: 20px" label="Show" border></el-checkbox>
+        <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
       </div>
       <el-form ref="form" label-width="120px" v-if="newsletter">
         <el-form-item label="Title">
@@ -25,7 +26,6 @@
           <el-input class="input-label" v-model="newsletter.description_button_href"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center">
-          <el-button @click="dialogFormVisible = true" style="margin-left: 10px">Change Style CSS</el-button>
           <el-button type="primary" @click="onSubmit">Create</el-button>
           <el-button @click="onReset">Cancel</el-button>
         </el-form-item>
@@ -38,19 +38,34 @@
       </div>
       <NewsletterPreview :newsletter="newsletter"
                          :isStyle="isStyle"
+                         v-if="newsletter"
+                         :render="key"
       />
     </el-card>
 
     <el-dialog title="Change style" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="Change css" :label-width="formLabelWidth">
-          <el-input type="textarea" :rows="2"  autocomplete="off"></el-input>
+      <el-form>
+        <el-form-item label="Change title css" :label-width="formLabelWidth">
+          <el-input v-model="newsletter.title_style" type="textarea" :rows="2"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Change description css" :label-width="formLabelWidth">
+          <el-input v-model="newsletter.description_style" type="textarea" :rows="2"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Change button css" :label-width="formLabelWidth">
+          <el-input v-model="newsletter.button_style" type="textarea" :rows="2"
+                    autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Change newsletter css" :label-width="formLabelWidth">
+          <el-input v-model="newsletter.newsletter_style" type="textarea" :rows="2"
+                    autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogFormVisible = false">Cancel</el-button>
-    <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
-  </span>
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="onChangeStyle">Confirm</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -59,6 +74,7 @@
 import {createNewsletter, getNewsletter} from "@/api/newsletter";
 import {successNotify, errorNotify} from '@/function/notify'
 import NewsletterPreview from "@/components/previews/NewsletterPreview";
+import {addStyleInClass, getStyleById} from "@/function/style";
 
 export default {
   components: {
@@ -66,13 +82,14 @@ export default {
   },
   data() {
     return {
-      newsletter: {},
-      dialogFormVisible: false,
+      newsletter: null,
       form: {
         name: '',
       },
       formLabelWidth: '200px',
-      isStyle: true
+      dialogFormVisible: false,
+      isStyle: true,
+      key: 0
     }
   },
   methods: {
@@ -87,6 +104,7 @@ export default {
       await getNewsletter().then(response => {
         if (response.data.data !== null) {
           this.newsletter = response.data.data
+          this.getStyleNewsletter()
         }
       })
     },
@@ -94,6 +112,17 @@ export default {
       this.newsletter = null
       this.getNewsletter()
     },
+    onChangeStyle() {
+      this.dialogFormVisible = false
+      this.getStyleNewsletter()
+      this.key = this.key + 1;
+    },
+    getStyleNewsletter() {
+      getStyleById('styleNewsletter').innerHTML = (addStyleInClass('style-newsletter-title', this.newsletter.title_style) +
+          addStyleInClass('style-newsletter-description', this.newsletter.description_style) +
+          addStyleInClass('style-newsletter', this.newsletter.newsletter_style) +
+          addStyleInClass('style-newsletter-button', this.newsletter.button_style))
+    }
   },
   async mounted() {
     await this.getNewsletter()
