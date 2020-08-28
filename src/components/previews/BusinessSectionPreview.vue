@@ -19,7 +19,8 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="feature-icon-list__media wow move-up style-business-image">
-                            <img :src="businessSection.image.data | pngSrc" class="img-fluid" alt>
+                            <img v-if="businessSection.image.data" v-lazy="businessSection.image.data" class="img-fluid" alt>
+                            <img v-else v-lazy="businessSection.image.id" class="img-fluid" alt>
                         </div>
                     </div>
                     <div class="col-lg-6">

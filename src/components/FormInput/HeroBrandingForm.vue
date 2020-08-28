@@ -52,7 +52,8 @@
           id="home"
           class="hero-branding bg-cover"
           style="position: relative"
-          :style="{ 'background-image': 'url(data:image/png;base64,' + heroBranding.image.data +')' }"
+          v-if="heroBranding.image"
+          v-lazy:background-image="heroBranding.image.data ? heroBranding.image.data : heroBranding.image.id"
       >
         <div class="container-fluid container-fluid--cp-150">
           <div class="hero-branding">
