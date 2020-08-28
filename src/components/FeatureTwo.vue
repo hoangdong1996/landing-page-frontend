@@ -10,7 +10,7 @@
                   <div class="row align-items-center">
                     <div class="col-md-6 wow move-up">
                       <div class="image">
-                        <img v-lazy="item.image.id | imgUrl " class="img-fluid style-feature-carousel-image" alt="">
+                        <img v-lazy="item.image.id" class="img-fluid style-feature-carousel-image" alt="">
                       </div>
                     </div>
                     <div class="col-md-6 wow move-up">

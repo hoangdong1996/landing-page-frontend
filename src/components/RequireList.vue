@@ -29,7 +29,7 @@
       </div>
       <div class="col-lg-6 order-1 order-xl-2">
         <div class="requirements-list-image wow move-up" style="margin-left: auto !important; margin-top: auto">
-          <img v-lazy="requirementSection.image.id | imgUrl"
+          <img v-lazy="requirementSection.image.id"
             class="img-fluid style-requirement-image"
             alt
           >

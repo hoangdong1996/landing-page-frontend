@@ -9,15 +9,17 @@ import store from './store/index'
 import VueLazyload from "vue-lazyload";
 import {routes} from './router/index'
 
-const lazyloadOption = {
+Vue.use(VueLazyload, {
+    preLoad: 1.3,
+    attempt: 1,
+    silent: false,
     filter: {
         imgUrl (listener) {
+            console.log("filter",listener.src)
             listener.src = `${process.env.VUE_APP_BASE_API}image/${listener.src}`
         },
     }
-}
-
-Vue.use(VueLazyload, lazyloadOption)
+})
 Vue.use(VueSilentbox)
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)

@@ -1,8 +1,7 @@
 <template>
   <div class="main-container">
     <!-- Navbar section -->
-    <Navbar v-if="navbar" :navbar="navbar"
-    />
+    <Navbar v-if="navbar" :navbar="navbar"/>
 
     <!-- hero section -->
     <HeroBranding v-if="heroBranding" :heroBranding="heroBranding"/>
@@ -41,20 +40,20 @@
         />
       </template>
     </CurveShape>
-    <PricingSection :pricingSection="pricingSection"/>
+    <PricingSection v-if="pricingSection" :pricingSection="pricingSection"/>
     <!-- pricing section end-->
 
     <!-- partner client section -->
-    <PartnerClientSection :partnerClientSection="partnerClientSection"/>
+    <PartnerClientSection v-if="partnerClientSection" :partnerClientSection="partnerClientSection"/>
 
     <!-- newsletter section -->
-    <Newsletter :newsletter="newsletter"/>
+    <Newsletter v-if="newsletter" :newsletter="newsletter"/>
 
     <!-- footer section -->
-    <FooterMain :footer="footer"/>
+    <FooterMain v-if="footer" :footer="footer"/>
 
     <!-- offcanvas search component -->
-    <OffcanvasSearchBox :searchBox="searchBox"/>
+    <OffcanvasSearchBox v-if="searchBox" :searchBox="searchBox"/>
   </div>
 </template>
 

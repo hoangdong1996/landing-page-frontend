@@ -1,12 +1,12 @@
 <template>
-  <div class="footer-area-wrapper" :class="FooterStyle" v-if="footer" v-show="footer.showSection">
+  <div class="footer-area-wrapper" :class="FooterStyle" v-show="footer && footer.showSection">
     <div class="footer-area section-space--ptb_90">
       <div class="container">
         <div class="row footer-widget-wrapper">
           <div class="col-lg-4 col-md-6 footer-widget">
             <div class="footer-widget__logo mb-30">
               <router-link to="/">
-                <img v-lazy="footer.image.id | imgUrl" class="img-fluid logo-dark" alt>
+                <img v-lazy="footer.image.id" class="img-fluid logo-dark" alt>
               </router-link>
             </div>
 
