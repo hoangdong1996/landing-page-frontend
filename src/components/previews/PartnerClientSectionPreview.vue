@@ -18,7 +18,8 @@
                             class="col-lg-2 col-md-3 col-sm-4 col-6 brand-logo wow move-up"
                     >
                         <div class="brand-logo__image">
-                            <img :src="brand.image.data | pngSrc " class="img-fluid style-partner-image">
+                            <img v-if="brand.image.data" :src="brand.image.data" class="img-fluid style-partner-image">
+                            <img v-else v-lazy="brand.image.id" class="img-fluid style-partner-image">
                         </div>
                     </div>
                 </div>

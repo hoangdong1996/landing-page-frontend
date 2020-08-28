@@ -1,5 +1,5 @@
 <template>
-  <div class="feature-slider-area section-space--pt_60" v-if="featureCarouselSection">
+  <div class="feature-slider-area section-space--pt_60">
     <div class="feature-slider position-relative">
       <div class="feature-slider__container">
         <div class="feature-slider__wrapper">
@@ -10,7 +10,8 @@
                   <div class="row align-items-center">
                     <div class="col-md-6 wow move-up">
                       <div class="image">
-                        <img :src="item.image.data | pngSrc " class="img-fluid style-feature-carousel-image" alt="">
+                        <img v-if="item.image.data" :src="item.image.data" class="img-fluid style-feature-carousel-image" alt="">
+                        <img v-else v-lazy="item.image.id" class="img-fluid style-feature-carousel-image" alt="">
                       </div>
                     </div>
                     <div class="col-md-6 wow move-up">

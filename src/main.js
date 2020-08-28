@@ -15,8 +15,11 @@ Vue.use(VueLazyload, {
     silent: false,
     filter: {
         imgUrl (listener) {
-            console.log("filter",listener.src)
-            listener.src = `${process.env.VUE_APP_BASE_API}image/${listener.src}`
+            const src = listener.src
+            const isId = Number.isInteger(src)
+            if(isId) {
+                listener.src = `${process.env.VUE_APP_BASE_API}image/${listener.src}`
+            }
         },
     }
 })

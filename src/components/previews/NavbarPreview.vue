@@ -10,7 +10,8 @@
     <div class="container-fluid container-fluid--cp-150">
       <b-navbar-toggle target="nav_collapse"/>
       <b-navbar-brand class="navbar-brand" to="/">
-        <img v-if="navbar.image" :src="navbar.image.data | pngSrc" alt="logo"/>
+        <img v-if="navbar.image.data" v-lazy="navbar.image.data" alt="logo"/>
+        <img v-else v-lazy="navbar.image.id">
       </b-navbar-brand>
       <b-btn-group class="header-config-wrapper">
         <b-btn class="header-config">

@@ -23,7 +23,8 @@
                 </div>
                 <div class="pricing-table__header">
                   <div class="pricing-table__image">
-                    <img :src="pricing.image.data | pngSrc " class="img-fluid style-pricing-image" :alt="pricing.alt">
+                    <img v-if="pricing.image.data" :src="pricing.image.data" class="img-fluid style-pricing-image" :alt="pricing.alt">
+                    <img v-else v-lazy="pricing.image.id" class="img-fluid style-pricing-image" :alt="pricing.alt">
                   </div>
                   <h5 class="pricing-table__title style-pricing-table_title">{{ pricing.title }}</h5>
                   <div class="pricing-table__price-wrap">

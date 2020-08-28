@@ -21,11 +21,8 @@
       </div>
       <div class="col-lg-6 order-1 order-xl-2">
         <div class="requirements-list-image wow move-up style-requirement-image" style="margin-left: auto !important; margin-top: auto">
-          <img
-              :src="requirementSection.image.data | pngSrc"
-              class="img-fluid"
-              alt
-          >
+          <img v-if="requirementSection.image.data" :src="requirementSection.image.data" class="img-fluid" alt>
+          <img v-else v-lazy="requirementSection.image.id" class="img-fluid" alt>
         </div>
       </div>
     </div>

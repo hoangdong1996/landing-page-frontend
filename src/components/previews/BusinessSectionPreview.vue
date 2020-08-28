@@ -31,7 +31,8 @@
                                         class="single-feature-icon wow move-up"
                                 >
                                     <div class="single-feature-icon__media style-feature-image">
-                                        <img :src="feature.image.data | pngSrc" class="img-fluid" alt>
+                                        <img v-if="feature.image.data" :src="feature.image.data" class="img-fluid" alt>
+                                        <img v-else v-lazy="feature.image.id" class="img-fluid" alt>
                                     </div>
                                     <div class="single-feature-icon__content">
                                         <h6 class="title style-feature-title">{{ feature.title }}</h6>

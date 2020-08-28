@@ -14,7 +14,8 @@
               class="col-md-4 box-image position-relative text-center wow move-up"
           >
             <div class="box-image__media  style-about-expand-image">
-              <img v-if="about.image" :src="about.image.data | pngSrc" class="img-fluid" alt="about icon">
+              <img v-if="about.image.data" :src="about.image.data" class="img-fluid" alt="about icon">
+              <img v-else v-lazy="about.image.id" class="img-fluid" alt="about icon">
             </div>
             <div class="box-image__content">
               <h6 class="box-image__title  style-about-e xpand-title">

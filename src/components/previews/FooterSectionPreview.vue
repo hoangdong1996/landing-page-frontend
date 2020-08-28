@@ -6,7 +6,8 @@
           <div class="col-lg-4 col-md-6 footer-widget">
             <div class="footer-widget__logo mb-30">
               <router-link to="/">
-                <img  :src="footer.image.data | pngSrc" class="img-fluid logo-dark style-footer-image" alt>
+                <img v-if="footer.image.data" :src="footer.image.data" class="img-fluid logo-dark style-footer-image" alt>
+                <img v-else v-lazy="footer.image.id" class="img-fluid logo-dark style-footer-image" alt>
               </router-link>
             </div>
 
